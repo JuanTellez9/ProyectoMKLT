@@ -13,6 +13,14 @@ public class TrabajadorUQ extends Usario {
         this.cargo = cargo;
     }
 
+    public Beneficio getBeneficio() {
+        return beneficio;
+    }
+
+    public void setBeneficio(Beneficio beneficio) {
+        this.beneficio = beneficio;
+    }
+
     public String getCargo() {
         return cargo;
     }

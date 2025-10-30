@@ -1,11 +1,16 @@
 package uniquindio.edu.co.gym.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Persona {
     private String nombre;
     private String ID;
     private String telefono;
     private String direccion;
     private String fechaNacimiento;
+    private List<Usario> listUsarios;
+    private String foto;
 
     public Persona(String nombre, String ID, String telefono, String direccion, String fechaNacimiento) {
         this.nombre = nombre;
@@ -13,6 +18,24 @@ public class Persona {
         this.telefono = telefono;
         this.direccion = direccion;
         this.fechaNacimiento = fechaNacimiento;
+        this.listUsarios = new ArrayList<>();
+        this.foto = "";
+    }
+
+    public List<Usario> getListUsarios() {
+        return listUsarios;
+    }
+
+    public void setListUsarios(List<Usario> listUsarios) {
+        this.listUsarios = listUsarios;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public String getNombre() {
