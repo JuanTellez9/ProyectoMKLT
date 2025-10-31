@@ -1,5 +1,5 @@
 package edu.co.gym.model;
-//j
+//ji
 import java.util.Date;
 
 public class Pago {
