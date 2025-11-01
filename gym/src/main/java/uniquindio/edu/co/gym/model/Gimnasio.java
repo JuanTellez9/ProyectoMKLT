@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Gimnasio {
+    private static Gimnasio instance;
     private String nombre;
     private int nit;
     private String ubicacion;
@@ -14,17 +15,25 @@ public class Gimnasio {
     private List<Persona> listPersona;
     private List<HistorialPago> listHistorialPago;
 
-    public Gimnasio(String nombre, int nit, String ubicacion, String direccion, String fechaNacimiento) {
-        this.nombre = nombre;
-        this.nit = nit;
-        this.ubicacion = ubicacion;
-        this.direccion = direccion;
-        this.fechaNacimiento = fechaNacimiento;
-        this.listMaquina = new ArrayList<Maquina>();
+    private Gimnasio() {
+        this.nombre = "Gimnasio UQ Fit";
+        this.nit = 123456;
+        this.ubicacion = "Armenia, Quindío";
+        this.direccion = "Cra 15 #23-45";
+        this.fechaNacimiento = "2020-01-01";
+        this.listMaquina = new ArrayList<>();
         this.listMembresia = new ArrayList<>();
         this.listPersona = new ArrayList<>();
         this.listHistorialPago = new ArrayList<>();
     }
+
+    public static Gimnasio getInstance() {
+        if (instance == null) {
+            instance = new Gimnasio();
+        }
+        return instance;
+    }
+
 
     public List<Maquina> getListMaquina() {
         return listMaquina;

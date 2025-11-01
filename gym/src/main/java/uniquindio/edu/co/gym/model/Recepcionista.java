@@ -5,11 +5,13 @@ import java.util.List;
 
 public class Recepcionista extends Persona {
     private String turno;
+    private String contrasena;
     private List<Clase> listClases;
 
-    public Recepcionista(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String turno) {
+    public Recepcionista(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String turno,String contrasena) {
         super(nombre, ID, telefono, direccion, fechaNacimiento);
         this.turno = turno;
+        this.contrasena=contrasena;
         this.listClases = new ArrayList<>();
     }
 
