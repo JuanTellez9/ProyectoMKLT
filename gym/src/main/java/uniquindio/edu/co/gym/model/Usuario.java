@@ -6,12 +6,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Usario extends Persona {
+public abstract class Usuario extends Persona {
     private String contraseña;
     private LocalDate fechaCreacion;
     private List<Pago> listpagos;
 
-    public Usario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contraseña, LocalDate fechaCreacion) {
+    public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contraseña, LocalDate fechaCreacion) {
         super(nombre,ID,telefono,direccion,fechaNacimiento);
         this.contraseña=contraseña;
         this.fechaCreacion=fechaCreacion;

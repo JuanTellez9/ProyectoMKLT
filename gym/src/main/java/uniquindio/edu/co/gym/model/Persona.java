@@ -9,7 +9,7 @@ public class Persona {
     private String telefono;
     private String direccion;
     private String fechaNacimiento;
-    private List<Usario> listUsarios;
+    private List<Usuario> listUsarios;
     private String foto;
 
     public Persona(String nombre, String ID, String telefono, String direccion, String fechaNacimiento) {
@@ -22,11 +22,11 @@ public class Persona {
         this.foto = "";
     }
 
-    public List<Usario> getListUsarios() {
+    public List<Usuario> getListUsarios() {
         return listUsarios;
     }
 
-    public void setListUsarios(List<Usario> listUsarios) {
+    public void setListUsarios(List<Usuario> listUsarios) {
         this.listUsarios = listUsarios;
     }
 

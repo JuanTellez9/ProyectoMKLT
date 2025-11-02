@@ -7,19 +7,19 @@ import java.util.List;
 public class HistorialPago {
     private String id;
     private Date fechaPago;
-    private List<Usario> listUsarios;
+    private List<Usuario> listUsarios;
 
     public HistorialPago(String id, Date fechaPago) {
         this.id = id;
         this.fechaPago = fechaPago;
-        this.listUsarios = new ArrayList<Usario>();
+        this.listUsarios = new ArrayList<Usuario>();
     }
 
-    public List<Usario> getListUsarios() {
+    public List<Usuario> getListUsarios() {
         return listUsarios;
     }
 
-    public void setListUsarios(List<Usario> listUsarios) {
+    public void setListUsarios(List<Usuario> listUsarios) {
         this.listUsarios = listUsarios;
     }
 

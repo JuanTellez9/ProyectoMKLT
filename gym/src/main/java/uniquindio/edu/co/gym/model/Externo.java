@@ -2,7 +2,7 @@ package uniquindio.edu.co.gym.model;
 
 import java.time.LocalDate;
 
-public class Externo extends Usario {
+public class Externo extends Usuario {
     private String ocupacion;
 
     public Externo (String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contraseña, LocalDate fechaCreacion, String ocupacion) {
