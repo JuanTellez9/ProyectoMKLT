@@ -1,5 +1,5 @@
 package uniquindio.edu.co.gym.model;
-
+//hh
 public class Administrador extends Persona {
     private String titulo;
     private String contrasena;
