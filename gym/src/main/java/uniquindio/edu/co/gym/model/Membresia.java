@@ -5,21 +5,23 @@ import java.util.Date;
 
 public class Membresia {
     private int id;
-    private int costp;
-    private Date FechaInicio;
-    private Date FechaVencimiento;
+    private double costo;
+    private Date fechaInicio;
+    private Date fechaVencimiento;
     private boolean estado;
     private String beneficio;
     private Tipo tipo;
     private Nivel nivel;
 
-    public Membresia(int id,int costo,Date fechaInicio,Date fechaVencimiento,String beneficio) {
+    public Membresia(int id,double costo,Date fechaInicio,Date fechaVencimiento,boolean estado, String beneficio) {
         this.id = id;
-        this.costp = costo;
-        this.FechaInicio = fechaInicio;
-        this.FechaVencimiento = fechaVencimiento;
+        this.costo = costo;
+        this.fechaInicio = fechaInicio;
+        this.fechaVencimiento = fechaVencimiento;
+        this.estado = estado;
         this.beneficio = beneficio;
-        this.estado = false;
+        this.tipo = tipo;
+        this.nivel = nivel;
     }
 
     public Tipo getTipo() {
