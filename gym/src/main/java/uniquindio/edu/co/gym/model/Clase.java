@@ -1,25 +1,23 @@
 package uniquindio.edu.co.gym.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Clase {
-    private String nombre;
     private String id;
     private int cupoMaximo;
     private Date fecha;
     private Semana semana;
     private ClaseGrupal claseGrupal;
+    private List<Usuario> listUsuariosInscritos;
+
 
     public Clase(String nombre, String id,int cupoMaximo, Date fecha) {
-        this.nombre = nombre;
         this.id = id;
-
         this.cupoMaximo = cupoMaximo;
         this.fecha = fecha;
-    }
-
-    public String getNombre() {
-        return nombre;
+        this.listUsuariosInscritos = new ArrayList<>();
     }
 
     public Semana getSemana() {
@@ -38,9 +36,6 @@ public class Clase {
         this.claseGrupal = claseGrupal;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
     public String getId() {
         return id;

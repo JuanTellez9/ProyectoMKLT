@@ -13,7 +13,7 @@ public class Membresia {
     private Tipo tipo;
     private Nivel nivel;
 
-    public Membresia(int id,double costo,Date fechaInicio,Date fechaVencimiento,boolean estado, String beneficio) {
+    public Membresia(int id,double costo,Date fechaInicio,Date fechaVencimiento,boolean estado, String beneficio, Tipo tipo, Nivel nivel) {
         this.id = id;
         this.costo = costo;
         this.fechaInicio = fechaInicio;
