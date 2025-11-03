@@ -24,20 +24,14 @@ public class Membresia {
         this.nivel = nivel;
     }
 
-    public Tipo getTipo() {
-        return tipo;
-    }
+    public boolean isActiva() {
+        Date hoy = new Date();
 
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
-
-    public Nivel getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(Nivel nivel) {
-        this.nivel = nivel;
+        if (estado && fechaVencimiento != null && fechaVencimiento.after(hoy)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public int getId() {
@@ -48,28 +42,26 @@ public class Membresia {
         this.id = id;
     }
 
-    public int getCostp() {
-        return costp;
+    public double getCosto() {
+        return costo;
     }
 
-    public void setCostp(int costp) {
-        this.costp = costp;
+    public void setCosto(double costo) {
+        this.costo = costo;
     }
 
     public Date getFechaInicio() {
-        return FechaInicio;
+        return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
-        FechaInicio = fechaInicio;
-    }
+    public void setFechaInicio(Date fechaInicio) {this.fechaInicio = fechaInicio; }
 
     public Date getFechaVencimiento() {
-        return FechaVencimiento;
+        return fechaVencimiento;
     }
 
     public void setFechaVencimiento(Date fechaVencimiento) {
-        FechaVencimiento = fechaVencimiento;
+        fechaVencimiento = fechaVencimiento;
     }
 
     public boolean isEstado() {
@@ -86,5 +78,35 @@ public class Membresia {
 
     public void setBeneficio(String beneficio) {
         this.beneficio = beneficio;
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
+    public Nivel getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Nivel nivel) {
+        this.nivel = nivel;
+    }
+
+    @Override
+    public String toString() {
+        return "Membresia{" +
+                "id=" + id +
+                ", costo=" + costo +
+                ", fechaInicio=" + fechaInicio +
+                ", fechaVencimiento=" + fechaVencimiento +
+                ", estado=" + estado +
+                ", beneficio='" + beneficio + '\'' +
+                ", tipo=" + tipo +
+                ", nivel=" + nivel +
+                '}';
     }
 }
