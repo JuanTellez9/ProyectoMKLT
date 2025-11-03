@@ -10,10 +10,10 @@ public class Gimnasio {
     private String ubicacion;
     private String direccion;
     private String fechaNacimiento;
-    private List<Maquina> listMaquina;
-    private List<Membresia> listMembresia;
-    private List<Persona> listPersona;
-    private List<HistorialPago> listHistorialPago;
+    private ArrayList<Maquina> listMaquina;
+    private ArrayList<Membresia> listMembresia;
+    private ArrayList<Persona> listPersona;
+    private ArrayList<HistorialPago> listHistorialPago;
 
     private Gimnasio() {
         this.nombre = "Gimnasio UQ Fit";
@@ -39,7 +39,7 @@ public class Gimnasio {
         return listMaquina;
     }
 
-    public void setListMaquina(List<Maquina> listMaquina) {
+    public void setListMaquina(ArrayList<Maquina> listMaquina) {
         this.listMaquina = listMaquina;
     }
 
@@ -47,7 +47,7 @@ public class Gimnasio {
         return listMembresia;
     }
 
-    public void setListMembresia(List<Membresia> listMembresia) {
+    public void setListMembresia(ArrayList<Membresia> listMembresia) {
         this.listMembresia = listMembresia;
     }
 
@@ -55,7 +55,7 @@ public class Gimnasio {
         return listPersona;
     }
 
-    public void setListPersona(List<Persona> listPersona) {
+    public void setListPersona(ArrayList<Persona> listPersona) {
         this.listPersona = listPersona;
     }
 
@@ -63,7 +63,7 @@ public class Gimnasio {
         return listHistorialPago;
     }
 
-    public void setListHistorialPago(List<HistorialPago> listHistorialPago) {
+    public void setListHistorialPago(ArrayList<HistorialPago> listHistorialPago) {
         this.listHistorialPago = listHistorialPago;
     }
 

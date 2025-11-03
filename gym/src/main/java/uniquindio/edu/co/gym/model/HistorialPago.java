@@ -1,5 +1,4 @@
 package uniquindio.edu.co.gym.model;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,20 +6,39 @@ import java.util.List;
 public class HistorialPago {
     private String id;
     private Date fechaPago;
-    private List<Usuario> listUsarios;
+    private ArrayList<Usuario> listUsuarios;
+    private ArrayList<Pago> listaPagos;
 
     public HistorialPago(String id, Date fechaPago) {
         this.id = id;
         this.fechaPago = fechaPago;
-        this.listUsarios = new ArrayList<Usuario>();
+        this.listUsuarios = new ArrayList<Usuario>();
+        this.listaPagos=new ArrayList<>();
     }
+    public void registrarPago(Usuario usuario, Pago pago) {
+        try {
+            if (usuario == null || pago == null) {
+                throw new Exception("Usuario o pago no pueden ser nulos.");
+            }
 
+            listUsuarios.add(usuario);
+            listaPagos.add(pago);
+
+            System.out.println("Pago registrado correctamente:");
+            System.out.println("Usuario: " + usuario.getNombre());
+            System.out.println("Monto: $" + pago.getValor());
+            System.out.println("Fecha: " + pago.getFechaPago());
+
+        } catch (Exception e) {
+            System.out.println("Error al registrar pago: " + e.getMessage());
+        }
+    }
     public List<Usuario> getListUsarios() {
-        return listUsarios;
+        return listUsuarios;
     }
 
-    public void setListUsarios(List<Usuario> listUsarios) {
-        this.listUsarios = listUsarios;
+    public void setListUsarios(ArrayList<Usuario> listUsarios) {
+        this.listUsuarios = listUsarios;
     }
 
     public String getId() {
@@ -37,5 +55,12 @@ public class HistorialPago {
 
     public void setFechaPago(Date fechaPago) {
         this.fechaPago = fechaPago;
+    }
+
+    public List<Pago> getListaPagos() {
+        return listaPagos;
+    }
+    public void setListaPagos(ArrayList<Pago> listaPagos) {
+        this.listaPagos = listaPagos;
     }
 }

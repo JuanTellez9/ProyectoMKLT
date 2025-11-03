@@ -2,7 +2,7 @@ package uniquindio.edu.co.gym.model;
 
 public class UsuarioLogueado {
     private static UsuarioLogueado instance;
-    private Persona usuario; // Puede ser Administrador o Recepcionista
+    private Persona usuario;
 
     private UsuarioLogueado() {}
 

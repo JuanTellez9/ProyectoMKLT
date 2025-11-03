@@ -3,24 +3,22 @@ package uniquindio.edu.co.gym.model;
 import java.util.Date;
 
 public class Clase {
-    private String nombre;
     private String id;
     private int cupoMaximo;
     private Date fecha;
     private Semana semana;
     private ClaseGrupal claseGrupal;
+    private Entrenador entrenador;
 
-    public Clase(String nombre, String id,int cupoMaximo, Date fecha) {
-        this.nombre = nombre;
+
+    public Clase(String id,int cupoMaximo, Date fecha, Entrenador entrenador) {
         this.id = id;
 
         this.cupoMaximo = cupoMaximo;
         this.fecha = fecha;
+        this.entrenador = entrenador;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
 
     public Semana getSemana() {
         return semana;
@@ -38,9 +36,6 @@ public class Clase {
         this.claseGrupal = claseGrupal;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
     public String getId() {
         return id;
@@ -65,4 +60,7 @@ public class Clase {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+
+    public Entrenador getEntrenador() { return entrenador; }
+    public void setEntrenador(Entrenador entrenador) { this.entrenador = entrenador; }
 }

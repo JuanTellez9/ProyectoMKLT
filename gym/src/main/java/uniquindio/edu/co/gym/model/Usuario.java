@@ -1,6 +1,5 @@
 package uniquindio.edu.co.gym.model;
 
-import edu.co.gym.model.Pago;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 public abstract class Usuario extends Persona {
     private String contraseña;
     private LocalDate fechaCreacion;
-    private List<Pago> listpagos;
+    private ArrayList<Pago> listpagos;
 
     public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contraseña, LocalDate fechaCreacion) {
         super(nombre,ID,telefono,direccion,fechaNacimiento);
@@ -22,7 +21,7 @@ public abstract class Usuario extends Persona {
         return listpagos;
     }
 
-    public void setListpagos(List<Pago> listpagos) {
+    public void setListpagos(ArrayList<Pago> listpagos) {
         this.listpagos = listpagos;
     }
 
