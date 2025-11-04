@@ -1,6 +1,4 @@
 package uniquindio.edu.co.gym.model;
-
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Membresia {
