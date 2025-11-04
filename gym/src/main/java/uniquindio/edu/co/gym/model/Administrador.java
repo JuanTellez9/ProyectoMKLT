@@ -147,44 +147,54 @@ public class Administrador extends Persona {
             System.out.println("Error al generar reporte de ingresos por membresías: " + e.getMessage());
         }
     }
-
-    /**
-     * Reporte avanzado 3:
-     * Identifica las clases más populares (las que tienen más usuarios inscritos).
-     */
-    public void generarClasesMasPopulares() {
+    public void generarReporteClasesMasPopulares() {
         try {
-            System.out.println("----- REPORTE DE CLASES MÁS POPULARES -----");
+            System.out.println("\n------ REPORTE: CLASES MÁS POPULARES ------");
 
-            if (listClases.isEmpty()) {
-                System.out.println("No hay clases registradas.");
+            if (listClases == null || listClases.isEmpty()) {
+                System.out.println("No hay clases registradas en el sistema.");
                 return;
             }
 
+            // Variables para encontrar la clase más popular
             Clase claseMasPopular = null;
-            int mayorAsistencia = 0;
+            int maxAsistentes = -1;
 
+            // Recorrer todas las clases
             for (Clase clase : listClases) {
                 int asistentes = 0;
 
-                if (asistentes > mayorAsistencia) {
-                    mayorAsistencia = asistentes;
+                // Si la clase tiene lista de usuarios, contar los asistentes
+                if (clase.getListUsuarios() != null) {
+                    asistentes = clase.getListUsuarios().size();
+                }
+
+                System.out.println("- Clase: " + clase.getClaseGrupal() +
+                        " | Asistentes: " + asistentes +
+                        " | Cupo: " + clase.getCupoMaximo());
+
+                // Actualizar la clase más popular
+                if (asistentes > maxAsistentes) {
+                    maxAsistentes = asistentes;
                     claseMasPopular = clase;
                 }
             }
 
+            // Mostrar resultado final
             if (claseMasPopular != null) {
-                System.out.println("Clase más popular: " + claseMasPopular.getClaseGrupal());
-                System.out.println("Cantidad de asistentes: " + mayorAsistencia);
+                System.out.println("\n👉 La clase más popular es: " + claseMasPopular.getClaseGrupal());
+                System.out.println("   Con " + maxAsistentes + " asistentes.");
             } else {
-                System.out.println("No hay datos de asistencia para determinar la clase más popular.");
+                System.out.println("No se encontró ninguna clase con asistentes.");
             }
 
-            System.out.println("-------------------------------------------\n");
+            System.out.println("---------------------------------------------");
+
         } catch (Exception e) {
-            System.out.println("Error al generar reporte de clases más populares: " + e.getMessage());
+            System.out.println("Error al generar el reporte de clases populares: " + e.getMessage());
         }
     }
+
     public String getTitulo() {
         return titulo;
     }
