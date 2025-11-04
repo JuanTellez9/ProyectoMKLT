@@ -9,7 +9,7 @@ public class Persona {
     private String telefono;
     private String direccion;
     private String fechaNacimiento;
-    private List<Usuario> listUsarios;
+    private ArrayList<Usuario> listUsarios;
     private String foto;
 
     public Persona(String nombre, String ID, String telefono, String direccion, String fechaNacimiento) {
@@ -26,7 +26,7 @@ public class Persona {
         return listUsarios;
     }
 
-    public void setListUsarios(List<Usuario> listUsarios) {
+    public void setListUsarios(ArrayList<Usuario> listUsarios) {
         this.listUsarios = listUsarios;
     }
 

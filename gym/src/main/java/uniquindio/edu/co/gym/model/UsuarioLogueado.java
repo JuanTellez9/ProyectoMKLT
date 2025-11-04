@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class UsuarioLogueado implements Ihashes {
     private static UsuarioLogueado instance;
-    private Persona usuario; // Puede ser Administrador o Recepcionista
+    private Persona usuario;
 
     public void setUsuario(Persona usuario) {
         this.usuario = usuario;

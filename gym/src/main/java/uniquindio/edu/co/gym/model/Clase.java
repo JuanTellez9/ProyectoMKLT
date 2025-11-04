@@ -10,8 +10,11 @@ public class Clase {
     private ClaseGrupal claseGrupal;
     private ArrayList<Usuario> listUsuariosInscritos;
 
+    private Entrenador entrenador;
+    private ArrayList<Usuario> listUsuarios;
 
-    public Clase(String nombre, String id,int cupoMaximo, Date fecha) {
+
+    public Clase(String id,int cupoMaximo, Date fecha, Entrenador entrenador) {
         this.id = id;
         this.cupoMaximo = cupoMaximo;
         this.fecha = fecha;
@@ -21,12 +24,10 @@ public class Clase {
      public void setListUsuariosInscritos(ArrayList<Usuario> listUsuariosInscritos) {
         this.listUsuariosInscritos = listUsuariosInscritos;
     }
-
     public ArrayList<Usuario> getListUsuariosInscritos() {
         return listUsuariosInscritos;
     }
 
-    
     public Semana getSemana() {
         return semana;
     }
@@ -67,4 +68,15 @@ public class Clase {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+    public ArrayList<Usuario> getListUsuarios() {
+        return listUsuarios;
+    }
+
+    public void setListUsuarios(ArrayList<Usuario> listUsuarios) {
+        this.listUsuarios = listUsuarios;
+    }
+
+
+    public Entrenador getEntrenador() { return entrenador; }
+    public void setEntrenador(Entrenador entrenador) { this.entrenador = entrenador; }
 }

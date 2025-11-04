@@ -7,10 +7,9 @@ import java.util.ArrayList;
 public abstract class Usuario extends Persona {
     private String contrasena;
     private LocalDate fechaCreacion;
-     private ArrayList<Pago> listpagos;
-     private Membresia membresia;
+    private ArrayList<Pago> listpagos;
     private ArrayList<Clase> listClases;
-
+    private Membresia membresia;
 
     public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contrasena, LocalDate fechaCreacion) {
         super(nombre,ID,telefono,direccion,fechaNacimiento);
@@ -28,7 +27,7 @@ public abstract class Usuario extends Persona {
         this.listpagos = listpagos;
     }
 
-    public String getContraseña() {
+    public String getContrasena() {
         return contrasena;
     }
     public void setListClases(ArrayList<Clase> listClases) {
@@ -38,7 +37,7 @@ public abstract class Usuario extends Persona {
     public ArrayList<Clase> getListClases() {
         return listClases;
     }
-    public void setContraseña(String contrasena) {
+    public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
 
