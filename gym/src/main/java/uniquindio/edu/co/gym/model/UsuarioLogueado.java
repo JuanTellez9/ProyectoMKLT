@@ -4,7 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class UsuarioLogueado implements Ihashes {
     private static UsuarioLogueado instance;
