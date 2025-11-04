@@ -10,10 +10,15 @@ public class Gimnasio {
     private String ubicacion;
     private String direccion;
     private String fechaNacimiento;
-    private List<Maquina> listMaquina;
-    private List<Membresia> listMembresia;
-    private List<Persona> listPersona;
-    private List<HistorialPago> listHistorialPago;
+    private ArrayList<Maquina> listMaquina;
+    private ArrayList<Membresia> listMembresia;
+    private ArrayList<TrabajadorUQ>  listTrabajadorUQ;
+    private ArrayList<Estudiante> listEstudiante;
+    private ArrayList<Externo> listExterno;
+    private ArrayList<HistorialPago> listHistorialPago;
+    private ArrayList<Recepcionista>  listRecepcionista;
+    private Administrador administrador;
+    private ArrayList<Entrenador> listEntrenadores;
 
     private Gimnasio() {
         this.nombre = "Gimnasio UQ Fit";
@@ -23,9 +28,69 @@ public class Gimnasio {
         this.fechaNacimiento = "2020-01-01";
         this.listMaquina = new ArrayList<>();
         this.listMembresia = new ArrayList<>();
-        this.listPersona = new ArrayList<>();
+        this.listTrabajadorUQ = new ArrayList<>();
+        this.listEstudiante = new ArrayList<>();
+        this.listExterno = new ArrayList<>();
         this.listHistorialPago = new ArrayList<>();
+        this.listRecepcionista = new ArrayList<>();
+        this.listEntrenadores = new ArrayList<>();
     }
+
+    public void setListMaquina(ArrayList<Maquina> listMaquina) {
+        this.listMaquina = listMaquina;
+    }
+
+    public void setListMembresia(ArrayList<Membresia> listMembresia) {
+        this.listMembresia = listMembresia;
+    }
+
+    public void setListTrabajadorUQ(ArrayList<TrabajadorUQ> listTrabajadorUQ) {
+        this.listTrabajadorUQ = listTrabajadorUQ;
+    }
+
+    public ArrayList<Estudiante> getListEstudiante() {
+        return listEstudiante;
+    }
+
+    public void setListEstudiante(ArrayList<Estudiante> listEstudiante) {
+        this.listEstudiante = listEstudiante;
+    }
+
+    public ArrayList<Externo> getListExterno() {
+        return listExterno;
+    }
+
+    public void setListExterno(ArrayList<Externo> listExterno) {
+        this.listExterno = listExterno;
+    }
+
+    public void setListHistorialPago(ArrayList<HistorialPago> listHistorialPago) {
+        this.listHistorialPago = listHistorialPago;
+    }
+
+    public void setListRecepcionista(ArrayList<Recepcionista> listRecepcionista) {
+        this.listRecepcionista = listRecepcionista;
+    }
+
+    public ArrayList<Entrenador> getListEntrenadores() {
+        return listEntrenadores;
+    }
+
+    public void setListEntrenadores(ArrayList<Entrenador> listEntrenadores) {
+        this.listEntrenadores = listEntrenadores;
+    }
+
+    public void agregarAdministrador(Administrador administrador){
+        this.administrador = administrador;
+    }
+    public void agregarRecepcionista(Recepcionista recepcionista){
+        this.listRecepcionista.add(recepcionista);
+    }
+
+    public List<TrabajadorUQ> getListTrabajadorUQ() {
+        return listTrabajadorUQ;
+    }
+
 
     public static Gimnasio getInstance() {
         if (instance == null) {
@@ -34,38 +99,34 @@ public class Gimnasio {
         return instance;
     }
 
+    public ArrayList<Recepcionista> getListRecepcionista() {
+        return listRecepcionista;
+    }
 
-    public List<Maquina> getListMaquina() {
+
+    public Administrador getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
+    }
+
+    public ArrayList<Maquina> getListMaquina() {
         return listMaquina;
     }
 
-    public void setListMaquina(List<Maquina> listMaquina) {
-        this.listMaquina = listMaquina;
-    }
 
-    public List<Membresia> getListMembresia() {
+    public ArrayList<Membresia> getListMembresia() {
         return listMembresia;
     }
 
-    public void setListMembresia(List<Membresia> listMembresia) {
-        this.listMembresia = listMembresia;
-    }
 
-    public List<Persona> getListPersona() {
-        return listPersona;
-    }
-
-    public void setListPersona(List<Persona> listPersona) {
-        this.listPersona = listPersona;
-    }
-
-    public List<HistorialPago> getListHistorialPago() {
+    public ArrayList<HistorialPago> getListHistorialPago() {
         return listHistorialPago;
     }
 
-    public void setListHistorialPago(List<HistorialPago> listHistorialPago) {
-        this.listHistorialPago = listHistorialPago;
-    }
+
 
     public String getNombre() {
         return nombre;

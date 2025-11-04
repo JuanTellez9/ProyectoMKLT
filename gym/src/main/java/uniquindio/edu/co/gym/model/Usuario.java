@@ -7,31 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Usuario extends Persona {
-    private String contraseña;
     private LocalDate fechaCreacion;
-    private List<Pago> listpagos;
+    private ArrayList<Pago> listpagos;
 
-    public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contraseña, LocalDate fechaCreacion) {
+    public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, LocalDate fechaCreacion) {
         super(nombre,ID,telefono,direccion,fechaNacimiento);
-        this.contraseña=contraseña;
         this.fechaCreacion=fechaCreacion;
         this.listpagos=new ArrayList<>();
+
     }
 
-    public List<Pago> getListpagos() {
+    public ArrayList<Pago> getListpagos() {
         return listpagos;
     }
 
     public void setListpagos(List<Pago> listpagos) {
-        this.listpagos = listpagos;
-    }
-
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+        this.listpagos = (ArrayList<Pago>) listpagos;
     }
 
     public LocalDate getFechaCreacion() {

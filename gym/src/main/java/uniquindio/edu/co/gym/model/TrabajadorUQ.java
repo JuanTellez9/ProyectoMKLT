@@ -8,8 +8,8 @@ public class TrabajadorUQ extends Usuario {
     private String area;
     private Beneficio beneficio;
 
-    public TrabajadorUQ(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contraseña, LocalDate fechaCreacion, String cargo, String area) {
-        super(nombre,ID,telefono,direccion,fechaNacimiento,contraseña,fechaCreacion);
+    public TrabajadorUQ(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, LocalDate fechaCreacion, String cargo, String area) {
+        super(nombre,ID,telefono,direccion,fechaNacimiento,fechaCreacion);
         this.cargo = cargo;
     }
 
