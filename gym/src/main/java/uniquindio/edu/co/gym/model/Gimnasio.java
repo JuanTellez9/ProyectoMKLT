@@ -35,7 +35,12 @@ public class Gimnasio {
         this.listRecepcionista = new ArrayList<>();
         this.listEntrenadores = new ArrayList<>();
     }
-
+    public void registrarMaquina(Maquina maquina) {
+        this.listMaquina.add(maquina);
+    }
+    public void registrarMembresia(Membresia membresia) {
+        this.listMembresia.add(membresia);
+    }
     public void setListMaquina(ArrayList<Maquina> listMaquina) {
         this.listMaquina = listMaquina;
     }

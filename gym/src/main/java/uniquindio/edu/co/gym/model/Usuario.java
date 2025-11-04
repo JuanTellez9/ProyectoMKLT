@@ -29,7 +29,11 @@ public abstract class Usuario extends Persona {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(LocalDate fechaCreacion) {
+    public void setListpagos(ArrayList<Pago> listpagos) {
+        this.listpagos = listpagos;
+    }
+
+    public void setFechaCreacion() {
         this.fechaCreacion = fechaCreacion;
     }
 }
