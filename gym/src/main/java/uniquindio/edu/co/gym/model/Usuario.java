@@ -1,39 +1,62 @@
 package uniquindio.edu.co.gym.model;
 
-import edu.co.gym.model.Pago;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class Usuario extends Persona {
+    private String contrasena;
     private LocalDate fechaCreacion;
-    private ArrayList<Pago> listpagos;
+     private ArrayList<Pago> listpagos;
+     private Membresia membresia;
+    private ArrayList<Clase> listClases;
 
-    public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, LocalDate fechaCreacion) {
+
+    public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contrasena, LocalDate fechaCreacion) {
         super(nombre,ID,telefono,direccion,fechaNacimiento);
+        this.contrasena=contrasena;
         this.fechaCreacion=fechaCreacion;
         this.listpagos=new ArrayList<>();
-
     }
+    public abstract double calcularDescuento(Membresia membresia);
 
     public ArrayList<Pago> getListpagos() {
         return listpagos;
-    }
-
-    public void setListpagos(List<Pago> listpagos) {
-        this.listpagos = (ArrayList<Pago>) listpagos;
-    }
-
-    public LocalDate getFechaCreacion() {
-        return fechaCreacion;
     }
 
     public void setListpagos(ArrayList<Pago> listpagos) {
         this.listpagos = listpagos;
     }
 
-    public void setFechaCreacion() {
+    public String getContraseña() {
+        return contrasena;
+    }
+    public void setListClases(ArrayList<Clase> listClases) {
+        this.listClases = listClases;
+    }
+
+    public ArrayList<Clase> getListClases() {
+        return listClases;
+    }
+    public void setContraseña(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    
+
+    public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+    public Membresia getMembresia() {
+        return membresia;
+    }
+
+    public void setMembresia(Membresia membresia) {
+        this.membresia = membresia;
+    }
 }
+

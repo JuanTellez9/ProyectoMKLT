@@ -1,4 +1,4 @@
-package edu.co.gym.model;
+package uniquindio.edu.co.gym.model;
 //ji
 import java.util.Date;
 

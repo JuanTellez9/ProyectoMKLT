@@ -19,6 +19,8 @@ public class Gimnasio {
     private ArrayList<Recepcionista>  listRecepcionista;
     private Administrador administrador;
     private ArrayList<Entrenador> listEntrenadores;
+    private ArrayList<Usuario> listUsuarios;
+    private ArrayList<Clase> listClases;
 
     private Gimnasio() {
         this.nombre = "Gimnasio UQ Fit";
@@ -32,6 +34,7 @@ public class Gimnasio {
         this.listEstudiante = new ArrayList<>();
         this.listExterno = new ArrayList<>();
         this.listHistorialPago = new ArrayList<>();
+        this.listClases = new ArrayList <> ();
         this.listRecepcionista = new ArrayList<>();
         this.listEntrenadores = new ArrayList<>();
     }
@@ -117,7 +120,43 @@ public class Gimnasio {
         this.administrador = administrador;
     }
 
-    public ArrayList<Maquina> getListMaquina() {
+    public boolean verificarClase(Clase clase) {
+        try {
+            boolean bandera = false;
+            for (Clase clas : listClases) {
+                if (clas.getId() == clase.getId()) {
+                    bandera = true;
+                }
+            }
+            return bandera;
+        } catch (Exception e) {
+            System.out.println("Error al verificar la clase: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void registrarClase(Clase clase) {
+        try {
+            if (!verificarClase(clase)) {
+                if (clase.getCupoMaximo() <= 0) {
+                    System.out.println("⚠ No se puede registrar la clase '" + clase.getId() +
+                            "': el cupo máximo debe ser mayor a 0.");
+                    return;
+                }
+
+                listClases.add(clase);
+
+                System.out.println("Clase registrada: " + clase.getId() +
+                        " | Cupo máximo: " + clase.getCupoMaximo());
+
+            } else {
+                System.out.println("⚠ La clase ya existe: " + clase.getId());
+            }
+        } catch (Exception e) {
+            System.out.println("Error al registrar la clase: " + e.getMessage());
+        }
+    }
+    public List<Maquina> getListMaquina() {
         return listMaquina;
     }
 
@@ -125,12 +164,6 @@ public class Gimnasio {
     public ArrayList<Membresia> getListMembresia() {
         return listMembresia;
     }
-
-
-    public ArrayList<HistorialPago> getListHistorialPago() {
-        return listHistorialPago;
-    }
-
 
 
     public String getNombre() {
@@ -161,6 +194,12 @@ public class Gimnasio {
         return direccion;
     }
 
+     public List<HistorialPago> getListHistorialPago() {
+        return listHistorialPago;
+    }
+
+   
+
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
@@ -171,5 +210,20 @@ public class Gimnasio {
 
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+    public void setListClases(ArrayList<Clase> listClases) {
+        this.listClases = listClases;
+    }
+
+    public List<Clase> getListClases() {
+        return listClases;
+    }
+
+    public void setListUsuarios(ArrayList<Usuario> listUsuarios) {
+        this.listUsuarios = listUsuarios;
+    }
+
+    public ArrayList<Usuario> getListUsuarios() {
+        return listUsuarios;
     }
 }
