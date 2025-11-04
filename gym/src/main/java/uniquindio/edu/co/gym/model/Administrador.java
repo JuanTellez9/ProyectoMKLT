@@ -53,6 +53,56 @@ public class Administrador extends Persona {
         }
     }
 
+    public void modificarEntrenador(String idEntrenador, String nuevoTelefono, String nuevaDireccion, String nuevoTurno) {
+        try {
+            boolean encontrado = false;
+
+            for (Entrenador ent : listEntrenadores) {
+                if (ent.getID().equals(idEntrenador)) {
+                    ent.setTelefono(nuevoTelefono);
+                    ent.setDireccion(nuevaDireccion);
+                    ent.setTurno(nuevoTurno);
+                    encontrado = true;
+                    System.out.println("✅ Entrenador actualizado: " + ent.getNombre());
+                    break;
+                }
+            }
+
+            if (!encontrado) {
+                System.out.println("⚠️ No se encontró ningún entrenador con ID: " + idEntrenador);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al modificar entrenador: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Método que elimina un entrenador del sistema.
+     */
+    public void eliminarEntrenador(String idEntrenador) {
+        try {
+            Entrenador entrenadorAEliminar = null;
+
+            for (Entrenador ent : listEntrenadores) {
+                if (ent.getID().equals(idEntrenador)) {
+                    entrenadorAEliminar = ent;
+                    break;
+                }
+            }
+
+            if (entrenadorAEliminar != null) {
+                listEntrenadores.remove(entrenadorAEliminar);
+                System.out.println("✅ Entrenador eliminado: " + entrenadorAEliminar.getNombre());
+            } else {
+                System.out.println("⚠️ No se encontró el entrenador con ID: " + idEntrenador);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al eliminar entrenador: " + e.getMessage());
+        }
+    }
+
     public void asignarEntrenadorAClase(String idClase, Entrenador entrenador) {
         try {
             Clase claseEncontrada = null;
