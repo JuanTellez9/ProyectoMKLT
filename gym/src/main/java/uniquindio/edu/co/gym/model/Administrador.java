@@ -84,29 +84,38 @@ public class Administrador extends Persona {
     }
     public void generarEstadisticasAsistencia() {
         try {
-            System.out.println("----- ESTADÍSTICAS DE ASISTENCIA POR CLASE -----");
+            System.out.println("\n------ REPORTE DE ASISTENCIA ------");
 
             if (listClases.isEmpty()) {
-                System.out.println("No hay clases registradas para generar estadísticas.");
+                System.out.println("No hay clases registradas en el sistema.");
                 return;
             }
 
             for (Clase clase : listClases) {
-
                 int asistentes = 0;
+                int cupoMaximo = clase.getCupoMaximo();
 
-                System.out.println("- Clase: " + clase.getClaseGrupal() +
-                        " | Cupo máximo: " + clase.getCupoMaximo() +
-                        " | Asistentes: " + asistentes +
-                        " | Ocupación: " + (asistentes * 100 / clase.getCupoMaximo()) + "%");
+                // Si la clase tiene usuarios inscritos
+                if (clase.getListUsuarios() != null) {
+                    asistentes = clase.getListUsuarios().size();
+                }
+
+                double porcentajeOcupacion = 0;
+                if (cupoMaximo > 0) {
+                    porcentajeOcupacion = (asistentes * 100.0) / cupoMaximo;
+                }
+
+                System.out.println("- Clase: " + clase.getClaseGrupal());
+                System.out.println("  • Cupo máximo: " + cupoMaximo);
+                System.out.println("  • Asistentes: " + asistentes);
+                System.out.println("  • Ocupación: " + String.format("%.2f", porcentajeOcupacion) + "%");
+                System.out.println("--------------------------------------");
             }
 
-            System.out.println("------------------------------------------------\n");
         } catch (Exception e) {
-            System.out.println("Error al generar estadísticas de asistencia: " + e.getMessage());
+            System.out.println("Error al generar el reporte de asistencia: " + e.getMessage());
         }
     }
-
     /**
      *
      * Calcula los ingresos totales por membresías registradas en el historial de pagos.

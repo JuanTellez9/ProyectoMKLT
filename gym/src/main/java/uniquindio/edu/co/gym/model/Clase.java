@@ -1,6 +1,8 @@
 package uniquindio.edu.co.gym.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Clase {
     private String id;
@@ -9,6 +11,7 @@ public class Clase {
     private Semana semana;
     private ClaseGrupal claseGrupal;
     private Entrenador entrenador;
+    private ArrayList<Usuario> listUsuarios;
 
 
     public Clase(String id,int cupoMaximo, Date fecha, Entrenador entrenador) {
@@ -60,6 +63,14 @@ public class Clase {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+    public ArrayList<Usuario> getListUsuarios() {
+        return listUsuarios;
+    }
+
+    public void setListUsuarios(ArrayList<Usuario> listUsuarios) {
+        this.listUsuarios = listUsuarios;
+    }
+
 
     public Entrenador getEntrenador() { return entrenador; }
     public void setEntrenador(Entrenador entrenador) { this.entrenador = entrenador; }
