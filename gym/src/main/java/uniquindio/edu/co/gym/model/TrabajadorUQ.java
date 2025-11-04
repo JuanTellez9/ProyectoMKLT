@@ -8,11 +8,20 @@ public class TrabajadorUQ extends Usuario {
     private String area;
     private Beneficio beneficio;
 
-    public TrabajadorUQ(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contraseña, LocalDate fechaCreacion, String cargo, String area) {
-        super(nombre,ID,telefono,direccion,fechaNacimiento,contraseña,fechaCreacion);
+    public TrabajadorUQ(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contrasena, LocalDate fechaCreacion, String cargo, String area) {
+        super(nombre,ID,telefono,direccion,fechaNacimiento,contrasena,fechaCreacion);
         this.cargo = cargo;
     }
 
+    @Override
+    public double calcularDescuento(Membresia membresia) {
+        Membresia membre = (membresia != null) ? membresia : this.getMembresia();
+        if (membre == null) {
+            return 0;
+        }
+        double valorConDescuento = membre.getCosto() - (membre.getCosto() * 0.15);
+        return valorConDescuento;
+    }
     public Beneficio getBeneficio() {
         return beneficio;
     }
