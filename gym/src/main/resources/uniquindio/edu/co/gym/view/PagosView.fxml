@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="uniquindio.edu.co.gym.controller.PagosController"
+      spacing="12">
+    <Label text="Pagos" styleClass="h1"/>
+    <HBox spacing="10">
+        <TextField promptText="ID pago" styleClass="form-control"/>
+        <DatePicker promptText="Fecha de pago"/>
+        <Button text="Registrar" styleClass="btn btn-primary"/>
+    </HBox>
+
+    <TableView prefHeight="480">
+        <columns>
+            <TableColumn text="ID pago" prefWidth="180"/>
+            <TableColumn text="Fecha" prefWidth="220"/>
+        </columns>
+    </TableView>
+</VBox>

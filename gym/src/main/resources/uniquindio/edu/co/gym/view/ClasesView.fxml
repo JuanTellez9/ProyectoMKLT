@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="uniquindio.edu.co.gym.controller.ClasesController"
+      spacing="12">
+    <Label text="Clases" styleClass="h1"/>
+    <HBox spacing="10">
+        <TextField promptText="Nombre" styleClass="form-control"/>
+        <TextField promptText="ID" styleClass="form-control"/>
+        <TextField promptText="Hora inicio" styleClass="form-control"/>
+        <TextField promptText="Hora fin" styleClass="form-control"/>
+        <TextField promptText="Cupo máximo" styleClass="form-control"/>
+        <Button text="Nueva" styleClass="btn btn-primary"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <ComboBox promptText="Clase grupal (ZUMBA, YOGA...)" prefWidth="280"/>
+        <ComboBox promptText="Día de semana" prefWidth="180"/>
+        <ComboBox promptText="Nivel (Básico/Premium/VIP)" prefWidth="220"/>
+    </HBox>
+
+    <TableView prefHeight="460">
+        <columns>
+            <TableColumn text="Nombre" prefWidth="180"/>
+            <TableColumn text="ID" prefWidth="120"/>
+            <TableColumn text="Inicio" prefWidth="100"/>
+            <TableColumn text="Fin" prefWidth="100"/>
+            <TableColumn text="Cupo" prefWidth="80"/>
+            <TableColumn text="Tipo" prefWidth="120"/>
+            <TableColumn text="Día" prefWidth="120"/>
+            <TableColumn text="Nivel" prefWidth="120"/>
+        </columns>
+    </TableView>
+</VBox>

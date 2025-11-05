@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefWidth="1150" prefHeight="720"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uniquindio.edu.co.gym.controller.MainController"
+            styleClass="app-root">
+
+    <!-- Header -->
+    <top>
+        <HBox spacing="12" styleClass="topbar">
+            <Label text="Gimnasio UQ" styleClass="brand"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <TextField promptText="Buscar..." styleClass="form-control" prefWidth="260"/>
+            <Button text="Perfil" styleClass="btn btn-outline"/>
+        </HBox>
+    </top>
+
+    <!-- Sidebar -->
+    <left>
+        <VBox spacing="6" styleClass="sidebar" BorderPane.alignment="CENTER">
+            <Label text="Menú" styleClass="sidebar-title"/>
+            <Button text="Personas"     onAction="#goPersonas"    styleClass="btn btn-nav"/>
+            <Button text="Clases"       onAction="#goClases"      styleClass="btn btn-nav"/>
+            <Button text="Membresías"   onAction="#goMembresias"  styleClass="btn btn-nav"/>
+            <Button text="Máquinas"     onAction="#goMaquinas"    styleClass="btn btn-nav"/>
+            <Button text="Pagos"        onAction="#goPagos"       styleClass="btn btn-nav"/>
+            <Pane VBox.vgrow="ALWAYS"/>
+            <Button text="⚙ Ajustes"    styleClass="btn btn-muted"/>
+        </VBox>
+    </left>
+
+    <!-- Contenido intercambiable -->
+    <center>
+        <StackPane fx:id="contentArea">
+            <padding>
+                <Insets top="16" right="16" bottom="16" left="16"/>
+            </padding>
+        </StackPane>
+
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" styleClass="footer">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <Label text="© 2025 Gimnasio UQ"/>
+        </HBox>
+
+    </bottom>
+</BorderPane>
