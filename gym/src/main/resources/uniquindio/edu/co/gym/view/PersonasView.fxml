@@ -43,12 +43,12 @@
                             <Insets top="10" right="10" bottom="10" left="10"/>
                         </padding>
                         <HBox spacing="10">
-                            <TextField promptText="Nombre" styleClass="form-control"/>
+                            <TextField promptText="Nombre" styleClass="form-control" fx:id="txtNombre"/>
                             <TextField promptText="ID" styleClass="form-control"/>
                             <TextField promptText="Teléfono" styleClass="form-control"/>
                             <TextField promptText="Título" styleClass="form-control"/>
                             <Button fx:id="btnSeleccionarAdmin" text="Seleccionar Imagen" />
-                            <Button text="Nuevo" styleClass="btn btn-primary"/>
+                            <Button text="Nuevo" styleClass="btn btn-primary" onAction="#onGuardarPersona"/>
                         </HBox>
                         <TableView prefHeight="420">
                             <columns>
