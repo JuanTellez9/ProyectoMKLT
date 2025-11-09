@@ -3,6 +3,8 @@ module uniquindio.edu.co.gym {
     requires javafx.fxml;
     requires javafx.graphics;
     requires javafx.base;
+    requires java.desktop;
+    requires java.sql;
 
     // 🔓 Permitir que FXML acceda a tus controladores y clases
     opens uniquindio.edu.co.gym to javafx.fxml;
