@@ -11,8 +11,8 @@ public abstract class Usuario extends Persona {
     private ArrayList<Clase> listClases;
     private Membresia membresia;
 
-    public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contrasena, LocalDate fechaCreacion) {
-        super(nombre,ID,telefono,direccion,fechaNacimiento);
+    public Usuario(String nombre, String id, String telefono, String direccion, String fechaNacimiento, String contrasena, LocalDate fechaCreacion) {
+        super(nombre,id,telefono,direccion,fechaNacimiento);
         this.contrasena=contrasena;
         this.fechaCreacion=fechaCreacion;
         this.listpagos=new ArrayList<>();

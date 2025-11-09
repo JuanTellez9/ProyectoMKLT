@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d8e71646-5cbb-4f37-a379-1f296ef28890" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Administrador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Clase.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Clase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Entrenador.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Entrenador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Estudiante.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Estudiante.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Externo.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Externo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Gimnasio.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Gimnasio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/HistorialPago.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/HistorialPago.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Maquina.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Maquina.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Membresia.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Membresia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Pago.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Pago.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Persona.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Persona.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Recepcionista.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Recepcionista.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/TrabajadorUQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/TrabajadorUQ.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/UsuarioLogueado.java" beforeDir="false" afterPath="$PROJECT_DIR$/gym/src/main/java/uniquindio/edu/co/gym/model/UsuarioLogueado.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="35FZcexAuAVpW7BrxpWAIgQu2rh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "corregir2",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d8e71646-5cbb-4f37-a379-1f296ef28890" name="Changes" comment="" />
+      <created>1762707868113</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762707868113</updated>
+    </task>
+    <servers />
+  </component>
+</project>

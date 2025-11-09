@@ -14,9 +14,19 @@ public  class Recepcionista extends Persona implements Ihashes {
     private ArrayList<Membresia> listMembresias;
     private ArrayList<Usuario> listUsuarios;
 
-
-    public Recepcionista(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String turno,String contrasena) {
-        super(nombre, ID, telefono, direccion, fechaNacimiento);
+    /**
+     * Constructor de la clase Recepcionista.
+     * Inicializa los valores del recepcionista y aplica un hash a la contrasena.
+     * @param nombre Nombre del recepcionista.
+     * @param id Identificador unico del recepcionista.
+     * @param telefono Numero de telefono del recepcionista.
+     * @param direccion Direccion del recepcionista.
+     * @param fechaNacimiento Fecha de nacimiento del recepcionista.
+     * @param turno Turno de trabajo del recepcionista.
+     * @param contrasena Contrasena del recepcionista (se almacena de forma hasheada).
+     */
+    public Recepcionista(String nombre, String id, String telefono, String direccion, String fechaNacimiento, String turno,String contrasena) {
+        super(nombre, id, telefono, direccion, fechaNacimiento);
         this.turno = turno;
         this.contrasena= Arrays.toString(hashearContrasenaBytes(contrasena));
         this.listClases = new ArrayList<>();
@@ -24,15 +34,25 @@ public  class Recepcionista extends Persona implements Ihashes {
         this.listUsuarios = new ArrayList<>();
     }
 
+    /**
+     * Verifica si un usuario ya esta registrado en la lista del recepcionista.
+     * @param usuario Usuario a verificar.
+     * @return true si el usuario ya existe, false en caso contrario.
+     */
     public boolean verificarUsuario(Usuario usuario){
         boolean bandera = false;
         for(Usuario usu : listUsuarios){
-            if(usu.getID() == usuario.getID()){
+            if(usu.getId() == usuario.getId()){
                 bandera = true;
             }
         }
         return bandera;
     }
+
+    /**
+     * Registra un nuevo usuario si no existe previamente.
+     * @param usuario Usuario a registrar.
+     */
     public void registrarUsuario(Usuario usuario) {
         if (!verificarUsuario(usuario)) {
             listUsuarios.add(usuario);
@@ -42,6 +62,12 @@ public  class Recepcionista extends Persona implements Ihashes {
         }
     }
 
+    /**
+     * Permite al recepcionista reservar una clase para un usuario dentro del gimnasio.
+     * @param gimnasio Objeto Gimnasio donde se realiza la reserva.
+     * @param usuario Usuario que desea reservar la clase.
+     * @param clase Clase a reservar.
+     */
     public void reservarClase(Gimnasio gimnasio, Usuario usuario, Clase clase) {
         try {
             if (gimnasio == null || usuario == null || clase == null) {
@@ -53,7 +79,7 @@ public  class Recepcionista extends Persona implements Ihashes {
             Clase claseEncontrada = null;
 
             for (Clase c : gimnasio.getListClases()) {
-                if (c.getId() == clase.getId()) {
+                if (c.getId().equals(clase.getId())) {
                     encontrada = true;
                     claseEncontrada = c;
                 }
@@ -85,6 +111,12 @@ public  class Recepcionista extends Persona implements Ihashes {
             System.out.println("Error al reservar la clase: " + e.getMessage());
         }
     }
+
+    /**
+     * Asigna una membresia a un usuario.
+     * @param usuario Usuario al que se le asigna la membresia.
+     * @param membresia Membresia a asignar.
+     */
     public void asignarMembresia(Usuario usuario, Membresia membresia) {
         try {
             if (usuario == null || membresia == null) {
@@ -93,13 +125,18 @@ public  class Recepcionista extends Persona implements Ihashes {
             }
 
             usuario.setMembresia(membresia);
-            System.out.println("Membresía " + membresia.getTipo() + " asignada al usuario " + usuario.getID());
+            System.out.println("Membresía " + membresia.getTipo() + " asignada al usuario " + usuario.getId());
 
         } catch (Exception e) {
             System.out.println("Error al asignar la membresía: " + e.getMessage());
         }
     }
 
+    /**
+     * Controla el acceso al gimnasio verificando la validez de la membresia del usuario.
+     * @param usuario Usuario que intenta ingresar.
+     * @return true si la membresia esta activa, false en caso contrario.
+     */
     public boolean controlAcceso(Usuario usuario) {
         try {
             if (usuario == null) {
@@ -120,6 +157,11 @@ public  class Recepcionista extends Persona implements Ihashes {
             return false;
         }
     }
+
+    /**
+     * Genera un reporte general del gimnasio con informacion de usuarios, clases y membresias.
+     * @param gimnasio Objeto Gimnasio del cual se genera el reporte.
+     */
     public void generarReporte(Gimnasio gimnasio) {
         try {
             if (gimnasio == null) {
@@ -134,7 +176,7 @@ public  class Recepcionista extends Persona implements Ihashes {
             System.out.println("USUARIOS ACTIVOS:");
             for (Usuario u : gimnasio.getListUsuarios()) {
                 if (u.getMembresia() != null && u.getMembresia().isActiva()) {
-                    System.out.println("- " + u.getNombre() + " | ID: " + u.getID() + " | Tipo membresía: " + u.getMembresia().getTipo());
+                    System.out.println("- " + u.getNombre() + " | ID: " + u.getId() + " | Tipo membresía: " + u.getMembresia().getTipo());
                 }
             }
 
@@ -181,6 +223,12 @@ public  class Recepcionista extends Persona implements Ihashes {
             System.out.println("Error al generar el reporte: " + e.getMessage());
         }
     }
+
+    /**
+     * Metodo para aplicar un hash SHA-256 a la contrasena en formato de bytes.
+     * @param contrasena Contrasena a hashear.
+     * @return Arreglo de bytes con el hash generado.
+     */
     @Override
     public byte[] hashearContrasenaBytes(String contrasena) {
         try {
@@ -191,46 +239,79 @@ public  class Recepcionista extends Persona implements Ihashes {
         }
     }
 
-
+    /**
+     * Retorna la contrasena (hasheada) del recepcionista.
+     *
+     * @return contrasena en formato String
+     */
     public String getContrasena() {
         return contrasena;
     }
 
+    /**
+     * Retorna la lista de clases que administra el recepcionista.
+     *
+     * @return lista de objetos Clase
+     */
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
 
-
-
+    /**
+     * Asigna la lista de clases que administra el recepcionista.
+     *
+     * @param listClases lista de objetos Clase a asignar
+     */
     public void setListClases(ArrayList<Clase> listClases) {
         this.listClases = listClases;
     }
 
-    public void setListUsario(ArrayList<Usuario> listUsario) {
-        this.listUsuarios = listUsario;
+
+    /**
+     * Asigna la lista de usuarios del recepcionista.
+     *
+     * @param listUsuarios lista de objetos Usuario a asignar
+     */
+    public void setListUsuarios(ArrayList<Usuario> listUsuarios) {
+        this.listUsuarios = listUsuarios;
     }
 
+    /**
+     * Retorna la lista de usuarios registrados por el recepcionista.
+     *
+     * @return lista de objetos Usuario
+     */
     public ArrayList<Clase> getListClases() {
         return listClases;
     }
 
-  
+    /**
+     * Retorna el turno de trabajo del recepcionista.
+     *
+     * @return turno en formato String
+     */
+    public String getTurno() {return turno;}
 
-    public String getTurno() {
-        return turno;
-    }
-
+    /**
+     * Asigna el turno de trabajo del recepcionista.
+     *
+     * @param turno nuevo turno a asignar
+     */
     public void setTurno(String turno) {
         this.turno = turno;
     }
 
+    /**
+     * Retorna la lista de membresias que puede gestionar el recepcionista.
+     *
+     * @return lista de objetos Membresia
+     */
     public List<Membresia> getListMembresias() { return listMembresias; }
 
+    /**
+     * Asigna la lista de membresias que puede gestionar el recepcionista.
+     *
+     * @param listMembresias lista de objetos Membresia a asignar
+     */
     public void setListMembresias(ArrayList<Membresia> listMembresias) { this.listMembresias = listMembresias; }
-
-
-
-  
-
-
 }

@@ -9,18 +9,37 @@ public class UsuarioLogueado implements Ihashes {
     private static UsuarioLogueado instance;
     private Persona usuario;
 
+
+    /**
+     * Asigna el usuario actual de la sesion.
+     * @param usuario objeto Persona que representa al usuario logueado
+     */
     public void setUsuario(Persona usuario) {
         this.usuario = usuario;
     }
 
+    /**
+     * Constructor privado para evitar instanciacion externa.
+     */
+
     private UsuarioLogueado() {}
 
+    /**
+     * Retorna la unica instancia de la clase UsuarioLogueado.
+     * @return instancia unica de UsuarioLogueado
+     */
     public static UsuarioLogueado getInstance() {
         if (instance == null) {
             instance = new UsuarioLogueado();
         }
         return instance;
     }
+
+    /**
+     * Genera el hash de una contrasena en formato de bytes utilizando SHA-256.
+     * @param contrasena texto plano de la contrasena
+     * @return arreglo de bytes con el hash de la contrasena
+     */
     @Override
     public byte[] hashearContrasenaBytes(String contrasena) {
         try {
@@ -31,6 +50,12 @@ public class UsuarioLogueado implements Ihashes {
         }
     }
 
+    /**
+     * Verifica una contrasena ingresada contra un hash almacenado de forma segura.
+     * @param contrasenaIngresada contrasena digitada por el usuario
+     * @param hashAlmacenado arreglo de bytes del hash guardado
+     * @return true si la contrasena coincide, false en caso contrario
+     */
     public boolean verificarContrasenaSecure(String contrasenaIngresada, byte[] hashAlmacenado) {
         try {byte[] hashIngresado = hashearContrasenaBytes(contrasenaIngresada);
             return MessageDigest.isEqual(hashIngresado, hashAlmacenado);
@@ -40,6 +65,12 @@ public class UsuarioLogueado implements Ihashes {
         }
     }
 
+    /**
+     * Inicia sesion en el sistema segun el tipo de usuario y credenciales proporcionadas.
+     * @param id identificador del usuario
+     * @param tipo tipo de usuario (administrador o recepcionista)
+     * @param contrasena contrasena ingresada para autenticacion
+     */
     public void iniciarSesion(String id, String tipo, String contrasena) {
         Gimnasio gym = Gimnasio.getInstance();
 
@@ -59,7 +90,7 @@ public class UsuarioLogueado implements Ihashes {
                 if (verificarContrasenaSecure(contrasena, hashAlmacenado)) {
                     Persona persona = new Persona(
                             admin.getNombre(),
-                            admin.getID(),
+                            admin.getId(),
                             admin.getTelefono(),
                             admin.getDireccion(),
                             admin.getFechaNacimiento()
@@ -87,14 +118,14 @@ public class UsuarioLogueado implements Ihashes {
             }
            for (Recepcionista recepcionista : recepcionistas) {
 
-                if (recepcionista.getID().equals(id)) {
+                if (recepcionista.getId().equals(id)) {
                     byte[] hashAlmacenado = recepcionista.getContrasena() != null
                             ? recepcionista.getContrasena().getBytes(StandardCharsets.UTF_8)
                             : new byte[0];
                     if (verificarContrasenaSecure(contrasena, hashAlmacenado)){
                         Persona persona = new Persona(
                                 recepcionista.getNombre(),
-                                recepcionista.getID(),
+                                recepcionista.getId(),
                                 recepcionista.getTelefono(),
                                 recepcionista.getDireccion(),
                                 recepcionista.getFechaNacimiento()
@@ -112,14 +143,26 @@ public class UsuarioLogueado implements Ihashes {
             }
         }
     }
+
+    /**
+     * Cierra la sesion actual.
+     */
     public void cerrarSesion() {
         setUsuario(null);
     }
 
+    /**
+     * Retorna el usuario actualmente logueado.
+     * @return objeto Persona del usuario activo o null si no hay sesion
+     */
     public Persona getUsuario() {
         return usuario;
     }
 
+    /**
+     * Verifica si existe una sesion activa.
+     * @return true si hay usuario logueado, false en caso contrario
+     */
     public boolean isSesionActiva() {
         return usuario != null;
     }
