@@ -226,4 +226,6 @@ public class Gimnasio {
     public ArrayList<Usuario> getListUsuarios() {
         return listUsuarios;
     }
+
+
 }
