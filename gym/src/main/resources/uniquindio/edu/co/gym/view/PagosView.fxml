@@ -9,8 +9,8 @@
         <TextField promptText="ID pago" styleClass="form-control" fx:id="textIdPago"/>
         <DatePicker promptText="Fecha de pago" fx:id="DatePagoFecha"/>
         <TextField promptText="Valor" styleClass="form-control" fx:id="textValor"/>
-        <TextField promptText="Detalles" styleClass="form-control" fx:id="textDetalles"/>
-        <Button text="Registrar" styleClass="btn btn-primary"/>
+        <TextField promptText="Detalles" styleClass="form-control" fx:id="textDetallesPago"/>
+        <Button text="Registrar" styleClass="btn btn-primary" onAction="#guardarPagos"/>
     </HBox>
 
     <TableView prefHeight="480" fx:id="tablePago">
@@ -18,7 +18,7 @@
             <TableColumn text="Id de pago" prefWidth="180" fx:id="colID"/>
             <TableColumn text="Fecha" prefWidth="220" fx:id="colFecha"/>
             <TableColumn text="Valor" prefWidth="180" fx:id="colValor"/>
-            <TableColumn text="Detalles" prefWidth="180" fx:id="colDestalles"/>
+            <TableColumn text="Detalles" prefWidth="180" fx:id="colDetallesPago"/>
 
         </columns>
     </TableView>
