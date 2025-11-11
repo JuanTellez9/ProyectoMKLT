@@ -11,13 +11,13 @@
         <TextField promptText="Hora inicio" styleClass="form-control"/>
         <TextField promptText="Hora fin" styleClass="form-control"/>
         <TextField promptText="Cupo máximo" styleClass="form-control"/>
-        <Button text="Nueva" styleClass="btn btn-primary"/>
+        <Button text="Nueva" styleClass="btn btn-primary" onAction="#registrarClases"/>
     </HBox>
 
     <HBox spacing="10">
-        <ComboBox promptText="Clase grupal (ZUMBA, YOGA...)" prefWidth="280"/>
-        <ComboBox promptText="Día de semana" prefWidth="180"/>
-        <ComboBox promptText="Nivel (Básico/Premium/VIP)" prefWidth="220"/>
+        <ComboBox promptText="Clase grupal (ZUMBA, YOGA...)" prefWidth="280" fx:id="claseGrupal"/>
+        <ComboBox promptText="Día de semana" prefWidth="180" fx:id="comboDiaSemana"/>
+        <ComboBox promptText="Nivel (Básico/Premium/VIP)" prefWidth="220" fx:id="nivel"/>
     </HBox>
 
     <TableView prefHeight="460">

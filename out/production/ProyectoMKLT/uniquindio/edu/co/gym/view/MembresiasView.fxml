@@ -11,7 +11,9 @@
         <DatePicker promptText="Fecha inicio" fx:id="DateFechaInicio"/>
         <DatePicker promptText="Fecha vencimiento" fx:id="DateFechaVencimiento"/>
         <CheckBox text="Activa" fx:id="checkActivo"/>
-        <ComboBox promptText="Beneficio (Acompañante, Proteína, Valoración)" prefWidth="320"/>
+        <ComboBox fx:id="comboBeneficio" promptText="Beneficio" prefWidth="160"/>
+        <ComboBox fx:id="comboTipo" promptText="Tipo" prefWidth="120"/>
+        <ComboBox fx:id="comboNivel" promptText="Nivel" prefWidth="120"/>
         <Button text="Crear" styleClass="btn btn-primary" onAction="#guardarMembresias"/>
     </HBox>
 
@@ -23,6 +25,8 @@
             <TableColumn text="Vence" prefWidth="140" fx:id="colVence"/>
             <TableColumn text="Estado" prefWidth="100" fx:id="colEstado"/>
             <TableColumn text="Beneficio" prefWidth="220" fx:id="colBeneficio"/>
+            <TableColumn text="Tipo" prefWidth="100" fx:id="colTipo"/>
+            <TableColumn text="Nivel" prefWidth="100" fx:id="colNivel"/>
         </columns>
     </TableView>
 </VBox>

@@ -14,7 +14,7 @@ public class MainApp extends Application {
         Parent root = FXMLLoader.load(
                 getClass().getResource("/uniquindio/edu/co/gym/view/MainLayout.fxml")
         );
-        Scene scene = new Scene(root, 1450, 820);
+        Scene scene = new Scene(root, 1250, 650);
         scene.getStylesheets().add(
                 getClass().getResource("/uniquindio/edu/co/gym/css/styles.css").toExternalForm()
         );
