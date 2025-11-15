@@ -8,7 +8,7 @@ import uniquindio.edu.co.gym.Navigator;
 public class MainController {
 
     @FXML private StackPane contentArea;
-
+//t
 
     @FXML
     public void initialize() {
