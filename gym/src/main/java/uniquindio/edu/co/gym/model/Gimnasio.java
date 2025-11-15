@@ -10,6 +10,7 @@ public class Gimnasio {
     private String ubicacion;
     private String direccion;
     private String fechaNacimiento;
+    private ArrayList<Pago> listPagos;
     private ArrayList<Maquina> listMaquina;
     private ArrayList<Membresia> listMembresia;
     private ArrayList<TrabajadorUQ>  listTrabajadorUQ;
@@ -37,6 +38,8 @@ public class Gimnasio {
         this.listClases = new ArrayList <> ();
         this.listRecepcionista = new ArrayList<>();
         this.listEntrenadores = new ArrayList<>();
+        this.listUsuarios = new ArrayList<>();
+        this.listPagos = new ArrayList<>();
     }
     public void registrarMaquina(Maquina maquina) {
         this.listMaquina.add(maquina);
@@ -47,6 +50,9 @@ public class Gimnasio {
     public void setListMaquina(ArrayList<Maquina> listMaquina) {
         this.listMaquina = listMaquina;
     }
+    public void registrarPagos(Pago pago) {
+        this.listPagos.add(pago);
+    }
 
     public void setListMembresia(ArrayList<Membresia> listMembresia) {
         this.listMembresia = listMembresia;
@@ -54,6 +60,14 @@ public class Gimnasio {
 
     public void setListTrabajadorUQ(ArrayList<TrabajadorUQ> listTrabajadorUQ) {
         this.listTrabajadorUQ = listTrabajadorUQ;
+    }
+
+    public ArrayList<Pago> getListPagos() {
+        return listPagos;
+    }
+
+    public void setListPagos(ArrayList<Pago> listPagos) {
+        this.listPagos = listPagos;
     }
 
     public ArrayList<Estudiante> getListEstudiante() {
@@ -226,4 +240,6 @@ public class Gimnasio {
     public ArrayList<Usuario> getListUsuarios() {
         return listUsuarios;
     }
+
+
 }

@@ -6,15 +6,20 @@
       spacing="12">
     <Label text="Pagos" styleClass="h1"/>
     <HBox spacing="10">
-        <TextField promptText="ID pago" styleClass="form-control"/>
-        <DatePicker promptText="Fecha de pago"/>
-        <Button text="Registrar" styleClass="btn btn-primary"/>
+        <TextField promptText="ID pago" styleClass="form-control" fx:id="textIdPago"/>
+        <DatePicker promptText="Fecha de pago" fx:id="DatePagoFecha"/>
+        <TextField promptText="Valor" styleClass="form-control" fx:id="textValor"/>
+        <TextField promptText="Detalles" styleClass="form-control" fx:id="textDetallesPago"/>
+        <Button text="Registrar" styleClass="btn btn-primary" onAction="#guardarPagos"/>
     </HBox>
 
-    <TableView prefHeight="480">
+    <TableView prefHeight="480" fx:id="tablePago">
         <columns>
-            <TableColumn text="ID pago" prefWidth="180"/>
-            <TableColumn text="Fecha" prefWidth="220"/>
+            <TableColumn text="Id de pago" prefWidth="180" fx:id="colID"/>
+            <TableColumn text="Fecha" prefWidth="220" fx:id="colFecha"/>
+            <TableColumn text="Valor" prefWidth="180" fx:id="colValor"/>
+            <TableColumn text="Detalles" prefWidth="180" fx:id="colDetallesPago"/>
+
         </columns>
     </TableView>
 </VBox>
