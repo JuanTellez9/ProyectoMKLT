@@ -14,7 +14,7 @@
             <Label text="Gimnasio UQ" styleClass="brand"/>
             <Pane HBox.hgrow="ALWAYS"/>
             <TextField promptText="Buscar..." styleClass="form-control" prefWidth="260"/>
-            <Button text="Perfil" styleClass="btn btn-outline"/>
+            <Button text="Perfil" styleClass="btn-outline"/>
         </HBox>
     </top>
 
@@ -22,13 +22,13 @@
     <left>
         <VBox spacing="6" styleClass="sidebar" BorderPane.alignment="CENTER">
             <Label text="Menú" styleClass="sidebar-title"/>
-            <Button text="Personas"     onAction="#goPersonas"    styleClass="btn btn-nav"/>
-            <Button text="Clases"       onAction="#goClases"      styleClass="btn btn-nav"/>
-            <Button text="Membresías"   onAction="#goMembresias"  styleClass="btn btn-nav"/>
-            <Button text="Máquinas"     onAction="#goMaquinas"    styleClass="btn btn-nav"/>
-            <Button text="Pagos"        onAction="#goPagos"       styleClass="btn btn-nav"/>
+            <Button text="Personas"     onAction="#goPersonas"    styleClass="btn-nav"/>
+            <Button text="Clases"       onAction="#goClases"      styleClass="btn-nav"/>
+            <Button text="Membresías"   onAction="#goMembresias"  styleClass="btn-nav"/>
+            <Button text="Máquinas"     onAction="#goMaquinas"    styleClass="btn-nav"/>
+            <Button text="Pagos"        onAction="#goPagos"       styleClass="btn-nav"/>
             <Pane VBox.vgrow="ALWAYS"/>
-            <Button text="⚙ Ajustes"    styleClass="btn btn-muted"/>
+           <!-- <Button text="⚙ Ajustes"    styleClass="btn btn-muted"/> -->
         </VBox>
     </left>
 

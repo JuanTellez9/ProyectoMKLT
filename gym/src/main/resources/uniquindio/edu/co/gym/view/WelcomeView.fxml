@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.Image?>
+
+<VBox alignment="CENTER" spacing="18"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml">
+
+    <!-- IMAGEN CIRCULAR -->
+    <ImageView fx:id="logoImage"
+               fitWidth="160"
+               fitHeight="160"
+               preserveRatio="true"
+               styleClass="circular-image"
+               pickOnBounds="true">
+        <image>
+            <Image url="https://www.uniquindio.edu.co/info/uniquindio/media/bloque2.png"/>
+        </image>
+    </ImageView>
+
+    <!-- TÍTULO -->
+    <Label text="GIMNASIO UQ" styleClass="home-title"/>
+
+    <!-- SUBTÍTULO -->
+    <Label text="Bienvenido al sistema de gestión" styleClass="home-subtitle"/>
+
+</VBox>

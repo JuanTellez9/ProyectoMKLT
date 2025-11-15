@@ -12,7 +12,7 @@
 }
 
 .brand {
-  -fx-text-fill: #f97316; /* naranja */
+  -fx-text-fill: #308113; /* naranja */
   -fx-font-size: 20px;
   -fx-font-weight: bold;
 }
@@ -66,7 +66,7 @@
 .text-field:focused,
 .combo-box:focused,
 .date-picker:focused {
-  -fx-border-color: #f97316; /* naranja */
+  -fx-border-color: #308113; /* naranja */
   -fx-effect: dropshadow(three-pass-box, rgba(249,115,22,0.25), 8, 0, 0, 0);
 }
 
@@ -89,23 +89,26 @@
 }
 
 .btn-primary {
-  -fx-background-color: linear-gradient(to bottom, #fb923c, #f97316);
+  -fx-background-color: linear-gradient(to bottom, #fb923c, #308113);
   -fx-border-color: transparent;
   -fx-border-radius: 12;
 }
 .btn-primary:hover {
-  -fx-background-color: linear-gradient(to bottom, #f97316, #ea580c);
+  -fx-background-color: linear-gradient(to bottom, #308113, #ea580c);
 }
 
 .btn-outline {
   -fx-background-color: transparent;
-  -fx-border-color: #f97316;
-  -fx-text-fill: #f97316;
+  -fx-border-color: #308113;
+  -fx-text-fill: #308113;
   -fx-border-radius: 12;
 }
 .btn-outline:hover {
-  -fx-background-color: #f97316;
+  -fx-background-color: #308113;
   -fx-text-fill: white;
+  -fx-cursor: hand;
+  -fx-transition: all 0.3s ease;
+
 }
 
 .btn-muted {
@@ -129,18 +132,18 @@
   -fx-transition: all 0.3s ease;
 }
 .btn-nav:hover {
-  -fx-background-color: rgba(249,115,22,0.15); /* naranja translúcido */
-  -fx-text-fill: #f97316;
+  -fx-background-color: rgba(48,129,19,0.25); /* naranja translúcido */
+  -fx-text-fill: #308113;
 }
 
-/* Botón activo (opcional) */
+/* Botón activo (opcional)  rgba(48,129,19,0.15) rgba(48,129,19,0.25) */
 .btn-nav:focused {
-  -fx-background-color: #f97316;
+  -fx-background-color: #308113;
   -fx-text-fill: white;
   -fx-background-radius: 12;
   -fx-border-radius: 12;
   -fx-border-color: transparent;
-  -fx-effect: dropshadow(gaussian, rgba(249,115,22,0.5), 8, 0, 0, 0);
+  -fx-effect: dropshadow(gaussian,  rgba(48,129,19,0.15), 8, 0, 0, 0);
 }
 
 /* ======= TABLAS ======= */
@@ -174,7 +177,7 @@
   -fx-background-color: #f9fafb;
 }
 .table-row-cell:selected {
-  -fx-background-color: #f97316;
+  -fx-background-color: #308113;
   -fx-text-fill: white;
 }
 
@@ -201,7 +204,7 @@
 }
 
 .tab-pane .tab:selected {
-  -fx-background-color: #f97316;
+  -fx-background-color: #308113;
 }
 
 .tab-pane .tab:selected .tab-label {
@@ -219,7 +222,7 @@
 }
 
 .thumb:hover {
-  -fx-background-color: #f97316;
+  -fx-background-color: #308113;
 }
 
 /* ======= SOMBRAS Y TARJETAS ======= */
@@ -231,7 +234,57 @@
 }
 
 .card-title {
-  -fx-text-fill: #f97316;
+  -fx-text-fill: #308113;
   -fx-font-size: 16px;
   -fx-font-weight: bold;
 }
+
+
+/* ===================== COMBOBOX BASE ===================== */
+.custom-combo {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #d0d7de; /* gris suave */
+    -fx-border-width: 1.3;
+    -fx-padding: 3 10;
+    -fx-font-size: 12px;
+    -fx-text-fill: #0f172a;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 1);
+}
+
+.custom-combo:hover {
+    -fx-border-color: #308113; /* naranja */
+}
+
+/* Cuando tiene foco */
+.custom-combo:focused {
+    -fx-border-color: #308113;
+    -fx-effect: dropshadow(three-pass-box, rgba(249,115,22,0.25), 8, 0, 0, 0);
+}
+
+
+/* ===== WELCOME SCREEN ===== */
+/* Imagen circular */
+.circular-image {
+    -fx-clip-shape: "circle";
+    -fx-background-radius: 100%;
+    -fx-border-radius: 100%;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+/* Título del home */
+.home-title {
+    -fx-text-fill: #308113;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+/* Subtítulo */
+.home-subtitle {
+    -fx-text-fill: #475569;
+    -fx-font-size: 16px;
+}
+
+

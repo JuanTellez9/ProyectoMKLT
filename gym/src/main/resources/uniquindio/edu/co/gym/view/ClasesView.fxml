@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="uniquindio.edu.co.gym.controller.ClasesController"
-      spacing="12">
+      spacing="12" style="-fx-border-radius: 12">
     <Label text="Clases" styleClass="h1"/>
     <HBox spacing="10">
         <TextField promptText="Nombre" styleClass="form-control"/>
@@ -11,17 +11,17 @@
         <TextField promptText="Hora inicio" styleClass="form-control"/>
         <TextField promptText="Hora fin" styleClass="form-control"/>
         <TextField promptText="Cupo máximo" styleClass="form-control"/>
-        <Button text="Nueva" styleClass="btn btn-primary"/>
+        <Button text="Nueva" styleClass="btn"/>
     </HBox>
 
     <HBox spacing="10">
-        <ComboBox promptText="Clase grupal (ZUMBA, YOGA...)" prefWidth="280"/>
-        <ComboBox promptText="Día de semana" prefWidth="180"/>
-        <ComboBox promptText="Nivel (Básico/Premium/VIP)" prefWidth="220"/>
+        <ComboBox promptText="Clase grupal (ZUMBA, YOGA...)" prefWidth="280"  styleClass="custom-combo"/>
+        <ComboBox promptText="Día de semana" prefWidth="180"  styleClass="custom-combo"/>
+        <ComboBox promptText="Nivel (Básico/Premium/VIP)" prefWidth="220"  styleClass="custom-combo"/>
     </HBox>
 
-    <TableView prefHeight="460">
-        <columns>
+    <TableView prefHeight="460" style="-fx-border-radius: 12">
+        <columns >
             <TableColumn text="Nombre" prefWidth="180"/>
             <TableColumn text="ID" prefWidth="120"/>
             <TableColumn text="Inicio" prefWidth="100"/>

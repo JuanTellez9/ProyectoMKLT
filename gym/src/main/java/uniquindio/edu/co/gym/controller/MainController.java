@@ -9,6 +9,13 @@ public class MainController {
 
     @FXML private StackPane contentArea;
 
+
+    @FXML
+    public void initialize() {
+        // Cargar pantalla de bienvenida al iniciar la app
+        setContent(Navigator.loadView("WelcomeView.fxml"));
+    }
+
     private void setContent(Node node) {
         contentArea.getChildren().setAll(node);
     }
