@@ -7,10 +7,10 @@
     <Label text="Pagos" styleClass="h1"/>
     <HBox spacing="10">
         <TextField promptText="ID pago" styleClass="form-control" fx:id="textIdPago"/>
-        <DatePicker promptText="Fecha de pago" fx:id="DatePagoFecha"/>
+        <DatePicker promptText="Fecha de pago" fx:id="DatePagoFecha" styleClass="form-control"/>
         <TextField promptText="Valor" styleClass="form-control" fx:id="textValor"/>
         <TextField promptText="Detalles" styleClass="form-control" fx:id="textDetallesPago"/>
-        <Button text="Registrar" styleClass="btn btn-primary" onAction="#guardarPagos"/>
+        <Button text="Registrar" styleClass="btn" onAction="#guardarPagos"/>
     </HBox>
 
     <TableView prefHeight="480" fx:id="tablePago">

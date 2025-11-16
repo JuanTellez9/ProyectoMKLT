@@ -1,0 +1,128 @@
+package uniquindio.edu.co.gym.controller;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+import uniquindio.edu.co.gym.model.Administrador;
+import uniquindio.edu.co.gym.model.Gimnasio;
+import uniquindio.edu.co.gym.model.UsuarioLogueado;
+
+public class LoginController {
+
+    @FXML private TextField txtID;
+    @FXML private PasswordField txtContrasena;
+    @FXML private ComboBox<String> comboTipo;
+    @FXML private Label lblError;
+    Gimnasio gym=Gimnasio.getInstance();
+
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    private byte[] hexToBytes(String hex) {
+        int len = hex.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
+                    + Character.digit(hex.charAt(i+1), 16));
+        }
+        return data;
+    }
+
+
+    @FXML
+    public void onLogin() {
+        String id = txtID.getText();
+        String tipo = comboTipo.getValue();
+        String contrasena = txtContrasena.getText();
+
+        if (id == null || id.isBlank()
+                || contrasena == null || contrasena.isBlank()
+                || tipo == null || tipo.isBlank()) {
+            lblError.setText("Completa todos los campos.");
+            return;
+        }
+        System.out.println(id);
+        System.out.println(tipo);
+        System.out.println(contrasena);
+
+        UsuarioLogueado auth = UsuarioLogueado.getInstance();
+        auth.iniciarSesion(id,tipo,contrasena);
+
+        boolean ok = auth.isSesionActiva() ? true : false;
+
+        if (!ok) {
+            lblError.setText("Credenciales incorrectas.");
+            return;
+        }
+
+        abrirDashboard();
+        cerrarLogin();
+    }
+
+    private void abrirDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/uniquindio/edu/co/gym/view/MainLayout.fxml")
+            );
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root, 1350, 670);
+            scene.getStylesheets().add(
+                    getClass().getResource("/uniquindio/edu/co/gym/css/styles.css").toExternalForm()
+            );
+
+            Stage stage = new Stage();
+            stage.setTitle("Gimnasio UQ • Dashboard");
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            lblError.setText("Error cargando la aplicación.");
+        }
+    }
+
+    private void cerrarLogin() {
+        Stage stage = (Stage) txtID.getScene().getWindow();
+        stage.close();
+    }
+    @FXML
+    public void initialize() {
+        crearAdministradorPorDefecto();
+
+    }
+
+
+    private void crearAdministradorPorDefecto(){
+        Administrador administrador = gym.getAdministrador();
+
+        if (administrador == null) {
+
+            Administrador admin = new Administrador(
+                    "Admin Principal",
+                    "112233445566",
+                    "0000000000",
+                    "portal de balcones",
+                    "1990-01-01",
+                    "Admin. Empresas",
+                    ""
+            );
+
+            String contrasena = "admin123";
+            byte[] hash = admin.hashearContrasenaBytes(contrasena);
+            admin.setContrasena(bytesToHex(hash));
+
+            gym.setAdministrador(admin);
+        }
+    }
+
+}

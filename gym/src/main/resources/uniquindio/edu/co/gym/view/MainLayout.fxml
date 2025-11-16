@@ -13,8 +13,9 @@
         <HBox spacing="12" styleClass="topbar">
             <Label text="Gimnasio UQ" styleClass="brand"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <TextField promptText="Buscar..." styleClass="form-control" prefWidth="260"/>
-            <Button text="Perfil" styleClass="btn-outline"/>
+<!--            <TextField promptText="Buscar..." styleClass="form-control" prefWidth="260"/>-->
+            <Button text="Perfil" styleClass="btn-outline" onAction="#goPerfil"/>
+            <Button text="Cerrar Sesión" styleClass="btn-outline" onAction="#logout"/>
         </HBox>
     </top>
 

@@ -10,25 +10,23 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        System.out.println(getClass().getResource("/uniquindio/edu/co/gym/view/MainLayout.fxml"));
+
+        // 🔹 PRIMERO: cargar la ventana de LOGIN
         Parent root = FXMLLoader.load(
-                getClass().getResource("/uniquindio/edu/co/gym/view/MainLayout.fxml")
+                getClass().getResource("/uniquindio/edu/co/gym/view/LoginView.fxml")
         );
-        Scene scene = new Scene(root, 1350, 670);
+
+        Scene scene = new Scene(root, 430, 320);
+
+        // 🔹 Opcional: si quieres usar el mismo CSS también en el login:
         scene.getStylesheets().add(
                 getClass().getResource("/uniquindio/edu/co/gym/css/styles.css").toExternalForm()
         );
-        stage.setTitle("Gimnasio UQ • Dashboard");
+
+        stage.setTitle("Iniciar Sesión • Gimnasio UQ");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
-//        try {
-//            Parent root = FXMLLoader.load(getClass().getResource("/uniquindio/edu/co/gymplantilla/view/MainLayout.fxml"));
-//            Scene scene = new Scene(root, 1150, 720);
-//            stage.setScene(scene);
-//            stage.show();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     public static void main(String[] args) {

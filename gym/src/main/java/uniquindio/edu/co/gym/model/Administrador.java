@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 //j
-public abstract class Administrador extends Persona implements Ihashes{
+public class Administrador extends Persona implements Ihashes{
     private String titulo;
     private String contrasena;
     private ArrayList<Entrenador> listEntrenadores;
@@ -234,7 +234,7 @@ public abstract class Administrador extends Persona implements Ihashes{
 
             // Mostrar resultado final
             if (claseMasPopular != null) {
-                System.out.println("\n👉 La clase más popular es: " + claseMasPopular.getClaseGrupal());
+                System.out.println("\nLa clase más popular es: " + claseMasPopular.getClaseGrupal());
                 System.out.println("   Con " + maxAsistentes + " asistentes.");
             } else {
                 System.out.println("No se encontró ninguna clase con asistentes.");

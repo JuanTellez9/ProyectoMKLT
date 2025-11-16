@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uniquindio.edu.co.gym.controller.LoginController"
+            prefWidth="430" prefHeight="320">
+
+    <VBox alignment="CENTER" spacing="12"
+          AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+
+        <Label text="GIMNASIO UQ"
+               style="-fx-text-fill: #308113; -fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+        <Label text="Iniciar sesión" style="-fx-font-size: 14px;"/>
+
+        <TextField fx:id="txtID" promptText="ID Usuario" prefWidth="260"/>
+
+        <PasswordField fx:id="txtContrasena" promptText="Contraseña" prefWidth="260"/>
+
+        <!-- COMBOBOX CORRECTO -->
+        <ComboBox fx:id="comboTipo" prefWidth="260" promptText="Tipo de usuario">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="administrador"/>
+                    <String fx:value="recepcionista"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <Button text="Ingresar" onAction="#onLogin"
+                style="-fx-background-color: #308113; -fx-text-fill: white; -fx-padding: 6 20; -fx-background-radius: 12;"/>
+
+        <Label fx:id="lblError" textFill="red"/>
+
+    </VBox>
+</AnchorPane>
