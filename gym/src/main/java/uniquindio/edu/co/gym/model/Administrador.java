@@ -148,8 +148,8 @@ public abstract class Administrador extends Persona implements Ihashes{
                 int cupoMaximo = clase.getCupoMaximo();
 
                 // Si la clase tiene usuarios inscritos
-                if (clase.getListUsuarios() != null) {
-                    asistentes = clase.getListUsuarios().size();
+                if (clase.getListUsario() != null) {
+                    asistentes = clase.getListUsario().size();
                 }
 
                 double porcentajeOcupacion = 0;
@@ -217,8 +217,8 @@ public abstract class Administrador extends Persona implements Ihashes{
                 int asistentes = 0;
 
                 // Si la clase tiene lista de usuarios, contar los asistentes
-                if (clase.getListUsuarios() != null) {
-                    asistentes = clase.getListUsuarios().size();
+                if (clase.getListUsario() != null) {
+                    asistentes = clase.getListUsario().size();
                 }
 
                 System.out.println("- Clase: " + clase.getClaseGrupal() +

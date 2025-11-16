@@ -1,35 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="uniquindio.edu.co.gym.controller.ClasesController"
-      spacing="12">
-    <Label text="Clases" styleClass="h1"/>
-    <HBox spacing="10">
-        <TextField promptText="Nombre" styleClass="form-control"/>
-        <TextField promptText="ID" styleClass="form-control"/>
-        <TextField promptText="Hora inicio" styleClass="form-control"/>
-        <TextField promptText="Hora fin" styleClass="form-control"/>
-        <TextField promptText="Cupo máximo" styleClass="form-control"/>
-        <Button text="Nueva" styleClass="btn btn-primary" onAction="#registrarClases"/>
-    </HBox>
+<?import javafx.geometry.Insets?>
 
-    <HBox spacing="10">
-        <ComboBox promptText="Clase grupal (ZUMBA, YOGA...)" prefWidth="280" fx:id="claseGrupal"/>
-        <ComboBox promptText="Día de semana" prefWidth="180" fx:id="comboDiaSemana"/>
-        <ComboBox promptText="Nivel (Básico/Premium/VIP)" prefWidth="220" fx:id="nivel"/>
-    </HBox>
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uniquindio.edu.co.gym.controller.ClasesController">
+    <VBox spacing="12" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+        <Label text="Gestión de Clases y Usuarios" styleClass="h1"/>
 
-    <TableView prefHeight="460">
-        <columns>
-            <TableColumn text="Nombre" prefWidth="180"/>
-            <TableColumn text="ID" prefWidth="120"/>
-            <TableColumn text="Inicio" prefWidth="100"/>
-            <TableColumn text="Fin" prefWidth="100"/>
-            <TableColumn text="Cupo" prefWidth="80"/>
-            <TableColumn text="Tipo" prefWidth="120"/>
-            <TableColumn text="Día" prefWidth="120"/>
-            <TableColumn text="Nivel" prefWidth="120"/>
-        </columns>
-    </TableView>
-</VBox>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <!-- TAB CLASES -->
+                <Tab text="Clases">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        <HBox spacing="10">
+                            <TextField promptText="ID Clase" styleClass="form-control" fx:id="textId"/>
+                            <TextField promptText="Cupo máximo" styleClass="form-control" fx:id="textCupoMaximo"/>
+                            <ComboBox promptText="Hora inicio" fx:id="comboHoraInicio"/>
+                            <ComboBox promptText="Hora fin" fx:id="comboHoraFin"/>
+                            <ComboBox promptText="Clase grupal (Zumba, Yoga...)" fx:id="comboClaseGrupal"/>
+                            <ComboBox promptText="Día semana" fx:id="comboDiaSemana"/>
+                            <Button text="Nueva Clase" styleClass="btn btn-primary" onAction="#registrarClase"/>
+                        </HBox>
+                        <TableView fx:id="tableClase" prefHeight="420">
+                            <columns>
+                                <TableColumn text="ID" prefWidth="100" fx:id="colId"/>
+                                <TableColumn text="Nombre" prefWidth="160" fx:id="colNombre"/>
+                                <TableColumn text="Inicio" prefWidth="100" fx:id="colInicio"/>
+                                <TableColumn text="Fin" prefWidth="100" fx:id="colFin"/>
+                                <TableColumn text="Cupo" prefWidth="80" fx:id="colCupo"/>
+                                <TableColumn text="Día" prefWidth="120" fx:id="colDia"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+                <!-- TAB USUARIOS INSCRITOS -->
+                <Tab text="Usuarios Inscritos">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        <HBox spacing="10">
+                            <ComboBox promptText="Seleccione Clase" fx:id="comboClases"/>
+                            <Button text="Ver inscritos" styleClass="btn btn-primary" onAction="#mostrarUsuarios"/>
+                        </HBox>
+                        <TableView fx:id="tablaUsuarios" prefHeight="420">
+                            <columns>
+                                <TableColumn text="Nombre Usuario" prefWidth="180" fx:id="colNombreUsuario"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </VBox>
+</AnchorPane>

@@ -50,7 +50,6 @@ public class MembresiasController {
         // Configurar columnas con conversión de tipos
         comboTipo.getItems().addAll(Tipo.values());
         comboNivel.getItems().addAll(Nivel.values());
-        colId.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getId())));
         colCosto.setCellValueFactory(data -> new SimpleStringProperty(String.format("%.2f", data.getValue().getCosto())));
         colInicio.setCellValueFactory(data -> new SimpleStringProperty(formatoFecha.format(data.getValue().getFechaInicio())));
         colVence.setCellValueFactory(data -> new SimpleStringProperty(formatoFecha.format(data.getValue().getFechaVencimiento())));
