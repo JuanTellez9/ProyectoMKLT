@@ -53,7 +53,14 @@ public class Gimnasio {
     public void registrarPagos(Pago pago) {
         this.listPagos.add(pago);
     }
-
+    public Gimnasio registrarRecepcionista(Recepcionista recepcionista) {
+        this.listRecepcionista.add(recepcionista);
+        return null;
+    }
+    public Gimnasio registrarEntrenador(Entrenador entrenador) {
+        this.listEntrenadores.add(entrenador);
+        return null;
+    }
     public void setListMembresia(ArrayList<Membresia> listMembresia) {
         this.listMembresia = listMembresia;
     }
