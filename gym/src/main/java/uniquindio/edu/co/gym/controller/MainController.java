@@ -62,10 +62,6 @@ public class MainController {
     public void goPersonas() {
         setContent(Navigator.loadView("PersonasView.fxml"));
     }
-    @FXML
-    public void goPerfil() {
-        setContent(Navigator.loadView("PerfilView.fxml"));
-    }
 
     @FXML
     public void logout() {
