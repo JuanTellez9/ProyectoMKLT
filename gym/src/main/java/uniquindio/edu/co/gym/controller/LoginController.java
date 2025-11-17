@@ -109,7 +109,7 @@ public class LoginController {
 
             Administrador admin = new Administrador(
                     "Admin Principal",
-                    "112233445566",
+                    "123",
                     "0000000000",
                     "portal de balcones",
                     "1990-01-01",
@@ -117,7 +117,7 @@ public class LoginController {
                     ""
             );
 
-            String contrasena = "admin123";
+            String contrasena = "123";
             byte[] hash = admin.hashearContrasenaBytes(contrasena);
             admin.setContrasena(bytesToHex(hash));
 
