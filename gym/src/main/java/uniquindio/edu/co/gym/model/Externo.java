@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public class Externo extends Usuario {
     private String ocupacion;
 
-    public Externo (String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String contrasena, LocalDate fechaCreacion, String ocupacion) {
-        super(nombre,ID,telefono,direccion,fechaNacimiento,contrasena,fechaCreacion);
+    public Externo (String nombre, String ID, String telefono, String direccion, String fechaNacimiento, LocalDate fechaCreacion, String ocupacion) {
+        super(nombre,ID,telefono,direccion,fechaNacimiento,fechaCreacion);
         this.ocupacion = ocupacion;
     }
     @Override

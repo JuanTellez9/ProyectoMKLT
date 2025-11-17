@@ -61,6 +61,18 @@ public class Gimnasio {
         this.listEntrenadores.add(entrenador);
         return null;
     }
+    public Gimnasio registrarEstudiante(Estudiante  estudiante) {
+        this.listUsuarios.add(estudiante);
+        return null;
+    }
+    public Gimnasio registrarTrabajadorUq(TrabajadorUQ trabajadorUQ) {
+        this.listTrabajadorUQ.add(trabajadorUQ);
+        return null;
+    }
+    public Gimnasio registrarExterno(Externo externo) {
+        this.listExterno.add(externo);
+        return null;
+    }
     public void setListMembresia(ArrayList<Membresia> listMembresia) {
         this.listMembresia = listMembresia;
     }
