@@ -106,7 +106,7 @@ public class ClasesController {
     public void registrarClase() {
         try {
             LocalDate fechaCreacion = LocalDate.now();
-            Estudiante est=new Estudiante("kebyn","111","23534534","portal","10 nov","",fechaCreacion,"inge","1","inge");
+            Estudiante est=new Estudiante("kebyn","111","23534534","portal","10 nov",fechaCreacion,"inge","1","inge");
 
             gimnasio.registrarEstudiantes(est);
 

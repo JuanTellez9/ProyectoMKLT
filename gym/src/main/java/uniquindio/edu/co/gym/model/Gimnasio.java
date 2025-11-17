@@ -60,8 +60,23 @@ public class Gimnasio {
     public void registrarEstudiantes(Estudiante est){
         listEstudiante.add(est);
     }
-    public  void  registrarExterno(Externo ext){
-        listExterno.add(ext);
+    
+    public Gimnasio registrarRecepcionista(Recepcionista recepcionista) {
+        this.listRecepcionista.add(recepcionista);
+        return null;
+    }
+   
+    public Gimnasio registrarEstudiante(Estudiante  estudiante) {
+        this.listUsuarios.add(estudiante);
+        return null;
+    }
+    public Gimnasio registrarTrabajadorUq(TrabajadorUQ trabajadorUQ) {
+        this.listTrabajadorUQ.add(trabajadorUQ);
+        return null;
+    }
+    public Gimnasio registrarExterno(Externo externo) {
+        this.listExterno.add(externo);
+        return null;
     }
     public void setListMembresia(ArrayList<Membresia> listMembresia) {
         this.listMembresia = listMembresia;

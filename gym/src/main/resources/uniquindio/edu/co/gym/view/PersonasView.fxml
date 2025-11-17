@@ -18,48 +18,31 @@
                             <Insets top="10" right="10" bottom="10" left="10"/>
                         </padding>
                         <HBox spacing="10">
-                            <TextField promptText="Nombre"   styleClass="form-control" />
-                            <TextField promptText="ID"       styleClass="form-control" />
-                            <TextField promptText="Teléfono" styleClass="form-control" />
-                            <TextField promptText="Turno"    styleClass="form-control" />
-                            <Button fx:id="btnSeleccionar" text="Seleccionar Imagen" />
-                            <Button text="Nuevo" styleClass="btn btn-primary"/>
+                            <TextField promptText="Nombre"   styleClass="form-control" fx:id="textNombreR"/>
+                            <TextField promptText="ID"       styleClass="form-control" fx:id="textIdR"/>
+                            <TextField promptText="Teléfono" styleClass="form-control" fx:id="textTelefonoR"/>
+                            <TextField promptText="Turno"    styleClass="form-control" fx:id="textTurnoR"/>
+                            <TextField promptText="Direccion" styleClass="form-control" fx:id="textDireccionR"/>
+                            <TextField promptText="Contraseña" styleClass="form-control" fx:id="textContrasenaR"/>
+                            <DatePicker promptText="Fecha de nacimiento" styleClass="form-control2" fx:id="textFechaNR"/>
+                        </HBox>
+                        <HBox spacing="10">
+                            <Button fx:id="btnSeleccionar" styleClass="btn" text="Seleccionar Imagen" />
+                            <Button text="Nuevo" styleClass="btn" onAction="#guardarRecepcionista"/>
                         </HBox>
                         <TableView fx:id="tablaRecepcionistas" prefHeight="420">
                             <columns>
-                                <TableColumn text="Nombre" prefWidth="160"/>
-                                <TableColumn text="ID" prefWidth="120"/>
-                                <TableColumn text="Teléfono" prefWidth="140"/>
-                                <TableColumn text="Turno" prefWidth="120"/>
+                                <TableColumn text="Nombre" prefWidth="160" fx:id="colNombreR"/>
+                                <TableColumn text="ID" prefWidth="120" fx:id="colIdR"/>
+                                <TableColumn text="Teléfono" prefWidth="140" fx:id="colTelefonoR"/>
+                                <TableColumn text="Turno" prefWidth="120" fx:id="colTurnoR"/>
+                                <TableColumn text="Direccion" prefWidth="120" fx:id="colDireccionR"/>
+                                <TableColumn text="Fecha de nacimiento" prefWidth="200" fx:id="colFechaNR"/>
                             </columns>
                         </TableView>
                     </VBox>
                 </Tab>
 
-                <!-- TAB ADMINISTRADORES -->
-                <Tab text="Administradores">
-                    <VBox spacing="10">
-                        <padding>
-                            <Insets top="10" right="10" bottom="10" left="10"/>
-                        </padding>
-                        <HBox spacing="10">
-                            <TextField promptText="Nombre" styleClass="form-control" fx:id="txtNombre"/>
-                            <TextField promptText="ID" styleClass="form-control"/>
-                            <TextField promptText="Teléfono" styleClass="form-control"/>
-                            <TextField promptText="Título" styleClass="form-control"/>
-                            <Button fx:id="btnSeleccionarAdmin" text="Seleccionar Imagen" />
-                            <Button text="Nuevo" styleClass="btn btn-primary" onAction="#onGuardarPersona"/>
-                        </HBox>
-                        <TableView prefHeight="420">
-                            <columns>
-                                <TableColumn text="Nombre" prefWidth="180"/>
-                                <TableColumn text="ID" prefWidth="120"/>
-                                <TableColumn text="Teléfono" prefWidth="140"/>
-                                <TableColumn text="Título" prefWidth="160"/>
-                            </columns>
-                        </TableView>
-                    </VBox>
-                </Tab>
 
                 <!-- TAB ENTRENADORES -->
                 <Tab text="Entrenadores">
@@ -68,17 +51,26 @@
                             <Insets top="10" right="10" bottom="10" left="10"/>
                         </padding>
                         <HBox spacing="10">
-                            <TextField promptText="Nombre" styleClass="form-control"/>
-                            <TextField promptText="ID" styleClass="form-control"/>
-                            <TextField promptText="Turno" styleClass="form-control"/>
-                            <Button fx:id="btnSeleccionarEntre" text="Seleccionar Imagen" />
-                            <Button text="Nuevo" styleClass="btn btn-primary"/>
+                            <TextField promptText="Nombre" styleClass="form-control" fx:id="textNombreE"/>
+                            <TextField promptText="ID" styleClass="form-control" fx:id="textIdE"/>
+                            <TextField promptText="Telefono" styleClass="form-control" fx:id="textTelefonoE"/>
+                            <TextField promptText="Turno" styleClass="form-control" fx:id="textTurnoE"/>
+                            <TextField promptText="Dirección" styleClass="form-control" fx:id="textDireccionE"/>
+                            <DatePicker promptText="Fecha de nacimiento" styleClass="form-control2" fx:id="textFechaNE"/>
+
                         </HBox>
-                        <TableView prefHeight="420">
+                        <HBox spacing="10">
+                            <Button fx:id="btnSeleccionarEntre" styleClass="btn" text="Seleccionar Imagen" />
+                            <Button text="Nuevo" styleClass="btn" onAction="#guardarEntrenador"/>
+                        </HBox>
+                        <TableView prefHeight="420" fx:id="tablaEntrenador">
                             <columns>
-                                <TableColumn text="Nombre" prefWidth="180"/>
-                                <TableColumn text="ID" prefWidth="120"/>
-                                <TableColumn text="Turno" prefWidth="120"/>
+                                <TableColumn text="Nombre" prefWidth="180" fx:id="colNombreE"/>
+                                <TableColumn text="ID" prefWidth="120" fx:id="colIdE"/>
+                                <TableColumn text="Telefono" prefWidth="120" fx:id="colTelefonoE"/>
+                                <TableColumn text="Turno" prefWidth="120" fx:id="colTurnoE"/>
+                                <TableColumn text="Dirección" prefWidth="120" fx:id="colDireccionE"/>
+                                <TableColumn text="Fecha de nacimiento" prefWidth="180" fx:id="colFechaNE"/>
                             </columns>
                         </TableView>
                     </VBox>
@@ -94,21 +86,33 @@
                                     <padding>
                                         <Insets top="10" right="10" bottom="10" left="10"/>
                                     </padding>
-                                    <HBox spacing="10">
-                                        <TextField promptText="Nombre" styleClass="form-control"/>
-                                        <TextField promptText="Programa" styleClass="form-control"/>
-                                        <TextField promptText="Semestre" styleClass="form-control"/>
-                                        <TextField promptText="Facultad" styleClass="form-control"/>
-                                        <TextField promptText="Contraseña" styleClass="form-control"/>
-                                        <Button fx:id="btnSeleccionarEst" text="Seleccionar Imagen" />
-                                        <Button text="Nuevo" styleClass="btn btn-primary"/>
+                                    <HBox spacing="8">
+                                        <TextField promptText="Nombre" styleClass="form-control" fx:id="textNombreEs"/>
+                                        <TextField promptText="ID" styleClass="form-control" fx:id="textIdEs"/>
+                                        <TextField promptText="Telefono" styleClass="form-control" fx:id="textTelefonoEs"/>
+                                        <TextField promptText="Dirección" styleClass="form-control" fx:id="textDireccionEs"/>
+                                        <DatePicker promptText="Fecha nacimiento" styleClass="form-control2" fx:id="dateFechaNEs"/>
+                                        <DatePicker promptText="Fecha creacion" styleClass="form-control2" fx:id="dateFechaCEs"/>
+                                        <TextField promptText="Programa" styleClass="form-control" fx:id="textProgramaEs"/>
+                                        <TextField promptText="Semestre" styleClass="form-control" fx:id="textSemestreEs"/>
+                                        <TextField promptText="Facultad" styleClass="form-control" fx:id="textFacultadEs"/>
+
                                     </HBox>
-                                    <TableView prefHeight="380">
+                                    <HBox spacing="10">
+                                        <Button fx:id="btnSeleccionarEst" styleClass="btn" text="Seleccionar Imagen" />
+                                        <Button text="Nuevo" styleClass="btn" onAction="#guardarEstudiante"/>
+                                    </HBox>
+                                    <TableView prefHeight="380" fx:id="tablaEstudiante">
                                         <columns>
-                                            <TableColumn text="Nombre" prefWidth="180"/>
-                                            <TableColumn text="Programa" prefWidth="180"/>
-                                            <TableColumn text="Semestre" prefWidth="120"/>
-                                            <TableColumn text="Facultad" prefWidth="160"/>
+                                            <TableColumn text="Nombre" prefWidth="120" fx:id="colNombreEs"/>
+                                            <TableColumn text="ID" prefWidth="120" fx:id="colIdEs"/>
+                                            <TableColumn text="Telefono" prefWidth="120" fx:id="colTelefonoEs"/>
+                                            <TableColumn text="Dirección" prefWidth="120" fx:id="colDireccionEs"/>
+                                            <TableColumn text="Fecha Nacimiento" prefWidth="160" fx:id="colFechaNEs"/>
+                                            <TableColumn text="Fechas Creacion" prefWidth="160" fx:id="colFechaCEs"/>
+                                            <TableColumn text="Programa" prefWidth="120" fx:id="colProgramaEs"/>
+                                            <TableColumn text="Semestre" prefWidth="120" fx:id="colSemestreEs"/>
+                                            <TableColumn text="Facultad" prefWidth="120" fx:id="colFacultadEs"/>
                                         </columns>
                                     </TableView>
                                 </VBox>
@@ -121,18 +125,30 @@
                                         <Insets top="10" right="10" bottom="10" left="10"/>
                                     </padding>
                                     <HBox spacing="10">
-                                        <TextField promptText="Nombre" styleClass="form-control"/>
-                                        <TextField promptText="Cargo" styleClass="form-control"/>
-                                        <TextField promptText="Área" styleClass="form-control"/>
-                                        <TextField promptText="Contraseña" styleClass="form-control"/>
-                                        <Button fx:id="btnSeleccionarTraba" text="Seleccionar Imagen" />
-                                        <Button text="Nuevo" styleClass="btn btn-primary"/>
+                                        <TextField promptText="Nombre" styleClass="form-control" fx:id="textNombreT"/>
+                                        <TextField promptText="ID" styleClass="form-control" fx:id="textIdT"/>
+                                        <TextField promptText="Telefono" styleClass="form-control" fx:id="textTelefonoT"/>
+                                        <TextField promptText="Dirección" styleClass="form-control" fx:id="textDireccionT"/>
+                                        <DatePicker promptText="Fecha nacimiento" styleClass="form-control2" fx:id="dateFechaNT"/>
+                                        <DatePicker promptText="Fecha creacion" styleClass="form-control2" fx:id="dateFechaCT"/>
+                                        <TextField promptText="Cargo" styleClass="form-control" fx:id="textCargoT"/>
+                                        <TextField promptText="Área" styleClass="form-control" fx:id="textAreaT"/>
+
                                     </HBox>
-                                    <TableView prefHeight="380">
+                                    <HBox spacing="10">
+                                        <Button fx:id="btnSeleccionarTraba" styleClass="btn" text="Seleccionar Imagen" />
+                                        <Button text="Nuevo" styleClass="btn" onAction="#guardarTrabajadoresUq"/>
+                                    </HBox>
+                                    <TableView prefHeight="380" fx:id="tablaTrabajadorUQ">
                                         <columns>
-                                            <TableColumn text="Nombre" prefWidth="220"/>
-                                            <TableColumn text="Cargo" prefWidth="160"/>
-                                            <TableColumn text="Área" prefWidth="160"/>
+                                            <TableColumn text="Nombre" prefWidth="120" fx:id="colNombreT"/>
+                                            <TableColumn text="ID" prefWidth="120" fx:id="colIdT"/>
+                                            <TableColumn text="Telefono" prefWidth="120" fx:id="colTelefonoT"/>
+                                            <TableColumn text="Dirección" prefWidth="120" fx:id="colDireccionT"/>
+                                            <TableColumn text="Fecha Nacimiento" prefWidth="160" fx:id="colFechaNT"/>
+                                            <TableColumn text="Fechas Creacion" prefWidth="160" fx:id="colFechaCT"/>
+                                            <TableColumn text="Cargo" prefWidth="160" fx:id="colCargoT"/>
+                                            <TableColumn text="Área" prefWidth="160" fx:id="colAreaT"/>
                                         </columns>
                                     </TableView>
                                 </VBox>
@@ -145,16 +161,28 @@
                                         <Insets top="10" right="10" bottom="10" left="10"/>
                                     </padding>
                                     <HBox spacing="10">
-                                        <TextField promptText="Nombre" styleClass="form-control"/>
-                                        <TextField promptText="Ocupación" styleClass="form-control"/>
-                                        <TextField promptText="Contraseña" styleClass="form-control"/>
-                                        <Button fx:id="btnSeleccionarExter" text="Seleccionar Imagen" />
-                                        <Button text="Nuevo" styleClass="btn btn-primary"/>
+                                        <TextField promptText="Nombre" styleClass="form-control" fx:id="textNombreEx"/>
+                                        <TextField promptText="ID" styleClass="form-control" fx:id="textIdEx"/>
+                                        <TextField promptText="Telefono" styleClass="form-control" fx:id="textTelefonoEx"/>
+                                        <TextField promptText="Dirección" styleClass="form-control" fx:id="textDireccionEx"/>
+                                        <DatePicker promptText="Fecha nacimiento" styleClass="form-control2" fx:id="dateFechaNEx"/>
+                                        <DatePicker promptText="Fecha creacion" styleClass="form-control2" fx:id="dateFechaCEx"/>
+                                        <TextField promptText="Ocupación" styleClass="form-control" fx:id="textOcupacionEx"/>
+
                                     </HBox>
-                                    <TableView prefHeight="380">
+                                    <HBox spacing="10">
+                                        <Button fx:id="btnSeleccionarExter" styleClass="btn" text="Seleccionar Imagen" />
+                                        <Button text="Nuevo" styleClass="btn" onAction="#guardarExterno"/>
+                                    </HBox>
+                                    <TableView prefHeight="380" fx:id="tablaExterno">
                                         <columns>
-                                            <TableColumn text="Nombre" prefWidth="220"/>
-                                            <TableColumn text="Ocupación" prefWidth="220"/>
+                                            <TableColumn text="Nombre" prefWidth="120" fx:id="colNombreEx"/>
+                                            <TableColumn text="ID" prefWidth="120" fx:id="colIdEx"/>
+                                            <TableColumn text="Telefono" prefWidth="120" fx:id="colTelefonoEx"/>
+                                            <TableColumn text="Dirección" prefWidth="120" fx:id="colDireccioEx"/>
+                                            <TableColumn text="Fecha Nacimiento" prefWidth="160" fx:id="colFechaNEx"/>
+                                            <TableColumn text="Fechas Creacion" prefWidth="160" fx:id="colFechaCEx"/>
+                                            <TableColumn text="Ocupación" prefWidth="220" fx:id="colOcupacionEx"/>
                                         </columns>
                                     </TableView>
                                 </VBox>

@@ -7,9 +7,9 @@
     <Label text="Pagos" styleClass="h1"/>
     <HBox spacing="10">
         <TextField promptText="ID pago" styleClass="form-control" fx:id="textIdPago"/>
-        <DatePicker promptText="Fecha de pago" fx:id="DatePagoFecha" styleClass="form-control2"/>
         <TextField promptText="Valor" styleClass="form-control" fx:id="textValor"/>
         <TextField promptText="Detalles" styleClass="form-control" fx:id="textDetallesPago"/>
+        <DatePicker promptText="Fecha de pago" fx:id="DatePagoFecha" styleClass="form-control2"/>
         <Button text="Registrar" styleClass="btn" onAction="#guardarPagos"/>
     </HBox>
 
