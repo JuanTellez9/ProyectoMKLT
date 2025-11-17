@@ -44,6 +44,12 @@ public class MainController {
     }
 
     @FXML
+    public void goReportes() {
+        setContent(Navigator.loadView("ReportesAdminView.fxml"));
+    }
+
+
+    @FXML
     public void goMaquinas() {
         try {
             Node view = Navigator.loadView("MaquinasView.fxml");

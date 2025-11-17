@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uniquindio.edu.co.gym.controller.ReportesAdminController">
+
+    <VBox spacing="12" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0">
+
+        <Label text="Reportes del Administrador" styleClass="h1"/>
+
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+
+            <tabs>
+
+                <!-- ================== REPORTE 1: ASISTENCIA ================== -->
+                <Tab text="Asistencia por Clase">
+                    <VBox spacing="12">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                        <Button text="Generar Reporte"
+                                styleClass="btn"
+                                onAction="#cargarAsistencia"/>
+
+                        <TableView fx:id="tablaAsistencia" prefHeight="500">
+                            <columns>
+                                <TableColumn text="Clase" fx:id="colClaseA" prefWidth="200"/>
+                                <TableColumn text="Cupo Máximo" fx:id="colCupoA" prefWidth="140"/>
+                                <TableColumn text="Asistentes" fx:id="colAsistentesA" prefWidth="140"/>
+                                <TableColumn text="Ocupación" fx:id="colOcupacionA" prefWidth="150"/>
+                            </columns>
+                        </TableView>
+
+                    </VBox>
+                </Tab>
+
+                <!-- ================== REPORTE 2: INGRESOS ================== -->
+                <Tab text="Ingresos por Membresías">
+                    <VBox spacing="12">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                        <Button text="Generar Ingresos"
+                                styleClass="btn"
+                                onAction="#cargarIngresos"/>
+
+                        <TableView fx:id="tablaIngresos" prefHeight="500">
+                            <columns>
+                                <TableColumn text="Cantidad de Pagos" fx:id="colCantidadI" prefWidth="200"/>
+                                <TableColumn text="Total Recaudado" fx:id="colTotalI" prefWidth="200"/>
+                            </columns>
+                        </TableView>
+
+                    </VBox>
+                </Tab>
+
+                <!-- ================== REPORTE 3: CLASES MÁS POPULARES ================== -->
+                <Tab text="Clases Populares">
+                    <VBox spacing="12">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                        <Button text="Generar Ranking"
+                                styleClass="btn"
+                                onAction="#cargarPopulares"/>
+
+                        <TableView fx:id="tablaPopulares" prefHeight="500">
+                            <columns>
+                                <TableColumn text="Clase" fx:id="colClaseP" prefWidth="200"/>
+                                <TableColumn text="Asistentes" fx:id="colAsistentesP" prefWidth="180"/>
+                                <TableColumn text="Cupo Máximo" fx:id="colCupoP" prefWidth="180"/>
+                            </columns>
+                        </TableView>
+
+                    </VBox>
+                </Tab>
+
+            </tabs>
+        </TabPane>
+
+    </VBox>
+
+</AnchorPane>

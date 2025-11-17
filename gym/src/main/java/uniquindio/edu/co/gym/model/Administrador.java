@@ -131,6 +131,7 @@ public class Administrador extends Persona implements Ihashes{
             System.out.println("Error al asignar entrenador: " + e.getMessage());
         }
     }
+
     public void generarEstadisticasAsistencia() {
         ArrayList<Clase> listClases=gym.getListClases();
         try {
