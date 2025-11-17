@@ -11,7 +11,7 @@ import uniquindio.edu.co.gym.model.UsuarioLogueado;
 public class MainController {
 
     @FXML private StackPane contentArea;
-
+//t
 
     @FXML
     public void initialize() {
