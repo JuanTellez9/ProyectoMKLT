@@ -10,8 +10,8 @@ public class Clase {
     private Semana semana;
     private ClaseGrupal claseGrupal;
     private Entrenador entrenador;
-    private ArrayList<Usuario> listUsuariosInscritos;
     private ArrayList<Usuario> listUsario;
+
 
     public Clase(String id, int cupoMaximo, String horaInicio, String horaFin, Semana semana, ClaseGrupal claseGrupal, Entrenador entrenador) {
         this.id = id;
@@ -21,7 +21,6 @@ public class Clase {
         this.semana = semana;
         this.claseGrupal = claseGrupal;
         this.entrenador = entrenador;
-        this.listUsuariosInscritos= new ArrayList<>();
         this.listUsario=new ArrayList<>();
     }
 
@@ -31,14 +30,6 @@ public class Clase {
 
     public void setListUsario(ArrayList<Usuario> listUsario) {
         this.listUsario = listUsario;
-    }
-
-    public ArrayList<Usuario> getListUsuariosInscritos() {
-        return listUsuariosInscritos;
-    }
-
-    public void setListUsuariosInscritos(ArrayList<Usuario> listUsuariosInscritos) {
-        this.listUsuariosInscritos = listUsuariosInscritos;
     }
 
     public Semana getSemana() {
@@ -99,9 +90,25 @@ public class Clase {
     public void setHoraFin(String horaFin) {
         this.horaFin = horaFin;
     }
+    public boolean inscribirUsuario(Usuario usuario) {
+        if (usuario == null) {
+            return false;
+        }
 
+        if (cupoMaximo <= 0) {
+            return false; // No hay cupos
+        }
+
+
+        listUsario.add(usuario);
+        cupoMaximo--;
+        return true;
+    }
     public void gethoraFin(String horaFin) {
         this.horaFin = horaFin;
     }
-
+    @Override
+    public String toString() {
+        return id + " - " + claseGrupal + " (" + semana + ")";
+    }
 }

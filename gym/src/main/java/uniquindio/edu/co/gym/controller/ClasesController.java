@@ -7,20 +7,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import uniquindio.edu.co.gym.model.*;
 
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClasesController {
+
     @FXML private TextField textId;
     @FXML private ComboBox<String> comboHoraInicio;
     @FXML private ComboBox<String> comboHoraFin;
     @FXML private TextField textCupoMaximo;
     @FXML private ComboBox<ClaseGrupal> comboClaseGrupal;
     @FXML private ComboBox<Semana> comboDiaSemana;
+
     @FXML private ComboBox<Clase> comboClases;
-
-
-
+    @FXML private ComboBox<Clase> comboClasesRegistro;
+    @FXML private ComboBox<Usuario> comboUsuariosDisponibles;
 
     @FXML private TableView<Clase> tableClase;
     @FXML private TableColumn<Clase, String> colId;
@@ -29,74 +30,95 @@ public class ClasesController {
     @FXML private TableColumn<Clase, String> colInicio;
     @FXML private TableColumn<Clase, String> colFin;
     @FXML private TableColumn<Clase, String> colCupo;
+
     @FXML private TableView<Usuario> tablaUsuarios;
     @FXML private TableColumn<Usuario, String> colNombreUsuario;
-    @FXML private TableColumn<Usuario, String> colTipoUsuario;
-    @FXML private TableColumn<Usuario, String> colDetalle;
 
-    // Listas observables
     private final Gimnasio gimnasio = Gimnasio.getInstance();
     private final ObservableList<Clase> listaClases = FXCollections.observableArrayList();
     private final ObservableList<Usuario> listaUsuarios = FXCollections.observableArrayList();
 
-
-
-
-
     @FXML
-    public void initialize (){
-        //Inicializar ComboBox
+    public void initialize() {
 
-        comboHoraInicio.getItems().addAll("6:00 a.m", "7:00 a.m", "8:00 a.m", "9:00 a.m", "10:00 a.m", "11:00 a.m", "1:00 p.m","2:00 p.m", "3:00 p.m", "4:00 p.m", "5:00 p.m", "6:00 p.m", "7:00 p.m", "8:00 p.m");
-        comboHoraFin.getItems().addAll("6:00 a.m", "7:00 a.m", "8:00 a.m", "9:00 a.m", "10:00 a.m", "11:00 a.m", "1:00 p.m","2:00 p.m", "3:00 p.m", "4:00 p.m", "5:00 p.m", "6:00 p.m", "7:00 p.m", "8:00 p.m");
-        //comboClaseGrupal.getItems().addAll("Zumba", "Spinnig", "Yoga", "Tren Superior", "Full Body", "Aeróbicos");
-        //comboDiaSemana.getItems().addAll("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+        // Horas disponibles
+        ObservableList<String> horas = FXCollections.observableArrayList(
+                "6:00 a.m", "7:00 a.m", "8:00 a.m", "9:00 a.m",
+                "10:00 a.m", "11:00 a.m", "1:00 p.m", "2:00 p.m",
+                "3:00 p.m", "4:00 p.m", "5:00 p.m", "6:00 p.m",
+                "7:00 p.m", "8:00 p.m"
+        );
 
+        comboHoraInicio.setItems(horas);
+        comboHoraFin.setItems(FXCollections.observableArrayList(horas));
+
+        // Enums
+        comboClaseGrupal.setItems(FXCollections.observableArrayList(ClaseGrupal.values()));
+        comboDiaSemana.setItems(FXCollections.observableArrayList(Semana.values()));
+
+        // Columnas tabla clases
         colId.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getId()));
-        colNombre.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getClaseGrupal())));
+        colNombre.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getClaseGrupal().toString()));
         colInicio.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getHoraInicio()));
         colFin.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getHoraFin()));
         colCupo.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getCupoMaximo())));
-        comboDiaSemana.getItems().addAll(Semana.values());
-        comboClaseGrupal.getItems().addAll(ClaseGrupal.values());
-        colDia.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getSemana())));
-        colNombre.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getClaseGrupal())));
-        comboHoraInicio.getItems().addAll((comboHoraInicio.getValue()));
-        comboHoraFin.getItems().addAll((comboHoraFin.getValue()));
+        colDia.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSemana().toString()));
 
-        listaClases.setAll(gimnasio.getListClases());
+        // Lista de clases
+        List<Clase> clases = gimnasio.getListClases();
+        if (clases == null) clases = new ArrayList<>();
+
+        listaClases.setAll(clases);
         tableClase.setItems(listaClases);
-        comboClases.getItems().addAll(listaClases);
 
-        // Configurar columnas de tabla de usuarios
+
+
+        // Lista de usuarios globales
+        List<Usuario> usuarios = gimnasio.getListUsuarios();
+        if (usuarios == null) usuarios = new ArrayList<>();
+
+        comboUsuariosDisponibles.setItems(FXCollections.observableArrayList(usuarios));
+
+        // Tabla de usuarios inscritos
         colNombreUsuario.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNombre()));
+    }
 
-}
+    // Obtener la lista REAL donde inscribirUsuario() guarda
+    private List<Usuario> obtenerUsuariosInscritosReales(Clase clase) {
+        try {
+            var campo = Clase.class.getDeclaredField("listaUsuarios");
+            campo.setAccessible(true);
+            return (List<Usuario>) campo.get(clase);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
     @FXML
     public void mostrarUsuarios() {
         Clase claseSeleccionada = comboClases.getValue();
 
-        if (claseSeleccionada != null) {
-            // Aquí usamos la lista que está en Clase
-            listaUsuarios.setAll(claseSeleccionada.getListUsuariosInscritos());
-            tablaUsuarios.setItems(listaUsuarios);
-        } else {
-            mostrarAlerta("Debe seleccionar una clase para ver los usuarios inscritos.");
+        if (claseSeleccionada == null) {
+            mostrarAlerta("Debe seleccionar una clase para ver los usuarios.");
+            return;
         }
-    }
-    @FXML
-    public void registrarClase(){
-        try {
 
+        listaUsuarios.setAll(obtenerUsuariosInscritosReales(claseSeleccionada));
+        tablaUsuarios.setItems(listaUsuarios);
+    }
+
+    @FXML
+    public void registrarClase() {
+        try {
             String id = textId.getText();
             ClaseGrupal nombre = comboClaseGrupal.getValue();
             Semana dia = comboDiaSemana.getValue();
             String inicioHora = comboHoraInicio.getValue();
             String finHora = comboHoraFin.getValue();
-            int cupo =Integer.parseInt(textCupoMaximo.getText());
+            int cupo = Integer.parseInt(textCupoMaximo.getText());
 
-
-            Clase nueva =  new Clase(
+            Clase nueva = new Clase(
                     id,
                     cupo,
                     inicioHora,
@@ -104,20 +126,60 @@ public class ClasesController {
                     dia,
                     nombre,
                     new Entrenador("n","12","12","jkj","kjj","jjk")
-
-
-
-
             );
-            Gimnasio.getInstance().registrarClase(nueva);
+
+            gimnasio.registrarClase(nueva);
             listaClases.add(nueva);
+
+            comboClases.getItems().add(nueva);
+            comboClasesRegistro.getItems().add(nueva);
 
             limpiarFormulario();
 
-
-
-        } catch (NumberFormatException e){}
+        } catch (NumberFormatException e) {
+            mostrarAlerta("El cupo máximo debe ser un número.");
+        }
     }
+
+    @FXML
+    public void registrarUsuarioEnClase() {
+
+        Clase clase = comboClasesRegistro.getValue();
+        Usuario usuario = comboUsuariosDisponibles.getValue();
+
+        if (clase == null || usuario == null) {
+            mostrarAlerta("Debe seleccionar una clase y un usuario.");
+            return;
+        }
+
+        List<Usuario> inscritos = obtenerUsuariosInscritosReales(clase);
+
+        if (inscritos.contains(usuario)) {
+            mostrarAlerta("El usuario ya está inscrito en esta clase.");
+            return;
+        }
+
+        int cuposDisponibles = clase.getCupoMaximo() - inscritos.size();
+        if (cuposDisponibles <= 0) {
+            mostrarAlerta("No hay cupos disponibles.");
+            return;
+        }
+
+        boolean registrado = clase.inscribirUsuario(usuario);
+
+        if (!registrado) {
+            mostrarAlerta("No se pudo registrar. Cupo lleno o error interno.");
+            return;
+        }
+
+        mostrarAlerta("Usuario registrado correctamente.");
+
+        // Actualiza si está viendo la misma clase
+        if (comboClases.getValue() == clase) {
+            listaUsuarios.setAll(inscritos);
+        }
+    }
+
     private void limpiarFormulario() {
         textId.clear();
         comboHoraInicio.setValue(null);
@@ -128,8 +190,8 @@ public class ClasesController {
     }
 
     private void mostrarAlerta(String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Validación");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
