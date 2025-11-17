@@ -41,7 +41,7 @@ public class MembresiasController {
 
     @FXML
     public void initialize() {
-        // Inicializar ComboBox
+        // Inicializar ComboBox 
         comboBeneficio.getItems().addAll("Acompañante", "Proteína", "Valoración");
 
         // Formateador de fechas
