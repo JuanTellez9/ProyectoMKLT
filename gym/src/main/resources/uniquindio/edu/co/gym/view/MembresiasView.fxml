@@ -8,18 +8,18 @@
     <HBox spacing="10">
         <TextField promptText="ID" styleClass="form-control" fx:id="textid"/>
         <TextField promptText="Costo" styleClass="form-control" fx:id="textCosto"/>
-        <DatePicker promptText="Fecha inicio" fx:id="DateFechaInicio"/>
-        <DatePicker promptText="Fecha vencimiento" fx:id="DateFechaVencimiento"/>
+        <DatePicker styleClass="form-control2" promptText="Fecha inicio" fx:id="DateFechaInicio"/>
+        <DatePicker styleClass="form-control2" promptText="Fecha vencimiento" fx:id="DateFechaVencimiento"/>
         <CheckBox text="Activa" fx:id="checkActivo"/>
-        <ComboBox fx:id="comboBeneficio" promptText="Beneficio" prefWidth="160"/>
-        <ComboBox fx:id="comboTipo" promptText="Tipo" prefWidth="120"/>
-        <ComboBox fx:id="comboNivel" promptText="Nivel" prefWidth="120"/>
-        <Button text="Crear" styleClass="btn btn-primary" onAction="#guardarMembresias"/>
+        <ComboBox fx:id="comboBeneficio" promptText="Beneficio" styleClass="form-control2" prefWidth="160"/>
+        <ComboBox fx:id="comboTipo" promptText="Tipo" styleClass="form-control2"  prefWidth="120"/>
+        <ComboBox fx:id="comboNivel" promptText="Nivel" styleClass="form-control2" prefWidth="120"/>
+        <Button text="Crear" styleClass="btn" onAction="#guardarMembresias"/>
     </HBox>
 
     <TableView prefHeight="480" fx:id="tableMembresia">
         <columns>
-            <TableColumn text="ID" prefWidth="80" fx:id="colId"/>
+            <TableColumn text="ID" prefWidth="100" fx:id="colId"/>
             <TableColumn text="Costo" prefWidth="100" fx:id="colCosto"/>
             <TableColumn text="Inicio" prefWidth="140" fx:id="colInicio"/>
             <TableColumn text="Vence" prefWidth="140" fx:id="colVence"/>

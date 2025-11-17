@@ -14,7 +14,6 @@
         <TextField promptText="Referencia" styleClass="form-control" fx:id="textReferencia"/>
         <TextField promptText="Uso" styleClass="form-control" fx:id="textUso"/>
 
-        <!-- ✔️ Corrección aquí -->
         <Button text="Agregar" styleClass="btn" onAction="#agregarMaquina"/>
     </HBox>
 

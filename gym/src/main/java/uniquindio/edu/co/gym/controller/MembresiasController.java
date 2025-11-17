@@ -57,6 +57,7 @@ public class MembresiasController {
         colBeneficio.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getBeneficio()));
         colNivel.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getNivel())));
         colTipo.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getTipo())));
+        colId.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getId())));
 
         // Cargar datos existentes desde el singleton
         listaMembresias.setAll(gimnasio.getListMembresia());

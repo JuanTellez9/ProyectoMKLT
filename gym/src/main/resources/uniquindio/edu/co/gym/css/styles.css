@@ -63,6 +63,17 @@
   -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 1);
 }
 
+.form-control2 {
+  -fx-background-color: white;
+  -fx-text-fill: #0f172a;
+  -fx-background-radius: 12;
+  -fx-border-color: #cbd5e1;
+  -fx-border-radius: 12;
+  -fx-padding: 4 12 4 12;
+  -fx-prompt-text-fill: #9ca3af;
+  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 3, 0, 0, 1);
+}
+
 .text-field:focused,
 .combo-box:focused,
 .date-picker:focused {

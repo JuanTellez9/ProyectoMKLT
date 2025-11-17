@@ -207,7 +207,7 @@ public class ClasesController {
         }
 
         mostrarAlerta("Usuario registrado correctamente.");
-
+        limpiarFormulario();
         // Actualizar tabla si está viendo esa clase
         if (comboClases.getValue() == clase) {
             listaUsuarios.setAll(inscritos);
@@ -223,6 +223,10 @@ public class ClasesController {
         comboClaseGrupal.setValue(null);
         comboDiaSemana.setValue(null);
         comboEntrenador.setValue(null);
+        comboClasesRegistro.setValue(null);
+        usuarioRegisClass.clear();
+        comboClases.setValue(null);
+
     }
 
     private void mostrarAlerta(String mensaje) {

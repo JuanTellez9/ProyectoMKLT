@@ -14,24 +14,23 @@
           AnchorPane.bottomAnchor="0">
 
         <Label text="Clases" styleClass="h1"/>
-
         <TabPane tabClosingPolicy="UNAVAILABLE">
             <tabs>
 
-                <!-- TAB 1: CLASES -->
+                <!-- TAB CLASES -->
                 <Tab text="Clases">
                     <VBox spacing="10">
                         <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
                         <HBox spacing="10">
-                            <TextField fx:id="textId" promptText="ID Clase"/>
-                            <TextField fx:id="textCupoMaximo" promptText="Cupo máximo"/>
-                            <ComboBox fx:id="comboHoraInicio" promptText="Hora inicio"/>
-                            <ComboBox fx:id="comboHoraFin" promptText="Hora fin"/>
-                            <ComboBox fx:id="comboClaseGrupal" promptText="Clase grupal"/>
-                            <ComboBox fx:id="comboDiaSemana" promptText="Día semana"/>
-                            <ComboBox fx:id="comboEntrenador" promptText="Entrenador"/>
-                            <Button text="Nueva Clase" onAction="#registrarClase"/>
+                            <TextField fx:id="textId" styleClass="form-control" promptText="ID Clase"/>
+                            <TextField fx:id="textCupoMaximo" styleClass="form-control" promptText="Cupo máximo"/>
+                            <ComboBox fx:id="comboHoraInicio" styleClass="form-control2" promptText="Hora inicio"/>
+                            <ComboBox fx:id="comboHoraFin" styleClass="form-control2" promptText="Hora fin"/>
+                            <ComboBox fx:id="comboClaseGrupal" styleClass="form-control2" promptText="Clase grupal"/>
+                            <ComboBox fx:id="comboDiaSemana"  styleClass="form-control2" promptText="Día semana"/>
+                            <ComboBox fx:id="comboEntrenador" styleClass="form-control2"  promptText="Entrenador"/>
+                            <Button text="Nueva Clase" styleClass="btn" onAction="#registrarClase"/>
                         </HBox>
 
                         <TableView fx:id="tableClase" prefHeight="420">
@@ -48,36 +47,40 @@
                     </VBox>
                 </Tab>
 
-                <!-- TAB 2: USUARIOS INSCRITOS -->
+                <!-- TAB USUARIOS INSCRITOS -->
                 <Tab text="Usuarios Inscritos">
                     <VBox spacing="10">
                         <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
                         <HBox spacing="10">
-                            <ComboBox promptText="Clase grupal (ZUMBA, YOGA...)" prefWidth="280"/>
-                            <ComboBox promptText="Día de semana" prefWidth="180"/>
-                            <ComboBox promptText="Nivel (Básico/Premium/VIP)" prefWidth="220"/>
+                            <ComboBox fx:id="comboClases" promptText="Seleccione clase" styleClass="form-control2"/>
+                            <Button text="Ver inscritos" onAction="#mostrarUsuarios" styleClass="btn"/>
                         </HBox>
 
-                        <TableView fx:id="tablaUsuarios" prefHeight="460">
+                        <TableView fx:id="tablaUsuarios" prefHeight="420">
                             <columns>
-                                <TableColumn fx:id="colNombreUsuario" text="Nombre" prefWidth="180"/>
-                                <TableColumn fx:id="colIdUsuario" text="ID" prefWidth="120"/>
-                                <TableColumn fx:id="colInicioUsuario" text="Inicio" prefWidth="100"/>
-                                <TableColumn fx:id="colFinUsuario" text="Fin" prefWidth="100"/>
-                                <TableColumn fx:id="colTipoUsuario" text="Tipo" prefWidth="80"/>
-                                <TableColumn fx:id="colDiaUsuario" text="Día" prefWidth="120"/>
-                                <TableColumn fx:id="colNivelUsuario" text="Nivel" prefWidth="120"/>
+                                <TableColumn text="Nombre Usuario" fx:id="colNombreUsuario" prefWidth="200"/>
                             </columns>
                         </TableView>
+                    </VBox>
+                </Tab>
 
+                <!-- TAB REGISTRAR USUARIO EN CLASE -->
+                <Tab text="Registrar Usuario en Clase">
+                    <VBox spacing="10">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                        <HBox spacing="10">
+                            <ComboBox fx:id="comboClasesRegistro" promptText="Clase" styleClass="form-control2"/>
+                            <TextField fx:id="usuarioRegisClass" promptText="ID Clase" styleClass="form-control"/>
+                            <Button text="Registrar" onAction="#registrarUsuarioEnClase" styleClass="btn"/>
+                        </HBox>
 
                     </VBox>
                 </Tab>
 
             </tabs>
         </TabPane>
-
     </VBox>
 
 </AnchorPane>
