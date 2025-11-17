@@ -24,35 +24,6 @@ public class UsuarioLogueado implements Ihashes {
 
 
 
-    @Override
-    public byte[] hashearContrasenaBytes(String contrasena) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return digest.digest(contrasena.getBytes(StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
-    }
-
-    private byte[] hexToBytes(String hex) {
-        int len = hex.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                    + Character.digit(hex.charAt(i+1), 16));
-        }
-        return data;
-    }
-
-
     public boolean verificarContrasenaSecure(String contrasenaIngresada, String hashAlmacenadoHex) {
         if (hashAlmacenadoHex == null || hashAlmacenadoHex.isEmpty()) {
             return false;
@@ -94,6 +65,7 @@ public class UsuarioLogueado implements Ihashes {
                     admin.getDireccion(),
                     admin.getFechaNacimiento()
             );
+            usuario.setFoto(admin.getFoto());
 
             System.out.println("Inicio de sesión exitoso (ADMIN)");
             return;
@@ -118,6 +90,7 @@ public class UsuarioLogueado implements Ihashes {
                             r.getDireccion(),
                             r.getFechaNacimiento()
                     );
+                    usuario.setFoto(r.getFoto());
 
                     System.out.println("Inicio de sesión exitoso (RECEPCIONISTA)");
                     return;

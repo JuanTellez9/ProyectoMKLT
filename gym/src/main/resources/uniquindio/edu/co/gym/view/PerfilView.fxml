@@ -7,23 +7,35 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="uniquindio.edu.co.gym.controller.PerfilController"
       alignment="TOP_CENTER"
-      spacing="20"
+      spacing="25"
       style="-fx-padding: 40 0 0 0;">
 
-    <!-- FOTO -->
-    <ImageView fx:id="imgPerfil"
-               fitWidth="150"
-               fitHeight="150"
-               preserveRatio="true"
-               style="-fx-background-radius: 100; -fx-border-radius: 100;"/>
+    <VBox spacing="25"
+          alignment="CENTER"
+          styleClass="perfil-card">
 
-    <!-- DATOS -->
-    <VBox spacing="10" alignment="CENTER">
-        <Label fx:id="lblNombre" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
-        <Label fx:id="lblID"/>
-        <Label fx:id="lblTelefono"/>
-        <Label fx:id="lblDireccion"/>
-        <Label fx:id="lblNacimiento"/>
+        <!-- FOTO -->
+        <ImageView fx:id="imgPerfil"
+                   fitWidth="180"
+                   fitHeight="180"
+                   preserveRatio="false"
+                   smooth="true"
+                   styleClass="perfil-img"/>
+
+        <!-- DATOS -->
+        <VBox spacing="6" alignment="CENTER">
+
+            <!-- SOLO EL NOMBRE -->
+            <Label fx:id="lblNombre" styleClass="perfil-nombre"/>
+
+            <Label fx:id="lblID" styleClass="perfil-info"/>
+            <Label fx:id="lblTelefono" styleClass="perfil-info"/>
+            <Label fx:id="lblDireccion" styleClass="perfil-info"/>
+            <Label fx:id="lblNacimiento" styleClass="perfil-info"/>
+
+        </VBox>
+
     </VBox>
 
 </VBox>
+

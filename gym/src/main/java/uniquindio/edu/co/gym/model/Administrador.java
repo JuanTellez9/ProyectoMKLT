@@ -9,25 +9,19 @@ import java.security.NoSuchAlgorithmException;
 public class Administrador extends Persona implements Ihashes{
     private String titulo;
     private String contrasena;
-    private ArrayList<Entrenador> listEntrenadores;
-    private ArrayList<Clase> listClases;
-    private HistorialPago historialPagos;
-    private ArrayList<Pago> listaPagos;
+    private  Gimnasio gym=Gimnasio.getInstance();
 
 
     public Administrador(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String titulo,String contrasena) {
         super(nombre, ID, telefono, direccion, fechaNacimiento);
         this.titulo = titulo;
         this.contrasena=contrasena;
-        this.listEntrenadores=new ArrayList();
-        this.listClases=new ArrayList();
-        this.historialPagos=historialPagos;
     }
     public boolean verificarEntrenador(Entrenador entrenador) {
         try {
             boolean bandera = false;
 
-            for (Entrenador ent : listEntrenadores) {
+            for (Entrenador ent : gym.getListEntrenadores()) {
                 if (ent.getID().equals(entrenador.getID())) {
                     bandera = true;
                     break;
@@ -45,7 +39,7 @@ public class Administrador extends Persona implements Ihashes{
     public void registrarEntrenador(Entrenador entrenador){
         try {
             if (!verificarEntrenador(entrenador)) {
-                listEntrenadores.add(entrenador);
+                gym.registrarEntrenador(entrenador);
                 System.out.println("Entrenador agregado: " + entrenador.getNombre());
             } else {
                 System.out.println("El entrenador ya existe: " + entrenador.getNombre());
@@ -58,13 +52,14 @@ public class Administrador extends Persona implements Ihashes{
     public void modificarEntrenador(String idEntrenador, String nuevoTelefono, String nuevaDireccion, String nuevoTurno) {
         try {
             boolean encontrado = false;
-
-            for (Entrenador ent : listEntrenadores) {
+            ArrayList<Entrenador> arrayE=gym.getListEntrenadores();
+            for (Entrenador ent : arrayE) {
                 if (ent.getID().equals(idEntrenador)) {
                     ent.setTelefono(nuevoTelefono);
                     ent.setDireccion(nuevaDireccion);
                     ent.setTurno(nuevoTurno);
                     encontrado = true;
+                    gym.setListEntrenadores(arrayE);
                     System.out.println(" Entrenador actualizado: " + ent.getNombre());
                     break;
                 }
@@ -85,8 +80,9 @@ public class Administrador extends Persona implements Ihashes{
     public void eliminarEntrenador(String idEntrenador) {
         try {
             Entrenador entrenadorAEliminar = null;
+            ArrayList<Entrenador> arrayE=gym.getListEntrenadores();
 
-            for (Entrenador ent : listEntrenadores) {
+            for (Entrenador ent : arrayE) {
                 if (ent.getID().equals(idEntrenador)) {
                     entrenadorAEliminar = ent;
                     break;
@@ -94,7 +90,8 @@ public class Administrador extends Persona implements Ihashes{
             }
 
             if (entrenadorAEliminar != null) {
-                listEntrenadores.remove(entrenadorAEliminar);
+                arrayE.remove(entrenadorAEliminar);
+                gym.setListEntrenadores(arrayE);
                 System.out.println(" Entrenador eliminado: " + entrenadorAEliminar.getNombre());
             } else {
                 System.out.println("No se encontró el entrenador con ID: " + idEntrenador);
@@ -108,33 +105,34 @@ public class Administrador extends Persona implements Ihashes{
     public void asignarEntrenadorAClase(String idClase, Entrenador entrenador) {
         try {
             Clase claseEncontrada = null;
+            ArrayList<Clase> arrayC=gym.getListClases();
 
-            for (Clase c : listClases) {
+            for (Clase c : arrayC) {
                 if (c.getId().equals(idClase)) {
                     claseEncontrada = c;
+                    if (!verificarEntrenador(entrenador)) {
+                            throw new Exception("El entrenador no está registrado en el sistema.");
+                    }
+
+                    c.setEntrenador(entrenador);
+
+                    entrenador.agregarClase(c);
+                    gym.setListClases(arrayC);
+                    System.out.println("Entrenador " + entrenador.getNombre() +
+                                " asignado a la clase: " + claseEncontrada.getClaseGrupal());
+
                     break;
                 }
             }
 
-            if (claseEncontrada == null) {
-                throw new Exception("No se encontró la clase con ID: " + idClase);
-            }
 
-            if (!verificarEntrenador(entrenador)) {
-                throw new Exception("El entrenador no está registrado en el sistema.");
-            }
-
-            claseEncontrada.setEntrenador(entrenador);
-
-            entrenador.agregarClase(claseEncontrada);
-            System.out.println("Entrenador " + entrenador.getNombre() +
-                    " asignado a la clase: " + claseEncontrada.getClaseGrupal());
 
         } catch (Exception e) {
             System.out.println("Error al asignar entrenador: " + e.getMessage());
         }
     }
     public void generarEstadisticasAsistencia() {
+        ArrayList<Clase> listClases=gym.getListClases();
         try {
             System.out.println("\n------ REPORTE DE ASISTENCIA ------");
 
@@ -175,8 +173,9 @@ public class Administrador extends Persona implements Ihashes{
     public void generarIngresosPorMembresias() {
         try {
             System.out.println("----- REPORTE DE INGRESOS POR MEMBRESÍAS -----");
+            ArrayList<Pago> historialPagos=gym.getListPagos();
 
-            if (historialPagos == null || historialPagos.getListaPagos().isEmpty()) {
+            if (historialPagos == null || historialPagos.isEmpty()) {
                 System.out.println("No hay pagos registrados.");
                 return;
             }
@@ -184,7 +183,7 @@ public class Administrador extends Persona implements Ihashes{
             double totalMembresias = 0;
             int cantidadMembresias = 0;
 
-            for (Pago pago : historialPagos.getListaPagos()) {
+            for (Pago pago : historialPagos) {
 
                 totalMembresias += pago.getValor();
                 cantidadMembresias++;
@@ -202,7 +201,7 @@ public class Administrador extends Persona implements Ihashes{
     public void generarReporteClasesMasPopulares() {
         try {
             System.out.println("\n------ REPORTE: CLASES MÁS POPULARES ------");
-
+            ArrayList<Clase> listClases=gym.getListClases();
             if (listClases == null || listClases.isEmpty()) {
                 System.out.println("No hay clases registradas en el sistema.");
                 return;
@@ -246,16 +245,6 @@ public class Administrador extends Persona implements Ihashes{
             System.out.println("Error al generar el reporte de clases populares: " + e.getMessage());
         }
     }
-    @Override
-    public byte[] hashearContrasenaBytes(String contrasena) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return digest.digest(contrasena.getBytes(StandardCharsets.UTF_8));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error al hashear la contraseña", e);
-        }
-    }
-
 
 
     public String getContrasena() {

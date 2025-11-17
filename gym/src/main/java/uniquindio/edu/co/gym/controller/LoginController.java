@@ -19,23 +19,8 @@ public class LoginController {
     Gimnasio gym=Gimnasio.getInstance();
 
 
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
-    }
 
-    private byte[] hexToBytes(String hex) {
-        int len = hex.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                    + Character.digit(hex.charAt(i+1), 16));
-        }
-        return data;
-    }
+
 
 
     @FXML
@@ -50,14 +35,11 @@ public class LoginController {
             lblError.setText("Completa todos los campos.");
             return;
         }
-        System.out.println(id);
-        System.out.println(tipo);
-        System.out.println(contrasena);
 
         UsuarioLogueado auth = UsuarioLogueado.getInstance();
         auth.iniciarSesion(id,tipo,contrasena);
 
-        boolean ok = auth.isSesionActiva() ? true : false;
+        boolean ok = auth.isSesionActiva();
 
         if (!ok) {
             lblError.setText("Credenciales incorrectas.");
@@ -119,7 +101,7 @@ public class LoginController {
 
             String contrasena = "123";
             byte[] hash = admin.hashearContrasenaBytes(contrasena);
-            admin.setContrasena(bytesToHex(hash));
+            admin.setContrasena(admin.bytesToHex(hash));
 
             gym.setAdministrador(admin);
         }

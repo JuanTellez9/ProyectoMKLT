@@ -27,8 +27,10 @@
                             <DatePicker promptText="Fecha de nacimiento" styleClass="form-control2" fx:id="textFechaNR"/>
                         </HBox>
                         <HBox spacing="10">
-                            <Button fx:id="btnSeleccionar" styleClass="btn" text="Seleccionar Imagen" />
-                            <Button text="Nuevo" styleClass="btn" onAction="#guardarRecepcionista"/>
+                            <Button fx:id="btnSeleccionar" styleClass="btn" text="Seleccionar Imagen" onAction="#seleccionarImagenRecepcionista"/>
+                            <Button fx:id="btnNuevoRecep" text="Nuevo" styleClass="btn" onAction="#guardarRecepcionista"/>
+                            <ProgressIndicator fx:id="loaderRecepcionista" prefWidth="20" prefHeight="20" visible="false"/>
+
                         </HBox>
                         <TableView fx:id="tablaRecepcionistas" prefHeight="420">
                             <columns>
@@ -45,36 +47,95 @@
 
 
                 <!-- TAB ENTRENADORES -->
-                <Tab text="Entrenadores">
-                    <VBox spacing="10">
-                        <padding>
-                            <Insets top="10" right="10" bottom="10" left="10"/>
-                        </padding>
-                        <HBox spacing="10">
-                            <TextField promptText="Nombre" styleClass="form-control" fx:id="textNombreE"/>
-                            <TextField promptText="ID" styleClass="form-control" fx:id="textIdE"/>
-                            <TextField promptText="Telefono" styleClass="form-control" fx:id="textTelefonoE"/>
-                            <TextField promptText="Turno" styleClass="form-control" fx:id="textTurnoE"/>
-                            <TextField promptText="Dirección" styleClass="form-control" fx:id="textDireccionE"/>
-                            <DatePicker promptText="Fecha de nacimiento" styleClass="form-control2" fx:id="textFechaNE"/>
 
-                        </HBox>
-                        <HBox spacing="10">
-                            <Button fx:id="btnSeleccionarEntre" styleClass="btn" text="Seleccionar Imagen" />
-                            <Button text="Nuevo" styleClass="btn" onAction="#guardarEntrenador"/>
-                        </HBox>
-                        <TableView prefHeight="420" fx:id="tablaEntrenador">
-                            <columns>
-                                <TableColumn text="Nombre" prefWidth="180" fx:id="colNombreE"/>
-                                <TableColumn text="ID" prefWidth="120" fx:id="colIdE"/>
-                                <TableColumn text="Telefono" prefWidth="120" fx:id="colTelefonoE"/>
-                                <TableColumn text="Turno" prefWidth="120" fx:id="colTurnoE"/>
-                                <TableColumn text="Dirección" prefWidth="120" fx:id="colDireccionE"/>
-                                <TableColumn text="Fecha de nacimiento" prefWidth="180" fx:id="colFechaNE"/>
-                            </columns>
-                        </TableView>
-                    </VBox>
+
+                <Tab text="Entrenadores">
+                    <TabPane tabClosingPolicy="UNAVAILABLE">
+                        <tabs>
+
+                            <!-- REGISTRAR ENTRENADOR -->
+                            <Tab text="Registrar">
+                                <VBox spacing="10">
+                                    <padding>
+                                        <Insets top="10" right="10" bottom="10" left="10"/>
+                                    </padding>
+
+                                    <HBox spacing="10">
+                                        <TextField fx:id="textNombreE" promptText="Nombre" styleClass="form-control"/>
+                                        <TextField fx:id="textIdE" promptText="ID" styleClass="form-control"/>
+                                        <TextField fx:id="textTelefonoE" promptText="Telefono" styleClass="form-control"/>
+                                        <TextField fx:id="textTurnoE" promptText="Turno" styleClass="form-control"/>
+                                        <TextField fx:id="textDireccionE" promptText="Dirección" styleClass="form-control"/>
+                                        <DatePicker fx:id="textFechaNE" promptText="Fecha nacimiento" styleClass="form-control2"/>
+                                    </HBox>
+
+                                    <HBox spacing="10">
+                                        <Button text="Seleccionar Imagen" styleClass="btn" onAction="#seleccionarImagenEntrenador"/>
+                                        <Button fx:id="btnNuevoEntrenador" text="Nuevo" styleClass="btn" onAction="#guardarEntrenador"/>
+                                        <ProgressIndicator fx:id="loaderEntrenador" visible="false"/>
+                                    </HBox>
+
+                                    <TableView fx:id="tablaEntrenador" prefHeight="420">
+                                        <columns>
+                                            <TableColumn text="Nombre" fx:id="colNombreE" prefWidth="160"/>
+                                            <TableColumn text="ID" fx:id="colIdE" prefWidth="120"/>
+                                            <TableColumn text="Telefono" fx:id="colTelefonoE" prefWidth="130"/>
+                                            <TableColumn text="Turno" fx:id="colTurnoE" prefWidth="120"/>
+                                            <TableColumn text="Dirección" fx:id="colDireccionE" prefWidth="150"/>
+                                            <TableColumn text="Fecha nac." fx:id="colFechaNE" prefWidth="150"/>
+                                        </columns>
+                                    </TableView>
+
+                                </VBox>
+                            </Tab>
+
+
+                            <!-- ACTUALIZAR ENTRENADOR -->
+                            <Tab text="Actualizar">
+                                <VBox spacing="12">
+                                    <padding>
+                                        <Insets top="20" right="20" bottom="20" left="20"/>
+                                    </padding>
+
+                                    <HBox spacing="10">
+                                        <TextField fx:id="updateIdE" promptText="ID del entrenador" styleClass="form-control"/>
+                                        <Button text="Buscar" styleClass="btn" onAction="#buscarEntrenador"/>
+                                    </HBox>
+
+                                    <Separator/>
+
+                                    <HBox spacing="10">
+                                        <TextField fx:id="updateTelE" promptText="Nuevo teléfono" styleClass="form-control"/>
+                                        <TextField fx:id="updateDirE" promptText="Nueva dirección" styleClass="form-control"/>
+                                        <TextField fx:id="updateTurnoE" promptText="Nuevo turno" styleClass="form-control"/>
+                                    </HBox>
+
+                                    <Button text="Actualizar" styleClass="btn" onAction="#actualizarEntrenador"/>
+
+                                </VBox>
+                            </Tab>
+
+
+                            <!-- ELIMINAR ENTRENADOR -->
+                            <Tab text="Eliminar">
+                                <VBox spacing="12">
+                                    <padding>
+                                        <Insets top="20" right="20" bottom="20" left="20"/>
+                                    </padding>
+
+                                    <TextField fx:id="deleteIdE" promptText="ID del entrenador a eliminar" styleClass="form-control"/>
+
+                                    <Button text="Eliminar Entrenador"
+                                            styleClass="btn"
+                                            onAction="#eliminarEntrenador"/>
+
+                                </VBox>
+                            </Tab>
+
+                        </tabs>
+                    </TabPane>
                 </Tab>
+
 
                 <!-- TAB USUARIOS -->
                 <Tab text="Usuarios">
@@ -99,8 +160,10 @@
 
                                     </HBox>
                                     <HBox spacing="10">
-                                        <Button fx:id="btnSeleccionarEst" styleClass="btn" text="Seleccionar Imagen" />
-                                        <Button text="Nuevo" styleClass="btn" onAction="#guardarEstudiante"/>
+                                        <Button fx:id="btnSeleccionarEst" styleClass="btn" text="Seleccionar Imagen" onAction="#seleccionarImagenEstudiante"/>
+                                        <Button fx:id="btnNuevoEstudiante" text="Nuevo" styleClass="btn" onAction="#guardarEstudiante"/>
+                                        <ProgressIndicator fx:id="loaderEstudiante" prefWidth="20" prefHeight="20" visible="false"/>
+
                                     </HBox>
                                     <TableView prefHeight="380" fx:id="tablaEstudiante">
                                         <columns>
@@ -136,8 +199,10 @@
 
                                     </HBox>
                                     <HBox spacing="10">
-                                        <Button fx:id="btnSeleccionarTraba" styleClass="btn" text="Seleccionar Imagen" />
-                                        <Button text="Nuevo" styleClass="btn" onAction="#guardarTrabajadoresUq"/>
+                                        <Button fx:id="btnSeleccionarTraba" styleClass="btn" text="Seleccionar Imagen" onAction="#seleccionarImagenTrabajador"/>
+                                        <Button fx:id="btnNuevoTrabajador" text="Nuevo" styleClass="btn" onAction="#guardarTrabajadoresUq"/>
+                                        <ProgressIndicator fx:id="loaderTrabajador" prefWidth="20" prefHeight="20" visible="false"/>
+
                                     </HBox>
                                     <TableView prefHeight="380" fx:id="tablaTrabajadorUQ">
                                         <columns>
@@ -171,8 +236,9 @@
 
                                     </HBox>
                                     <HBox spacing="10">
-                                        <Button fx:id="btnSeleccionarExter" styleClass="btn" text="Seleccionar Imagen" />
-                                        <Button text="Nuevo" styleClass="btn" onAction="#guardarExterno"/>
+                                        <Button fx:id="btnSeleccionarExter" styleClass="btn" text="Seleccionar Imagen" onAction="#seleccionarImagenExterno"/>
+                                        <Button fx:id="btnNuevoExterno" text="Nuevo" styleClass="btn" onAction="#guardarExterno"/>
+                                        <ProgressIndicator fx:id="loaderExterno" prefWidth="20" prefHeight="20" visible="false"/>
                                     </HBox>
                                     <TableView prefHeight="380" fx:id="tablaExterno">
                                         <columns>

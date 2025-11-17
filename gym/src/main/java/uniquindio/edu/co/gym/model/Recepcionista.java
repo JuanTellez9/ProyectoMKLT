@@ -27,8 +27,9 @@ public  class Recepcionista extends Persona implements Ihashes {
     public boolean verificarUsuario(Usuario usuario){
         boolean bandera = false;
         for(Usuario usu : listUsuarios){
-            if(usu.getID() == usuario.getID()){
+            if(usu.getID().equals(usuario.getID())){
                 bandera = true;
+                break;
             }
         }
         return bandera;
@@ -53,7 +54,7 @@ public  class Recepcionista extends Persona implements Ihashes {
             Clase claseEncontrada = null;
 
             for (Clase c : gimnasio.getListClases()) {
-                if (c.getId() == clase.getId()) {
+                if (c.getId().equals(clase.getId())) {
                     encontrada = true;
                     claseEncontrada = c;
                 }
@@ -181,15 +182,7 @@ public  class Recepcionista extends Persona implements Ihashes {
             System.out.println("Error al generar el reporte: " + e.getMessage());
         }
     }
-    @Override
-    public byte[] hashearContrasenaBytes(String contrasena) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return digest.digest(contrasena.getBytes(StandardCharsets.UTF_8));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error al hashear la contraseña", e);
-        }
-    }
+
 
 
     public String getContrasena() {

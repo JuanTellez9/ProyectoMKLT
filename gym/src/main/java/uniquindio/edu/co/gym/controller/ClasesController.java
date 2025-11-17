@@ -42,10 +42,8 @@ public class ClasesController {
 
     @FXML
     public void initialize() {
-        Entrenador entre=new Entrenador("Andres","12","12","jkj","kjj","jjk");
-        gimnasio.registrarEntrenador(entre);
 
-        // Horas disponibles
+        // Horas
         ObservableList<String> horas = FXCollections.observableArrayList(
                 "6:00 a.m", "7:00 a.m", "8:00 a.m", "9:00 a.m",
                 "10:00 a.m", "11:00 a.m", "1:00 p.m", "2:00 p.m",
@@ -68,20 +66,23 @@ public class ClasesController {
         colCupo.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getCupoMaximo())));
         colDia.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSemana().toString()));
         colEntrenador.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEntrenador().getNombre()));
-        ArrayList<Entrenador> entrenadores = gimnasio.getListEntrenadores();
-        if (entrenadores == null) entrenadores = new ArrayList<>();
 
-        comboEntrenador.setItems(FXCollections.observableArrayList(entrenadores));
+        // Entrenadores
+        comboEntrenador.setItems(FXCollections.observableArrayList(gimnasio.getListEntrenadores()));
+
         // Lista de clases
-        List<Clase> clases = gimnasio.getListClases();
-        if (clases == null) clases = new ArrayList<>();
-
-        listaClases.setAll(clases);
+        listaClases.setAll(gimnasio.getListClases());
         tableClase.setItems(listaClases);
 
-        // Tabla de usuarios inscritos
+        // Los combos comparten la misma lista observable
+        comboClases.setItems(listaClases);
+        comboClasesRegistro.setItems(listaClases);
+
+        // Tabla de usuarios
         colNombreUsuario.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNombre()));
     }
+
+
 
     // Obtener la lista REAL donde inscribirUsuario() guarda
     private ArrayList<Usuario> obtenerUsuariosInscritosReales(Clase clase) {
@@ -105,11 +106,6 @@ public class ClasesController {
     @FXML
     public void registrarClase() {
         try {
-            LocalDate fechaCreacion = LocalDate.now();
-            Estudiante est=new Estudiante("kebyn","111","23534534","portal","10 nov",fechaCreacion,"inge","1","inge");
-
-            gimnasio.registrarEstudiantes(est);
-
             String id = textId.getText();
             ClaseGrupal nombre = comboClaseGrupal.getValue();
             Semana dia = comboDiaSemana.getValue();
@@ -136,10 +132,8 @@ public class ClasesController {
 
             gimnasio.registrarClase(nueva);
             entrenadorSeleccionado.agregarClase(nueva);
-            listaClases.add(nueva);
 
-            comboClases.getItems().add(nueva);
-            comboClasesRegistro.getItems().add(nueva);
+            listaClases.add(nueva);
 
             limpiarFormulario();
 

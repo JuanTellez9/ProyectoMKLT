@@ -299,3 +299,31 @@
 }
 
 
+/* CARD */
+.perfil-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20;
+    -fx-padding: 30 50 40 50;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.20), 12, 0, 0, 4);
+}
+
+/* IMAGEN CIRCULAR */
+.perfil-img {
+    -fx-clip-shape: "M 90 0 A 90 90 0 1 1 89.9 0 Z";
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+/* NOMBRE (VERDE UQ) */
+.perfil-nombre {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #308113; /* verde */
+}
+
+/* INFO */
+.perfil-info {
+    -fx-font-size: 14px;
+    -fx-text-fill: #475569;
+}

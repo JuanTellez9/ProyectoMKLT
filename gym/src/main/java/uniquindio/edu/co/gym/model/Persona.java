@@ -19,7 +19,7 @@ public class Persona {
         this.direccion = direccion;
         this.fechaNacimiento = fechaNacimiento;
         this.listUsarios = new ArrayList<>();
-        this.foto = "";
+        this.foto = "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-vector-600nw-1725655669.jpg";
     }
 
     public List<Usuario> getListUsarios() {

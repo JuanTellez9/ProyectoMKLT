@@ -11,6 +11,7 @@ public class TrabajadorUQ extends Usuario {
     public TrabajadorUQ(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, LocalDate fechaCreacion, String cargo, String area) {
         super(nombre,ID,telefono,direccion,fechaNacimiento,fechaCreacion);
         this.cargo = cargo;
+        this.area=area;
     }
 
     @Override

@@ -57,26 +57,18 @@ public class Gimnasio {
     public  void  registrarEntrenador(Entrenador entrenador){
         listEntrenadores.add(entrenador);
     }
-    public void registrarEstudiantes(Estudiante est){
+    public void registrarEstudiante(Estudiante est){
         listEstudiante.add(est);
     }
-    
+    //ojo esta es en admin
     public Gimnasio registrarRecepcionista(Recepcionista recepcionista) {
         this.listRecepcionista.add(recepcionista);
         return null;
     }
-   
-    public Gimnasio registrarEstudiante(Estudiante  estudiante) {
-        this.listUsuarios.add(estudiante);
-        return null;
-    }
-    public Gimnasio registrarTrabajadorUq(TrabajadorUQ trabajadorUQ) {
-        this.listTrabajadorUQ.add(trabajadorUQ);
-        return null;
-    }
-    public Gimnasio registrarExterno(Externo externo) {
+
+
+    public void registrarExterno(Externo externo) {
         this.listExterno.add(externo);
-        return null;
     }
     public void setListMembresia(ArrayList<Membresia> listMembresia) {
         this.listMembresia = listMembresia;
@@ -162,7 +154,7 @@ public class Gimnasio {
         try {
             boolean bandera = false;
             for (Clase clas : listClases) {
-                if (clas.getId() == clase.getId()) {
+                if (clas.getId().equals(clase.getId())) {
                     bandera = true;
                 }
             }
@@ -177,7 +169,7 @@ public class Gimnasio {
         try {
             if (!verificarClase(clase)) {
                 if (clase.getCupoMaximo() <= 0) {
-                    System.out.println("⚠ No se puede registrar la clase '" + clase.getId() +
+                    System.out.println("No se puede registrar la clase '" + clase.getId() +
                             "': el cupo máximo debe ser mayor a 0.");
                     return;
                 }
@@ -254,7 +246,7 @@ public class Gimnasio {
         this.listClases = listClases;
     }
 
-    public List<Clase> getListClases() {
+    public ArrayList<Clase> getListClases() {
         return listClases;
     }
 

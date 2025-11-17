@@ -1,32 +1,48 @@
 package uniquindio.edu.co.gym.controller;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import uniquindio.edu.co.gym.model.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
-import java.time.LocalDate;
-
-
 public class PersonasController {
-    private final Gimnasio gimnasio= Gimnasio.getInstance();
-    private final ObservableList<Recepcionista> listRecepcionistas= FXCollections.observableArrayList();
-    private final ObservableList<Entrenador> listEntrenador= FXCollections.observableArrayList();
-    private final ObservableList<Estudiante> listEstudiante= FXCollections.observableArrayList();
-    private final ObservableList<TrabajadorUQ> listTrabajadorUQ= FXCollections.observableArrayList();
-    private final ObservableList<Externo> listExterno= FXCollections.observableArrayList();
 
-    //Recepcionista:
+    private final Gimnasio gimnasio = Gimnasio.getInstance();
+
+    private final ObservableList<Recepcionista> listRecepcionistas = FXCollections.observableArrayList();
+    private final ObservableList<Entrenador> listEntrenador = FXCollections.observableArrayList();
+    private final ObservableList<Estudiante> listEstudiante = FXCollections.observableArrayList();
+    private final ObservableList<TrabajadorUQ> listTrabajadorUQ = FXCollections.observableArrayList();
+    private final ObservableList<Externo> listExterno = FXCollections.observableArrayList();
+
+    // ---- Cloudinary ----
+    private final Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "dqrwt5fo7",
+            "api_key", "987922296483194",
+            "api_secret", "z9AKH5_ASnlzDCUs_pFk8oQnLh8"
+    ));
+
+    // archivo seleccionado para cada tipo
+    private File imagenRecepcionista;
+    private File imagenEntrenador;
+    private File imagenEstudiante;
+    private File imagenTrabajador;
+    private File imagenExterno;
+
+    // -------- Recepcionista ----------
     @FXML private TextField textNombreR;
     @FXML private TextField textIdR;
     @FXML private TextField textTelefonoR;
@@ -42,22 +58,24 @@ public class PersonasController {
     @FXML private TableColumn<Recepcionista, String> colDireccionR;
     @FXML private TableColumn<Recepcionista, String> colFechaNR;
 
-    //Entrenador
+    // -------- Entrenador ----------
     @FXML private TextField textNombreE;
     @FXML private TextField textIdE;
     @FXML private TextField textTelefonoE;
     @FXML private TextField textTurnoE;
     @FXML private TextField textDireccionE;
     @FXML private DatePicker textFechaNE;
-    @FXML private TableView<Entrenador>  tablaEntrenador;
+    @FXML private TableView<Entrenador> tablaEntrenador;
     @FXML private TableColumn<Entrenador, String> colNombreE;
     @FXML private TableColumn<Entrenador, String> colIdE;
     @FXML private TableColumn<Entrenador, String> colTelefonoE;
     @FXML private TableColumn<Entrenador, String> colTurnoE;
     @FXML private TableColumn<Entrenador, String> colDireccionE;
     @FXML private TableColumn<Entrenador, String> colFechaNE;
+    @FXML
+    private TextField updateIdE, updateTelE, updateDirE, updateTurnoE;
 
-    //Estudiante
+    // -------- Estudiante ----------
     @FXML private TextField textNombreEs;
     @FXML private TextField textIdEs;
     @FXML private TextField textTelefonoEs;
@@ -67,7 +85,7 @@ public class PersonasController {
     @FXML private TextField textProgramaEs;
     @FXML private TextField textSemestreEs;
     @FXML private TextField textFacultadEs;
-    @FXML private TableView<Estudiante>  tablaEstudiante;
+    @FXML private TableView<Estudiante> tablaEstudiante;
     @FXML private TableColumn<Estudiante, String> colNombreEs;
     @FXML private TableColumn<Estudiante, String> colIdEs;
     @FXML private TableColumn<Estudiante, String> colTelefonoEs;
@@ -78,7 +96,7 @@ public class PersonasController {
     @FXML private TableColumn<Estudiante, String> colSemestreEs;
     @FXML private TableColumn<Estudiante, String> colFacultadEs;
 
-    //TrabajadoresUq
+    // -------- Trabajador UQ ----------
     @FXML private TextField textNombreT;
     @FXML private TextField textIdT;
     @FXML private TextField textTelefonoT;
@@ -87,7 +105,7 @@ public class PersonasController {
     @FXML private DatePicker dateFechaCT;
     @FXML private TextField textCargoT;
     @FXML private TextField textAreaT;
-    @FXML private TableView<TrabajadorUQ>  tablaTrabajadorUQ;
+    @FXML private TableView<TrabajadorUQ> tablaTrabajadorUQ;
     @FXML private TableColumn<TrabajadorUQ, String> colNombreT;
     @FXML private TableColumn<TrabajadorUQ, String> colIdT;
     @FXML private TableColumn<TrabajadorUQ, String> colTelefonoT;
@@ -97,7 +115,7 @@ public class PersonasController {
     @FXML private TableColumn<TrabajadorUQ, String> colCargoT;
     @FXML private TableColumn<TrabajadorUQ, String> colAreaT;
 
-    //Externo
+    // -------- Externo ----------
     @FXML private TextField textNombreEx;
     @FXML private TextField textIdEx;
     @FXML private TextField textTelefonoEx;
@@ -105,7 +123,7 @@ public class PersonasController {
     @FXML private DatePicker dateFechaNEx;
     @FXML private DatePicker dateFechaCEx;
     @FXML private TextField textOcupacionEx;
-    @FXML private TableView<Externo>  tablaExterno;
+    @FXML private TableView<Externo> tablaExterno;
     @FXML private TableColumn<Externo, String> colNombreEx;
     @FXML private TableColumn<Externo, String> colIdEx;
     @FXML private TableColumn<Externo, String> colTelefonoEx;
@@ -115,319 +133,466 @@ public class PersonasController {
     @FXML private TableColumn<Externo, String> colOcupacionEx;
 
 
+    @FXML private Button btnNuevoRecep;
+    @FXML private ProgressIndicator loaderRecepcionista;
 
+    @FXML private Button btnNuevoEntrenador;
+    @FXML private ProgressIndicator loaderEntrenador;
+
+    @FXML private Button btnNuevoEstudiante;
+    @FXML private ProgressIndicator loaderEstudiante;
+
+    @FXML private Button btnNuevoTrabajador;
+    @FXML private ProgressIndicator loaderTrabajador;
+
+    @FXML private Button btnNuevoExterno;
+    @FXML private ProgressIndicator loaderExterno;
+
+    // ================== INIT ==================
     @FXML
-    public void initialize(){
-        //Recepcionista:
-        colNombreR.setCellValueFactory(data-> new SimpleStringProperty(data.getValue().getNombre()));
-        colIdR.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getID())));
-        colTelefonoR.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getTelefono())));
-        colTurnoR.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getTurno())));
-        colDireccionR.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getDireccion())));
-        colFechaNR.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getFechaNacimiento())));
+    public void initialize() {
+        // Recepcionistas
+        colNombreR.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+        colIdR.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getID()));
+        colTelefonoR.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTelefono()));
+        colTurnoR.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTurno()));
+        colDireccionR.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDireccion()));
+        colFechaNR.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getFechaNacimiento()));
         listRecepcionistas.setAll(gimnasio.getListRecepcionista());
         tablaRecepcionistas.setItems(listRecepcionistas);
 
-        //Entrenador
-        colNombreE.setCellValueFactory(data-> new SimpleStringProperty(data.getValue().getNombre()));
-        colIdE.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getID())));
-        colTelefonoE.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getTelefono())));
-        colTurnoE.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getTurno())));
-        colDireccionE.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getDireccion())));
-        colFechaNE.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getFechaNacimiento())));
+        // Entrenadores
+        colNombreE.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+        colIdE.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getID()));
+        colTelefonoE.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTelefono()));
+        colTurnoE.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTurno()));
+        colDireccionE.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDireccion()));
+        colFechaNE.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getFechaNacimiento()));
         listEntrenador.setAll(gimnasio.getListEntrenadores());
         tablaEntrenador.setItems(listEntrenador);
 
-        //Estudiante
+        // Estudiantes
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-        colNombreEs.setCellValueFactory(data-> new SimpleStringProperty(data.getValue().getNombre()));
-        colIdEs.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getID())));
-        colTelefonoEs.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getTelefono())));
-        colDireccionEs.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getDireccion())));
-        colFechaNEs.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getFechaNacimiento())));
-        colFechaCEs.setCellValueFactory(data -> {
-            Date fecha = Date.valueOf(data.getValue().getFechaCreacion());
-            String fechaFormateada = (fecha != null) ? formatoFecha.format(fecha) : "Sin fecha";
+        colNombreEs.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+        colIdEs.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getID()));
+        colTelefonoEs.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTelefono()));
+        colDireccionEs.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDireccion()));
+        colFechaNEs.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getFechaNacimiento()));
+        colFechaCEs.setCellValueFactory(d -> {
+            Date fecha = Date.valueOf(d.getValue().getFechaCreacion());
+            String fechaFormateada = fecha != null ? formatoFecha.format(fecha) : "Sin fecha";
             return new SimpleStringProperty(fechaFormateada);
         });
-        colProgramaEs.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPrograma()));
-        colSemestreEs.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getSemestre())));
-        colFacultadEs.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getFacultad())));
+        colProgramaEs.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPrograma()));
+        colSemestreEs.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getSemestre()));
+        colFacultadEs.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getFacultad()));
         listEstudiante.setAll(gimnasio.getListEstudiante());
         tablaEstudiante.setItems(listEstudiante);
 
-        //TrabajadoresUq
-         colNombreT.setCellValueFactory(data-> new SimpleStringProperty(data.getValue().getNombre()));
-        colIdT.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getID())));
-        colTelefonoT.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getTelefono())));
-        colDireccionT.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getDireccion())));
-        colFechaNT.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getFechaNacimiento())));
-        colFechaCT.setCellValueFactory(data -> {
-            Date fecha = Date.valueOf(data.getValue().getFechaCreacion());
-            String fechaFormateada = (fecha != null) ? formatoFecha.format(fecha) : "Sin fecha";
+        // Trabajadores
+        colNombreT.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+        colIdT.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getID()));
+        colTelefonoT.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTelefono()));
+        colDireccionT.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDireccion()));
+        colFechaNT.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getFechaNacimiento()));
+        colFechaCT.setCellValueFactory(d -> {
+            Date fecha = Date.valueOf(d.getValue().getFechaCreacion());
+            String fechaFormateada = fecha != null ? formatoFecha.format(fecha) : "Sin fecha";
             return new SimpleStringProperty(fechaFormateada);
         });
-        colCargoT.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getCargo())));
-        colAreaT.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getArea())));
+        colCargoT.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCargo()));
+        colAreaT.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getArea()));
         listTrabajadorUQ.setAll(gimnasio.getListTrabajadorUQ());
         tablaTrabajadorUQ.setItems(listTrabajadorUQ);
 
-        //Externo
-        colNombreEx.setCellValueFactory(data-> new SimpleStringProperty(data.getValue().getNombre()));
-        colIdEx.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getID())));
-        colTelefonoEx.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getTelefono())));
-        colDireccioEx.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getDireccion())));
-        colFechaNEx.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getFechaNacimiento())));
-        colFechaCEx.setCellValueFactory(data -> {
-            Date fecha = Date.valueOf(data.getValue().getFechaCreacion());
-            String fechaFormateada = (fecha != null) ? formatoFecha.format(fecha) : "Sin fecha";
+        // Externos
+        colNombreEx.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+        colIdEx.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getID()));
+        colTelefonoEx.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTelefono()));
+        colDireccioEx.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDireccion()));
+        colFechaNEx.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getFechaNacimiento()));
+        colFechaCEx.setCellValueFactory(d -> {
+            Date fecha = Date.valueOf(d.getValue().getFechaCreacion());
+            String fechaFormateada = fecha != null ? formatoFecha.format(fecha) : "Sin fecha";
             return new SimpleStringProperty(fechaFormateada);
         });
-        colOcupacionEx.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getOcupacion())));
+        colOcupacionEx.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOcupacion()));
         listExterno.setAll(gimnasio.getListExterno());
         tablaExterno.setItems(listExterno);
-
-
     }
+
+    // ================= SELECTORES DE IMAGEN =================
+
+    private File seleccionarImagen() {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Seleccionar imagen");
+        fc.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Imágenes", "*.jpg", "*.jpeg", "*.png")
+        );
+        return fc.showOpenDialog(null);
+    }
+
     @FXML
-    private void guardarRecepcionista(){
+    private void seleccionarImagenRecepcionista() {
+        imagenRecepcionista = seleccionarImagen();
+    }
 
-            String nombreR=textNombreR.getText();
-            String idR=textIdR.getText();
-            String telefonoR=textTelefonoR.getText();
-            String turnoR=textTurnoR.getText();
-            String direccionR=textDireccionR.getText();
-        LocalDate fechaSeleccionada = textFechaNR.getValue();
-        String fechaNRf="";
-        if (fechaSeleccionada != null) {
-            // Define el formato deseado, por ejemplo: "dd/MM/yyyy"
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    @FXML
+    private void seleccionarImagenEntrenador() {
+        imagenEntrenador = seleccionarImagen();
+    }
 
-            // Convierte la fecha a texto
-             fechaNRf = fechaSeleccionada.format(formatter);
+    @FXML
+    private void seleccionarImagenEstudiante() {
+        imagenEstudiante = seleccionarImagen();
+    }
 
-            System.out.println("Fecha formateada: " + fechaNRf);
-        } else {
-            System.out.println("No se ha seleccionado una fecha.");
-        }
+    @FXML
+    private void seleccionarImagenTrabajador() {
+        imagenTrabajador = seleccionarImagen();
+    }
 
-        String contrasenaR=textContrasenaR.getText();
+    @FXML
+    private void seleccionarImagenExterno() {
+        imagenExterno = seleccionarImagen();
+    }
 
-            Recepcionista nuevo= new Recepcionista(
-                    nombreR,
-                    idR,
-                    telefonoR,
-                    direccionR,
-                    fechaNRf,
-                    turnoR,
-                    contrasenaR
+    // ================= GUARDAR PERSONAS =================
+
+    @FXML
+    private void guardarRecepcionista() {
+        btnNuevoRecep.setDisable(true);
+        btnNuevoRecep.setText("Guardando...");
+        loaderRecepcionista.setVisible(true);
+
+        new Thread(() -> {
+        try {
+            String nombreR = textNombreR.getText();
+            String idR = textIdR.getText();
+            String telefonoR = textTelefonoR.getText();
+            String turnoR = textTurnoR.getText();
+            String direccionR = textDireccionR.getText();
+            LocalDate fecha = textFechaNR.getValue();
+            String contrasenaR = textContrasenaR.getText();
+
+            String fechaNRf = fecha != null
+                    ? fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                    : "";
+
+            Recepcionista nuevo = new Recepcionista(
+                    nombreR, idR, telefonoR, direccionR, fechaNRf, turnoR, contrasenaR
             );
-            Gimnasio gimnasio= Gimnasio.getInstance().registrarRecepcionista(nuevo);
-            listRecepcionistas.add(nuevo);
+            byte[] hash = nuevo.hashearContrasenaBytes(contrasenaR);
+            nuevo.setContrasena(nuevo.bytesToHex(hash));
 
+            // si hay imagen seleccionada, subirla y setear foto
+            if (imagenRecepcionista != null) {
+                var upload = cloudinary.uploader().upload(imagenRecepcionista, ObjectUtils.emptyMap());
+                String url = upload.get("secure_url").toString();
+                nuevo.setFoto(url);
+            }else{
+                System.out.println("llego vacio");
+            }
+            System.out.println("elrecpcionista creado fuer "+ nuevo + " y su imagen de perfil es "+ nuevo.getFoto());
+            gimnasio.registrarRecepcionista(nuevo);
+            listRecepcionistas.add(nuevo);   // <-- esto actualiza la tabla
+
+            imagenRecepcionista = null;
             limpiarPersona();
 
-    }
-
-    @FXML
-    private void guardarEntrenador(){
-
-        String nombreE=textNombreE.getText();
-        String idE=textIdE.getText();
-        String telefonoE=textTelefonoE.getText();
-        String turnoE=textTurnoE.getText();
-        String direccionE=textDireccionE.getText();
-        LocalDate fechaSeleccionada = textFechaNE.getValue();
-        String fechaNEf="";
-        if (fechaSeleccionada != null) {
-            // Define el formato deseado, por ejemplo: "dd/MM/yyyy"
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            // Convierte la fecha a texto
-            fechaNEf = fechaSeleccionada.format(formatter);
-
-            System.out.println("Fecha formateada: " + fechaNEf);
-        } else {
-            System.out.println("No se ha seleccionado una fecha.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // Volver al hilo de JavaFX
+            javafx.application.Platform.runLater(() -> {
+                btnNuevoRecep.setDisable(false);
+                btnNuevoRecep.setText("Nuevo");
+                loaderRecepcionista.setVisible(false);
+            });
         }
-
-            Entrenador nuevo= new Entrenador(
-                    nombreE,
-                    idE,
-                    telefonoE,
-                    direccionE,
-                    fechaNEf,
-                    turnoE
-            );
-        Gimnasio gimnasio= Gimnasio.getInstance();
-        gimnasio.registrarEntrenador(nuevo);
-        listEntrenador.add(nuevo);
-
-        limpiarPersona();
+        }).start();
     }
 
     @FXML
-    private void guardarEstudiante(){
-        String nombreEs=textNombreEs.getText();
-        String idEs=textIdEs.getText();
-        String telefonoEs=textTelefonoEs.getText();
-        String direccionEs=textDireccionEs.getText();
-        LocalDate fechaCEs= Date.valueOf(dateFechaCEs.getValue().toString()).toLocalDate();
-        String programaEs=textProgramaEs.getText();
-        String semestreEs=textSemestreEs.getText();
-        String facultadEs=textFacultadEs.getText();
-        LocalDate fechaSeleccionada = dateFechaNEs.getValue();
-        String fechaNEsf="";
-        if (fechaSeleccionada != null) {
-            // Define el formato deseado, por ejemplo: "dd/MM/yyyy"
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private void guardarEntrenador() {
+        btnNuevoEntrenador.setDisable(true);
+        btnNuevoEntrenador.setText("Guardando...");
+        loaderEntrenador.setVisible(true);
 
-            // Convierte la fecha a texto
-            fechaNEsf = fechaSeleccionada.format(formatter);
+        new Thread(() -> {
+            try {
+                String nombre = textNombreE.getText();
+                String id = textIdE.getText();
+                String tel = textTelefonoE.getText();
+                String turno = textTurnoE.getText();
+                String dir = textDireccionE.getText();
+                LocalDate fecha = textFechaNE.getValue();
 
-            System.out.println("Fecha formateada: " + fechaNEsf);
-        } else {
-            System.out.println("No se ha seleccionado una fecha.");
-        }
+                String fechaN = fecha != null
+                        ? fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "";
+
+                Entrenador nuevo = new Entrenador(
+                        nombre, id, tel, dir, fechaN, turno
+                );
+
+                if (imagenEntrenador != null) {
+                    var upload = cloudinary.uploader().upload(imagenEntrenador, ObjectUtils.emptyMap());
+                    nuevo.setFoto(upload.get("secure_url").toString());
+                }
+
+                gimnasio.registrarEntrenador(nuevo);
+                listEntrenador.add(nuevo);
+
+                imagenEntrenador = null;
+                limpiarPersona();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                Platform.runLater(() -> {
+                    btnNuevoEntrenador.setDisable(false);
+                    btnNuevoEntrenador.setText("Nuevo");
+                    loaderEntrenador.setVisible(false);
+                });
+            }
+        }).start();
+    }
 
 
-        Estudiante nuevo= new Estudiante(
-                nombreEs,
-                idEs,
-                telefonoEs,
-                direccionEs,
-                fechaNEsf,
-                fechaCEs,
-                programaEs,
-                semestreEs,
-                facultadEs
+    @FXML
+    private void guardarEstudiante() {
 
-        );
-        Gimnasio gimnasio=Gimnasio.getInstance().registrarEstudiante(nuevo);
-        listEstudiante.add(nuevo);
+        btnNuevoEstudiante.setDisable(true);
+        btnNuevoEstudiante.setText("Guardando...");
+        loaderEstudiante.setVisible(true);
 
-        limpiarPersona();
+        new Thread(() -> {
+            try {
+                String nombre = textNombreEs.getText();
+                String id = textIdEs.getText();
+                String tel = textTelefonoEs.getText();
+                String dir = textDireccionEs.getText();
+                LocalDate fechaN = dateFechaNEs.getValue();
+                LocalDate fechaC = dateFechaCEs.getValue();
+                String programa = textProgramaEs.getText();
+                String semestre = textSemestreEs.getText();
+                String facultad = textFacultadEs.getText();
+
+                String fechaNF = fechaN != null
+                        ? fechaN.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "";
+
+                Estudiante nuevo = new Estudiante(
+                        nombre, id, tel, dir, fechaNF,
+                        fechaC, programa, semestre, facultad
+                );
+
+                if (imagenEstudiante != null) {
+                    var upload = cloudinary.uploader().upload(imagenEstudiante, ObjectUtils.emptyMap());
+                    nuevo.setFoto(upload.get("secure_url").toString());
+                }
+
+                gimnasio.registrarEstudiante(nuevo);
+                listEstudiante.add(nuevo);
+
+                imagenEstudiante = null;
+                limpiarPersona();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                Platform.runLater(() -> {
+                    btnNuevoEstudiante.setDisable(false);
+                    btnNuevoEstudiante.setText("Nuevo");
+                    loaderEstudiante.setVisible(false);
+                });
+            }
+        }).start();
     }
 
     @FXML
-    private void guardarTrabajadoresUq(){
-        String nombreT=textNombreT.getText();
-        String idT=textIdT.getText();
-        String telefonoT=textTelefonoT.getText();
-        String direccionT=textDireccionT.getText();
-        LocalDate fechaCT= Date.valueOf(dateFechaCT.getValue().toString()).toLocalDate();
-        LocalDate fechaSeleccionada = dateFechaNT.getValue();
-        String cargoT=textCargoT.getText();
-        String areaT=textAreaT.getText();
-        String fechaNTf="";
-        if (fechaSeleccionada != null) {
-            // Define el formato deseado, por ejemplo: "dd/MM/yyyy"
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private void guardarTrabajadoresUq() {
 
-            // Convierte la fecha a texto
-            fechaNTf = fechaSeleccionada.format(formatter);
+        btnNuevoTrabajador.setDisable(true);
+        btnNuevoTrabajador.setText("Guardando...");
+        loaderTrabajador.setVisible(true);
 
-            System.out.println("Fecha formateada: " + fechaNTf);
-        } else {
-            System.out.println("No se ha seleccionado una fecha.");
-        }
+        new Thread(() -> {
+            try {
+                String nombre = textNombreT.getText();
+                String id = textIdT.getText();
+                String tel = textTelefonoT.getText();
+                String dir = textDireccionT.getText();
+                LocalDate fechaN = dateFechaNT.getValue();
+                LocalDate fechaC = dateFechaCT.getValue();
+                String cargo = textCargoT.getText();
+                String area = textAreaT.getText();
 
-        TrabajadorUQ nuevo= new TrabajadorUQ(
-                nombreT,
-                idT,
-                telefonoT,
-                direccionT,
-                fechaNTf,
-                fechaCT,
-                cargoT,
-                areaT
-        );
-        Gimnasio gimnasio=Gimnasio.getInstance().registrarTrabajadorUq(nuevo);
-        listTrabajadorUQ.add(nuevo);
-        limpiarPersona();
+                String fechaNF = fechaN != null
+                        ? fechaN.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "";
+
+                TrabajadorUQ nuevo = new TrabajadorUQ(
+                        nombre, id, tel, dir, fechaNF, fechaC, cargo, area
+                );
+
+                if (imagenTrabajador != null) {
+                    var upload = cloudinary.uploader().upload(imagenTrabajador, ObjectUtils.emptyMap());
+                    nuevo.setFoto(upload.get("secure_url").toString());
+                }
+
+                gimnasio.registrarTrabajadorUQ(nuevo);
+                listTrabajadorUQ.add(nuevo);
+
+                imagenTrabajador = null;
+                limpiarPersona();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                Platform.runLater(() -> {
+                    btnNuevoTrabajador.setDisable(false);
+                    btnNuevoTrabajador.setText("Nuevo");
+                    loaderTrabajador.setVisible(false);
+                });
+            }
+        }).start();
     }
 
+
     @FXML
-    private void guardarExterno(){
-        String nombreEx=textNombreEx.getText();
-        String idEx=textIdEx.getText();
-        String telefonoEx=textTelefonoEx.getText();
-        String direccionEx=textDireccionEx.getText();
-        LocalDate fechaCEx= Date.valueOf(dateFechaCEx.getValue().toString()).toLocalDate();
-        LocalDate fechaSeleccionada = dateFechaNEx.getValue();
-        String ocupacionEx=textOcupacionEx.getText();
-        String fechaNExf="";
-        if (fechaSeleccionada != null) {
-            // Define el formato deseado, por ejemplo: "dd/MM/yyyy"
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private void guardarExterno() {
 
-            // Convierte la fecha a texto
-            fechaNExf = fechaSeleccionada.format(formatter);
+        btnNuevoExterno.setDisable(true);
+        btnNuevoExterno.setText("Guardando...");
+        loaderExterno.setVisible(true);
 
-            System.out.println("Fecha formateada: " + fechaNExf);
-        } else {
-            System.out.println("No se ha seleccionado una fecha.");
-        }
+        new Thread(() -> {
+            try {
+                String nombre = textNombreEx.getText();
+                String id = textIdEx.getText();
+                String tel = textTelefonoEx.getText();
+                String dir = textDireccionEx.getText();
+                LocalDate fechaN = dateFechaNEx.getValue();
+                LocalDate fechaC = dateFechaCEx.getValue();
+                String ocupacion = textOcupacionEx.getText();
 
-        Externo externo= new Externo(
-                nombreEx,
-                idEx,
-                telefonoEx,
-                direccionEx,
-                fechaNExf,
-                fechaCEx,
-                ocupacionEx
-        );
-        Gimnasio gimnasio=Gimnasio.getInstance().registrarExterno(externo);
-        listExterno.add(externo);
-        limpiarPersona();
+                String fechaNF = fechaN != null
+                        ? fechaN.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                        : "";
 
+                Externo nuevo = new Externo(
+                        nombre, id, tel, dir, fechaNF, fechaC, ocupacion
+                );
+
+                if (imagenExterno != null) {
+                    var upload = cloudinary.uploader().upload(imagenExterno, ObjectUtils.emptyMap());
+                    nuevo.setFoto(upload.get("secure_url").toString());
+                }
+
+                gimnasio.registrarExterno(nuevo);
+                listExterno.add(nuevo);
+
+                imagenExterno = null;
+                limpiarPersona();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                Platform.runLater(() -> {
+                    btnNuevoExterno.setDisable(false);
+                    btnNuevoExterno.setText("Nuevo");
+                    loaderExterno.setVisible(false);
+                });
+            }
+        }).start();
     }
 
+
+    // ================= LIMPIAR CAMPOS =================
     @FXML
-    private void limpiarPersona(){
-        //Recepcionista
-        textNombreR.clear();
-        textIdR.clear();
-        textTelefonoR.clear();
-        textTurnoR.clear();
-        textDireccionR.clear();
+    private void limpiarPersona() {
+        // Recepcionista
+        textNombreR.clear(); textIdR.clear(); textTelefonoR.clear();
+        textTurnoR.clear(); textDireccionR.clear(); textContrasenaR.clear();
         textFechaNR.setValue(null);
-        textContrasenaR.clear();
-        //Entrenador
-        textNombreE.clear();
-        textIdE.clear();
-        textTelefonoE.clear();
-        textTurnoE.clear();
-        textDireccionE.clear();
-        textFechaNE.setValue(null);
-        //Estudiante
-        textNombreEs.clear();
-        textIdEs.clear();
-        textTelefonoEs.clear();
-        textDireccionEs.clear();
-        dateFechaCEs.setValue(null);
-        dateFechaNEs.setValue(null);
-        textProgramaEs.clear();
-        textSemestreEs.clear();
-        textFacultadEs.clear();
-        //TrabajadorUQ
-        textNombreT.clear();
-        textIdT.clear();
-        textTelefonoT.clear();
-        textDireccionT.clear();
-        dateFechaCT.setValue(null);
-        dateFechaNT.setValue(null);
-        textCargoT.clear();
-        textAreaT.clear();
-        //Externo
-        textNombreEx.clear();
-        textIdEx.clear();
-        textTelefonoEx.clear();
-        textDireccionEx.clear();
-        dateFechaCEx.setValue(null);
-        dateFechaNEx.setValue(null);
-        textOcupacionEx.clear();
 
+        // Entrenador
+        textNombreE.clear(); textIdE.clear(); textTelefonoE.clear();
+        textTurnoE.clear(); textDireccionE.clear(); textFechaNE.setValue(null);
+
+        // Estudiante
+        textNombreEs.clear(); textIdEs.clear(); textTelefonoEs.clear();
+        textDireccionEs.clear(); dateFechaNEs.setValue(null); dateFechaCEs.setValue(null);
+        textProgramaEs.clear(); textSemestreEs.clear(); textFacultadEs.clear();
+
+        // Trabajador
+        textNombreT.clear(); textIdT.clear(); textTelefonoT.clear();
+        textDireccionT.clear(); dateFechaNT.setValue(null); dateFechaCT.setValue(null);
+        textCargoT.clear(); textAreaT.clear();
+
+        // Externo
+        textNombreEx.clear(); textIdEx.clear(); textTelefonoEx.clear();
+        textDireccionEx.clear(); dateFechaNEx.setValue(null); dateFechaCEx.setValue(null);
+        textOcupacionEx.clear();
     }
+
+
+    @FXML
+    private void buscarEntrenador() {
+        String id = updateIdE.getText();
+
+        Entrenador encontrado = gimnasio.getListEntrenadores()
+                .stream()
+                .filter(e -> e.getID().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (encontrado == null) {
+            mostrar("No se encontró entrenador con ese ID");
+            return;
+        }
+
+        updateTelE.setText(encontrado.getTelefono());
+        updateDirE.setText(encontrado.getDireccion());
+        updateTurnoE.setText(encontrado.getTurno());
+    }
+
+    @FXML
+    private void actualizarEntrenador() {
+        String id = updateIdE.getText();
+        String nuevoTel = updateTelE.getText();
+        String nuevaDir = updateDirE.getText();
+        String nuevoTurno = updateTurnoE.getText();
+
+        gimnasio.getAdministrador().modificarEntrenador(id, nuevoTel, nuevaDir, nuevoTurno);
+
+        listEntrenador.setAll(gimnasio.getListEntrenadores()); // refrescar tabla de Registrar
+
+        mostrar("Entrenador actualizado correctamente");
+    }
+
+    @FXML
+    private TextField deleteIdE;
+
+    @FXML
+    private void eliminarEntrenador() {
+        String id = deleteIdE.getText();
+
+        gimnasio.getAdministrador().eliminarEntrenador(id);
+
+        listEntrenador.setAll(gimnasio.getListEntrenadores()); // refrescar tabla
+
+        mostrar("Entrenador eliminado");
+    }
+
+    private void mostrar(String msg) {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setHeaderText(null);
+        a.setContentText(msg);
+        a.showAndWait();
+    }
+
+
 }
