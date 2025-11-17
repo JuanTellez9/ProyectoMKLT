@@ -16,7 +16,7 @@
         <DatePicker styleClass="form-control2" promptText="Fecha inicio" fx:id="DateFechaInicio" prefWidth="180"/>
         <DatePicker styleClass="form-control2" promptText="Fecha vencimiento" fx:id="DateFechaVencimiento" prefWidth="180"/>
         <ComboBox fx:id="comboNivel" promptText="Nivel" styleClass="form-control2" prefWidth="140"/>
-        <ComboBox fx:id="comboBeneficio" promptText="Beneficio" styleClass="form-control2" prefWidth="170"/>
+        <ComboBox fx:id="comboBeneficio" promptText="Beneficio" styleClass="form-control2" prefWidth="120"/>
         <ComboBox fx:id="comboTipo" promptText="Tipo" styleClass="form-control2" prefWidth="140"/>
         <CheckBox text="Activa" fx:id="checkActivo" styleClass="form-control"/>
     </HBox>
@@ -24,7 +24,7 @@
     <!-- SEGUNDA FILA -->
     <HBox spacing="10">
 
-
+        <ComboBox fx:id="comboUsuario" promptText="Usuario" styleClass="form-control2" prefWidth="120"/>
         <Button text="Crear" styleClass="btn" onAction="#guardarMembresias" prefWidth="120"/>
     </HBox>
 
@@ -39,6 +39,7 @@
             <TableColumn text="Beneficio" prefWidth="220" fx:id="colBeneficio"/>
             <TableColumn text="Tipo" prefWidth="100" fx:id="colTipo"/>
             <TableColumn text="Nivel" prefWidth="100" fx:id="colNivel"/>
+            <TableColumn text="Usuario" prefWidth="120" fx:id="colUsuario"/>
         </columns>
     </TableView>
 

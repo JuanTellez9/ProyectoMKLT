@@ -1,5 +1,6 @@
 package uniquindio.edu.co.gym.model;
 import java.util.Date;
+import java.util.List;
 
 public class Membresia {
     private int id;
@@ -10,8 +11,8 @@ public class Membresia {
     private String beneficio;
     private Tipo tipo;
     private Nivel nivel;
-
-    public Membresia(int id,double costo,Date fechaInicio,Date fechaVencimiento,boolean estado, String beneficio, Tipo tipo, Nivel nivel) {
+    private Usuario usuario;
+    public Membresia(int id,double costo,Date fechaInicio,Date fechaVencimiento,boolean estado, String beneficio, Tipo tipo, Nivel nivel, Usuario usuario) {
         this.id = id;
         this.costo = costo;
         this.fechaInicio = fechaInicio;
@@ -20,6 +21,15 @@ public class Membresia {
         this.beneficio = beneficio;
         this.tipo = tipo;
         this.nivel = nivel;
+        this.usuario = usuario;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public boolean isActiva() {

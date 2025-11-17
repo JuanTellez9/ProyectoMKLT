@@ -261,6 +261,9 @@ public class Gimnasio {
     public void registrarPagos(Pago pago) {
         this.listPagos.add(pago);
     }
+    public void registrarUsuario(Usuario usuario) {
+        this.listUsuarios.add(usuario);
+    }
 
 
 }

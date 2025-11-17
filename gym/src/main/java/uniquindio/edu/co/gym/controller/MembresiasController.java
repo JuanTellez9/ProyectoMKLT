@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import uniquindio.edu.co.gym.model.Gimnasio;
-import uniquindio.edu.co.gym.model.Membresia;
-import uniquindio.edu.co.gym.model.Nivel;
-import uniquindio.edu.co.gym.model.Tipo;
+import uniquindio.edu.co.gym.model.*;
 
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -19,6 +16,7 @@ public class MembresiasController {
 
     @FXML private ComboBox<Tipo> comboTipo;
     @FXML private ComboBox<Nivel> comboNivel;
+    @FXML private ComboBox<Usuario> comboUsuario;
     @FXML private TextField textid;
     @FXML private TextField textCosto;
     @FXML private DatePicker DateFechaInicio;
@@ -26,6 +24,8 @@ public class MembresiasController {
     @FXML private CheckBox checkActivo;
     @FXML private ComboBox<String> comboBeneficio;
 
+
+    @FXML private TableColumn<Membresia, String> colUsuario;
     @FXML private TableColumn<Membresia, String> colId;
     @FXML private TableColumn<Membresia, String> colCosto;
     @FXML private TableColumn<Membresia, String> colInicio;
@@ -58,7 +58,10 @@ public class MembresiasController {
         colNivel.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getNivel())));
         colTipo.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getTipo())));
         colId.setCellValueFactory(data-> new SimpleStringProperty(String.valueOf(data.getValue().getId())));
+        comboUsuario.setItems(FXCollections.observableArrayList(gimnasio.getListUsuarios()));
 
+
+        colUsuario.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getUsuario().getNombre()));
         // Cargar datos existentes desde el singleton
         listaMembresias.setAll(gimnasio.getListMembresia());
         tableMembresia.setItems(listaMembresias);
@@ -69,6 +72,7 @@ public class MembresiasController {
     @FXML
     private void guardarMembresias() {
         try {
+            Usuario usuarioSeleccionado = comboUsuario.getSelectionModel().getSelectedItem();
             int id = Integer.parseInt(textid.getText());
             double costo = Double.parseDouble(textCosto.getText());
             Date fechaInicio = java.sql.Date.valueOf(DateFechaInicio.getValue());
@@ -86,10 +90,13 @@ public class MembresiasController {
                     estado,
                     beneficio,
                     tipo,
-                    nivel
+                    nivel,
+                    usuarioSeleccionado
+
             );
 
             Gimnasio.getInstance().registrarMembresia(nueva);
+
             listaMembresias.add(nueva);
 
             limpiarFormulario();

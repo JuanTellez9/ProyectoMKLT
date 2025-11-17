@@ -9,7 +9,6 @@ public abstract class Usuario extends Persona {
     private ArrayList<Pago> listpagos;
     private ArrayList<Clase> listClases;
     private Membresia membresia;
-
     public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento,LocalDate fechaCreacion) {
         super(nombre,ID,telefono,direccion,fechaNacimiento);
         this.fechaCreacion=fechaCreacion;
