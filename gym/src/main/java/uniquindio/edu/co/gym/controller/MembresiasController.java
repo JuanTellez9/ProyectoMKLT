@@ -74,14 +74,8 @@ public class MembresiasController {
             Date fechaVencimiento = java.sql.Date.valueOf(DateFechaVencimiento.getValue());
             boolean estado = checkActivo.isSelected();
             String beneficio = comboBeneficio.getValue();
-
-            // Si tienes ComboBox para tipo y nivel, deberías obtenerlos así:
-            // Tipo tipo = comboTipo.getValue();
-            // Nivel nivel = comboNivel.getValue();
-
-            // Si no los tienes aún, puedes usar valores por defecto:
-            Tipo tipo = comboTipo.getValue(); // ejemplo
-            Nivel nivel = comboNivel.getValue(); // ejemplo
+            Tipo tipo = comboTipo.getValue();
+            Nivel nivel = comboNivel.getValue();
 
             Membresia nueva = new Membresia(
                     id,
@@ -113,6 +107,8 @@ public class MembresiasController {
         DateFechaVencimiento.setValue(null);
         checkActivo.setSelected(false);
         comboBeneficio.setValue(null);
+        comboNivel.setValue(null);
+        comboTipo.setValue(null);
     }
 
     private void mostrarAlerta(String mensaje) {

@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import uniquindio.edu.co.gym.model.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +19,11 @@ public class ClasesController {
     @FXML private TextField textCupoMaximo;
     @FXML private ComboBox<ClaseGrupal> comboClaseGrupal;
     @FXML private ComboBox<Semana> comboDiaSemana;
+    @FXML private ComboBox<Entrenador> comboEntrenador;
 
     @FXML private ComboBox<Clase> comboClases;
     @FXML private ComboBox<Clase> comboClasesRegistro;
-    @FXML private ComboBox<Usuario> comboUsuariosDisponibles;
+    @FXML private TextField usuarioRegisClass;
 
     @FXML private TableView<Clase> tableClase;
     @FXML private TableColumn<Clase, String> colId;
@@ -30,7 +32,7 @@ public class ClasesController {
     @FXML private TableColumn<Clase, String> colInicio;
     @FXML private TableColumn<Clase, String> colFin;
     @FXML private TableColumn<Clase, String> colCupo;
-
+    @FXML private TableColumn<Clase, String> colEntrenador;
     @FXML private TableView<Usuario> tablaUsuarios;
     @FXML private TableColumn<Usuario, String> colNombreUsuario;
 
@@ -40,6 +42,8 @@ public class ClasesController {
 
     @FXML
     public void initialize() {
+        Entrenador entre=new Entrenador("Andres","12","12","jkj","kjj","jjk");
+        gimnasio.registrarEntrenador(entre);
 
         // Horas disponibles
         ObservableList<String> horas = FXCollections.observableArrayList(
@@ -63,7 +67,11 @@ public class ClasesController {
         colFin.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getHoraFin()));
         colCupo.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getCupoMaximo())));
         colDia.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSemana().toString()));
+        colEntrenador.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEntrenador().getNombre()));
+        ArrayList<Entrenador> entrenadores = gimnasio.getListEntrenadores();
+        if (entrenadores == null) entrenadores = new ArrayList<>();
 
+        comboEntrenador.setItems(FXCollections.observableArrayList(entrenadores));
         // Lista de clases
         List<Clase> clases = gimnasio.getListClases();
         if (clases == null) clases = new ArrayList<>();
@@ -71,29 +79,15 @@ public class ClasesController {
         listaClases.setAll(clases);
         tableClase.setItems(listaClases);
 
-
-
-        // Lista de usuarios globales
-        List<Usuario> usuarios = gimnasio.getListUsuarios();
-        if (usuarios == null) usuarios = new ArrayList<>();
-
-        comboUsuariosDisponibles.setItems(FXCollections.observableArrayList(usuarios));
-
         // Tabla de usuarios inscritos
         colNombreUsuario.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNombre()));
     }
 
     // Obtener la lista REAL donde inscribirUsuario() guarda
-    private List<Usuario> obtenerUsuariosInscritosReales(Clase clase) {
-        try {
-            var campo = Clase.class.getDeclaredField("listaUsuarios");
-            campo.setAccessible(true);
-            return (List<Usuario>) campo.get(clase);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+    private ArrayList<Usuario> obtenerUsuariosInscritosReales(Clase clase) {
+        return clase.getListUsario();
     }
+
 
     @FXML
     public void mostrarUsuarios() {
@@ -111,12 +105,24 @@ public class ClasesController {
     @FXML
     public void registrarClase() {
         try {
+            LocalDate fechaCreacion = LocalDate.now();
+            Estudiante est=new Estudiante("kebyn","111","23534534","portal","10 nov","",fechaCreacion,"inge","1","inge");
+
+            gimnasio.registrarEstudiantes(est);
+
             String id = textId.getText();
             ClaseGrupal nombre = comboClaseGrupal.getValue();
             Semana dia = comboDiaSemana.getValue();
             String inicioHora = comboHoraInicio.getValue();
             String finHora = comboHoraFin.getValue();
             int cupo = Integer.parseInt(textCupoMaximo.getText());
+
+            Entrenador entrenadorSeleccionado = comboEntrenador.getValue();
+
+            if (entrenadorSeleccionado == null) {
+                mostrarAlerta("Debe seleccionar un entrenador.");
+                return;
+            }
 
             Clase nueva = new Clase(
                     id,
@@ -125,10 +131,11 @@ public class ClasesController {
                     finHora,
                     dia,
                     nombre,
-                    new Entrenador("n","12","12","jkj","kjj","jjk")
+                    entrenadorSeleccionado
             );
 
             gimnasio.registrarClase(nueva);
+            entrenadorSeleccionado.agregarClase(nueva);
             listaClases.add(nueva);
 
             comboClases.getItems().add(nueva);
@@ -141,31 +148,58 @@ public class ClasesController {
         }
     }
 
+
+
     @FXML
     public void registrarUsuarioEnClase() {
 
+        // Clase seleccionada
         Clase clase = comboClasesRegistro.getValue();
-        Usuario usuario = comboUsuariosDisponibles.getValue();
+        String idUsuarioIngresado = usuarioRegisClass.getText();
 
-        if (clase == null || usuario == null) {
-            mostrarAlerta("Debe seleccionar una clase y un usuario.");
+        if (clase == null || idUsuarioIngresado == null || idUsuarioIngresado.isEmpty()) {
+            mostrarAlerta("Debe seleccionar una clase y escribir el ID del usuario.");
             return;
         }
 
-        List<Usuario> inscritos = obtenerUsuariosInscritosReales(clase);
+        // Unir los tres arrays en uno solo
+        List<Usuario> todosLosUsuarios = new ArrayList<>();
+        todosLosUsuarios.addAll(gimnasio.getListTrabajadorUQ());
+        todosLosUsuarios.addAll(gimnasio.getListExterno());
+        todosLosUsuarios.addAll(gimnasio.getListEstudiante());
 
-        if (inscritos.contains(usuario)) {
+        // Buscar usuario por ID
+        Usuario usuarioEncontrado = null;
+        for (Usuario u : todosLosUsuarios) {
+            if (u.getID().equals(idUsuarioIngresado)) {
+                usuarioEncontrado = u;
+                break;
+            }
+        }
+
+        if (usuarioEncontrado == null) {
+            mostrarAlerta("No existe un usuario con ese ID.");
+            return;
+        }
+
+        // Obtener inscritos reales
+        ArrayList<Usuario> inscritos = obtenerUsuariosInscritosReales(clase);
+
+        // Verificar si ya está inscrito
+        if (inscritos.contains(usuarioEncontrado)) {
             mostrarAlerta("El usuario ya está inscrito en esta clase.");
             return;
         }
 
+        // Verificar cupos
         int cuposDisponibles = clase.getCupoMaximo() - inscritos.size();
         if (cuposDisponibles <= 0) {
             mostrarAlerta("No hay cupos disponibles.");
             return;
         }
 
-        boolean registrado = clase.inscribirUsuario(usuario);
+        // Registrar al usuario completo dentro de la clase
+        boolean registrado = clase.inscribirUsuario(usuarioEncontrado);
 
         if (!registrado) {
             mostrarAlerta("No se pudo registrar. Cupo lleno o error interno.");
@@ -174,19 +208,21 @@ public class ClasesController {
 
         mostrarAlerta("Usuario registrado correctamente.");
 
-        // Actualiza si está viendo la misma clase
+        // Actualizar tabla si está viendo esa clase
         if (comboClases.getValue() == clase) {
             listaUsuarios.setAll(inscritos);
         }
     }
 
+
     private void limpiarFormulario() {
         textId.clear();
-        comboHoraInicio.setValue(null);
-        comboHoraFin.setValue(null);
         textCupoMaximo.clear();
+        comboHoraFin.setValue(null);
+        comboHoraInicio.setValue(null);
         comboClaseGrupal.setValue(null);
         comboDiaSemana.setValue(null);
+        comboEntrenador.setValue(null);
     }
 
     private void mostrarAlerta(String mensaje) {

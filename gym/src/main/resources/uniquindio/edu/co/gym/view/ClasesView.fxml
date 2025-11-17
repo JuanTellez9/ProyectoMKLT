@@ -13,6 +13,7 @@
           AnchorPane.rightAnchor="0"
           AnchorPane.bottomAnchor="0">
 
+        <Label text="Clases" styleClass="h1"/>
         <TabPane tabClosingPolicy="UNAVAILABLE">
             <tabs>
 
@@ -28,6 +29,7 @@
                             <ComboBox fx:id="comboHoraFin" promptText="Hora fin"/>
                             <ComboBox fx:id="comboClaseGrupal" promptText="Clase grupal"/>
                             <ComboBox fx:id="comboDiaSemana" promptText="Día semana"/>
+                            <ComboBox fx:id="comboEntrenador" promptText="Entrenador"/>
                             <Button text="Nueva Clase" onAction="#registrarClase"/>
                         </HBox>
 
@@ -39,6 +41,7 @@
                                 <TableColumn text="Fin" fx:id="colFin" prefWidth="100"/>
                                 <TableColumn text="Cupo" fx:id="colCupo" prefWidth="80"/>
                                 <TableColumn text="Día" fx:id="colDia" prefWidth="120"/>
+                                <TableColumn text="Entrenador" fx:id="colEntrenador" prefWidth="120"/>
                             </columns>
                         </TableView>
                     </VBox>
@@ -69,7 +72,7 @@
 
                         <HBox spacing="10">
                             <ComboBox fx:id="comboClasesRegistro" promptText="Clase"/>
-                            <ComboBox fx:id="comboUsuariosDisponibles" promptText="Usuario"/>
+                            <TextField fx:id="usuarioRegisClass" promptText="ID Clase"/>
                             <Button text="Registrar" onAction="#registrarUsuarioEnClase"/>
                         </HBox>
 
