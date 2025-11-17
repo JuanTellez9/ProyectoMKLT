@@ -37,7 +37,12 @@ public class MainController {
 
     @FXML
     public void goMaquinas() {
-        setContent(Navigator.loadView("MaquinasView.fxml"));
+        try {
+            Node view = Navigator.loadView("MaquinasView.fxml");
+            setContent(view);
+        } catch (RuntimeException e) {
+            e.printStackTrace(); // Ver el error exacto en consola
+        }
     }
 
     @FXML

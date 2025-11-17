@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="uniquindio.edu.co.gym.controller.MaquinasController"
       spacing="12">
+
     <Label text="Máquinas" styleClass="h1"/>
+
     <HBox spacing="10">
-        <TextField promptText="Nombre" styleClass="form-control"/>
-        <TextField promptText="ID" styleClass="form-control"/>
-        <TextField promptText="Referencia" styleClass="form-control"/>
-        <TextField promptText="Uso" styleClass="form-control"/>
-        <Button text="Agregar" styleClass="btn btn-primary"/>
+        <TextField promptText="Nombre" styleClass="form-control" fx:id="textNombre"/>
+        <TextField promptText="ID" styleClass="form-control" fx:id="textId"/>
+        <TextField promptText="Referencia" styleClass="form-control" fx:id="textReferencia"/>
+        <TextField promptText="Uso" styleClass="form-control" fx:id="textUso"/>
+
+        <!-- ✔️ Corrección aquí -->
+        <Button text="Agregar" styleClass="btn btn-primary" onAction="#agregarMaquina"/>
     </HBox>
 
-    <TableView prefHeight="480">
+    <TableView prefHeight="480" fx:id="tableMaquina">
         <columns>
-            <TableColumn text="Nombre" prefWidth="220"/>
-            <TableColumn text="ID" prefWidth="120"/>
-            <TableColumn text="Referencia" prefWidth="200"/>
-            <TableColumn text="Uso" prefWidth="220"/>
+            <TableColumn text="Nombre" prefWidth="220" fx:id="colNombre"/>
+            <TableColumn text="ID" prefWidth="120" fx:id="colId"/>
+            <TableColumn text="Referencia" prefWidth="200" fx:id="colReferencia"/>
+            <TableColumn text="Uso" prefWidth="220" fx:id="colUso"/>
         </columns>
     </TableView>
+
 </VBox>
