@@ -1,35 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="uniquindio.edu.co.gym.controller.ClasesController"
-      spacing="12" style="-fx-border-radius: 12">
-    <Label text="Clases" styleClass="h1"/>
-    <HBox spacing="10">
-        <TextField promptText="Nombre" styleClass="form-control"/>
-        <TextField promptText="ID" styleClass="form-control"/>
-        <TextField promptText="Hora inicio" styleClass="form-control"/>
-        <TextField promptText="Hora fin" styleClass="form-control"/>
-        <TextField promptText="Cupo máximo" styleClass="form-control"/>
-        <Button text="Nueva" styleClass="btn"/>
-    </HBox>
+<?import javafx.geometry.Insets?>
 
-    <HBox spacing="10">
-        <ComboBox promptText="Clase grupal (ZUMBA, YOGA...)" prefWidth="280"  styleClass="custom-combo"/>
-        <ComboBox promptText="Día de semana" prefWidth="180"  styleClass="custom-combo"/>
-        <ComboBox promptText="Nivel (Básico/Premium/VIP)" prefWidth="220"  styleClass="custom-combo"/>
-    </HBox>
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="uniquindio.edu.co.gym.controller.ClasesController">
 
-    <TableView prefHeight="460" style="-fx-border-radius: 12">
-        <columns >
-            <TableColumn text="Nombre" prefWidth="180"/>
-            <TableColumn text="ID" prefWidth="120"/>
-            <TableColumn text="Inicio" prefWidth="100"/>
-            <TableColumn text="Fin" prefWidth="100"/>
-            <TableColumn text="Cupo" prefWidth="80"/>
-            <TableColumn text="Tipo" prefWidth="120"/>
-            <TableColumn text="Día" prefWidth="120"/>
-            <TableColumn text="Nivel" prefWidth="120"/>
-        </columns>
-    </TableView>
-</VBox>
+    <VBox spacing="12"
+          AnchorPane.topAnchor="0"
+          AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0"
+          AnchorPane.bottomAnchor="0">
+
+        <Label text="Clases" styleClass="h1"/>
+
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+
+                <!-- TAB 1: CLASES -->
+                <Tab text="Clases">
+                    <VBox spacing="10">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                        <HBox spacing="10">
+                            <TextField fx:id="textId" promptText="ID Clase"/>
+                            <TextField fx:id="textCupoMaximo" promptText="Cupo máximo"/>
+                            <ComboBox fx:id="comboHoraInicio" promptText="Hora inicio"/>
+                            <ComboBox fx:id="comboHoraFin" promptText="Hora fin"/>
+                            <ComboBox fx:id="comboClaseGrupal" promptText="Clase grupal"/>
+                            <ComboBox fx:id="comboDiaSemana" promptText="Día semana"/>
+                            <ComboBox fx:id="comboEntrenador" promptText="Entrenador"/>
+                            <Button text="Nueva Clase" onAction="#registrarClase"/>
+                        </HBox>
+
+                        <TableView fx:id="tableClase" prefHeight="420">
+                            <columns>
+                                <TableColumn text="ID" fx:id="colId" prefWidth="100"/>
+                                <TableColumn text="Clase" fx:id="colNombre" prefWidth="160"/>
+                                <TableColumn text="Inicio" fx:id="colInicio" prefWidth="100"/>
+                                <TableColumn text="Fin" fx:id="colFin" prefWidth="100"/>
+                                <TableColumn text="Cupo" fx:id="colCupo" prefWidth="80"/>
+                                <TableColumn text="Día" fx:id="colDia" prefWidth="120"/>
+                                <TableColumn text="Entrenador" fx:id="colEntrenador" prefWidth="120"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+                <!-- TAB 2: USUARIOS INSCRITOS -->
+                <Tab text="Usuarios Inscritos">
+                    <VBox spacing="10">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                        <HBox spacing="10">
+                            <ComboBox promptText="Clase grupal (ZUMBA, YOGA...)" prefWidth="280"/>
+                            <ComboBox promptText="Día de semana" prefWidth="180"/>
+                            <ComboBox promptText="Nivel (Básico/Premium/VIP)" prefWidth="220"/>
+                        </HBox>
+
+                        <TableView fx:id="tablaUsuarios" prefHeight="460">
+                            <columns>
+                                <TableColumn fx:id="colNombreUsuario" text="Nombre" prefWidth="180"/>
+                                <TableColumn fx:id="colIdUsuario" text="ID" prefWidth="120"/>
+                                <TableColumn fx:id="colInicioUsuario" text="Inicio" prefWidth="100"/>
+                                <TableColumn fx:id="colFinUsuario" text="Fin" prefWidth="100"/>
+                                <TableColumn fx:id="colTipoUsuario" text="Tipo" prefWidth="80"/>
+                                <TableColumn fx:id="colDiaUsuario" text="Día" prefWidth="120"/>
+                                <TableColumn fx:id="colNivelUsuario" text="Nivel" prefWidth="120"/>
+                            </columns>
+                        </TableView>
+
+
+                    </VBox>
+                </Tab>
+
+            </tabs>
+        </TabPane>
+
+    </VBox>
+
+</AnchorPane>

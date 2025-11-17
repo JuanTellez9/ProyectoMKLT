@@ -23,6 +23,7 @@ public class Gimnasio {
     private ArrayList<Usuario> listUsuarios;
     private ArrayList<Clase> listClases;
 
+
     private Gimnasio() {
         this.nombre = "Gimnasio UQ Fit";
         this.nit = 123456;
@@ -50,10 +51,18 @@ public class Gimnasio {
     public void setListMaquina(ArrayList<Maquina> listMaquina) {
         this.listMaquina = listMaquina;
     }
-    public void registrarPagos(Pago pago) {
-        this.listPagos.add(pago);
+    public void  registrarTrabajadorUQ(TrabajadorUQ trabajador){
+        listTrabajadorUQ.add(trabajador);
     }
-
+    public  void  registrarEntrenador(Entrenador entrenador){
+        listEntrenadores.add(entrenador);
+    }
+    public void registrarEstudiantes(Estudiante est){
+        listEstudiante.add(est);
+    }
+    public  void  registrarExterno(Externo ext){
+        listExterno.add(ext);
+    }
     public void setListMembresia(ArrayList<Membresia> listMembresia) {
         this.listMembresia = listMembresia;
     }
@@ -196,6 +205,7 @@ public class Gimnasio {
         this.nit = nit;
     }
 
+
     public String getUbicacion() {
         return ubicacion;
     }
@@ -241,8 +251,9 @@ public class Gimnasio {
         return listUsuarios;
     }
 
-
-
+    public void registrarPagos(Pago pago) {
+        this.listPagos.add(pago);
+    }
 
 
 }

@@ -4,7 +4,7 @@ public enum ClaseGrupal {
     ZUMBA,
     SPINNING,
     YOGA,
-    TRNSUPERIOR,
+    TRENSUPERIOR,
     FULLBODY,
     AEROBICOS
 }

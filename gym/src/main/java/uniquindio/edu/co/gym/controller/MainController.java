@@ -2,7 +2,9 @@ package uniquindio.edu.co.gym.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import uniquindio.edu.co.gym.Navigator;
 import uniquindio.edu.co.gym.model.UsuarioLogueado;
 
@@ -29,6 +31,12 @@ public class MainController {
     public void goClases() {
         setContent(Navigator.loadView("ClasesView.fxml"));
     }
+
+    @FXML
+    public void goPerfil() {
+        setContent(Navigator.loadView("PerfilView.fxml"));
+    }
+
 
     @FXML
     public void goMembresias() {

@@ -65,13 +65,13 @@ public class Administrador extends Persona implements Ihashes{
                     ent.setDireccion(nuevaDireccion);
                     ent.setTurno(nuevoTurno);
                     encontrado = true;
-                    System.out.println("✅ Entrenador actualizado: " + ent.getNombre());
+                    System.out.println(" Entrenador actualizado: " + ent.getNombre());
                     break;
                 }
             }
 
             if (!encontrado) {
-                System.out.println("⚠️ No se encontró ningún entrenador con ID: " + idEntrenador);
+                System.out.println(" No se encontró ningún entrenador con ID: " + idEntrenador);
             }
 
         } catch (Exception e) {
@@ -95,9 +95,9 @@ public class Administrador extends Persona implements Ihashes{
 
             if (entrenadorAEliminar != null) {
                 listEntrenadores.remove(entrenadorAEliminar);
-                System.out.println("✅ Entrenador eliminado: " + entrenadorAEliminar.getNombre());
+                System.out.println(" Entrenador eliminado: " + entrenadorAEliminar.getNombre());
             } else {
-                System.out.println("⚠️ No se encontró el entrenador con ID: " + idEntrenador);
+                System.out.println("No se encontró el entrenador con ID: " + idEntrenador);
             }
 
         } catch (Exception e) {
@@ -148,8 +148,8 @@ public class Administrador extends Persona implements Ihashes{
                 int cupoMaximo = clase.getCupoMaximo();
 
                 // Si la clase tiene usuarios inscritos
-                if (clase.getListUsuarios() != null) {
-                    asistentes = clase.getListUsuarios().size();
+                if (clase.getListUsario() != null) {
+                    asistentes = clase.getListUsario().size();
                 }
 
                 double porcentajeOcupacion = 0;
@@ -217,8 +217,8 @@ public class Administrador extends Persona implements Ihashes{
                 int asistentes = 0;
 
                 // Si la clase tiene lista de usuarios, contar los asistentes
-                if (clase.getListUsuarios() != null) {
-                    asistentes = clase.getListUsuarios().size();
+                if (clase.getListUsario() != null) {
+                    asistentes = clase.getListUsario().size();
                 }
 
                 System.out.println("- Clase: " + clase.getClaseGrupal() +
@@ -234,7 +234,7 @@ public class Administrador extends Persona implements Ihashes{
 
             // Mostrar resultado final
             if (claseMasPopular != null) {
-                System.out.println("\nLa clase más popular es: " + claseMasPopular.getClaseGrupal());
+                System.out.println("\n La clase más popular es: " + claseMasPopular.getClaseGrupal());
                 System.out.println("   Con " + maxAsistentes + " asistentes.");
             } else {
                 System.out.println("No se encontró ninguna clase con asistentes.");
