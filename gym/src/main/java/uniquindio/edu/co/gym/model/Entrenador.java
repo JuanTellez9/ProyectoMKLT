@@ -12,6 +12,14 @@ public class Entrenador extends Persona {
         this.listaclasesEntrenador=new ArrayList<>();
     }
 
+    public ArrayList<Clase> getListaclasesEntrenador() {
+        return listaclasesEntrenador;
+    }
+
+    public void setListaclasesEntrenador(ArrayList<Clase> listaclasesEntrenador) {
+        this.listaclasesEntrenador = listaclasesEntrenador;
+    }
+
     @Override
     public String toString() {
         return getNombre() + " (" + turno + ")";

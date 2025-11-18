@@ -16,7 +16,7 @@ public  class Recepcionista extends Persona implements Ihashes {
     public Recepcionista(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String turno,String contrasena) {
         super(nombre, ID, telefono, direccion, fechaNacimiento);
         this.turno = turno;
-        this.contrasena= Arrays.toString(hashearContrasenaBytes(contrasena));
+        this.contrasena = bytesToHex(hashearContrasenaBytes(contrasena));
     }
 
     public boolean verificarUsuario(Usuario usuario){
@@ -29,12 +29,23 @@ public  class Recepcionista extends Persona implements Ihashes {
         }
         return bandera;
     }
-    private void registrarPagoAutomatico(Usuario usuario) {
+    private String generarIdPago(String idBase) {
+        int random = (int)(Math.random() * 9000) + 1000; // número aleatorio entre 1000 y 9999
+        return idBase + "-" + random;
+    }
+
+    private void registrarPagoAutomatico(Usuario usuario,double valor) {
 
         Membresia m = usuario.getMembresia();
         if (m == null) return;
 
-        Pago p = new Pago(usuario.getID(),"Pago de membresía " + m.getTipo(),(int)m.getCosto(),new java.util.Date(),usuario);
+        Pago p = new Pago(
+                generarIdPago(usuario.getID()),
+                "Pago de membresía " + m.getTipo(),
+                valor,
+                new java.util.Date(),
+                usuario
+        );
 
 
         gym.registrarPagos(p);
@@ -45,8 +56,8 @@ public  class Recepcionista extends Persona implements Ihashes {
         est.setMembresia(membresia);
         membresia.registrarUsuario(est);
         gym.registrarEstudiante(est);
-
-        registrarPagoAutomatico(est);
+        double valor=est.calcularDescuento(membresia);
+        registrarPagoAutomatico(est,valor);
     }
 
     public void registrarTrabajadorUQ(TrabajadorUQ trab, Membresia membresia) {
@@ -55,8 +66,8 @@ public  class Recepcionista extends Persona implements Ihashes {
         trab.setMembresia(membresia);
         membresia.registrarUsuario(trab);
         gym.registrarTrabajadorUQ(trab);
-
-        registrarPagoAutomatico(trab);
+        double valor=trab.calcularDescuento(membresia);
+        registrarPagoAutomatico(trab,valor);
     }
     public class ResultadoAcceso {
         public String mensaje;
@@ -120,8 +131,8 @@ public  class Recepcionista extends Persona implements Ihashes {
         ext.setMembresia(membresia);
         membresia.registrarUsuario(ext);
         gym.registrarExterno(ext);
-
-        registrarPagoAutomatico(ext);
+        double valor=ext.calcularDescuento(membresia);
+        registrarPagoAutomatico(ext,valor);
     }
     public String registrarUsuarioEnClase(String idUsuario, Clase clase) {
 

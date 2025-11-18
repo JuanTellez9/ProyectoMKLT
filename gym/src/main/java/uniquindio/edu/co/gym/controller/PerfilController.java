@@ -29,12 +29,9 @@ public class PerfilController {
             return;
         }
 
-        // 👉 Elegir la imagen
-//        String urlFoto = (u.getFoto() == null || u.getFoto().isBlank())
-//                ? URL_IMAGEN_POR_DEFECTO   // sin foto → usar la default
-//                : u.getFoto();             // con foto → usar la foto del usuario
+  
         String urlFoto =u.getFoto();
-        System.out.println("deberia ser esta la fot --------> "+ urlFoto);
+       
 
         try {
             Image foto = new Image(urlFoto, true);

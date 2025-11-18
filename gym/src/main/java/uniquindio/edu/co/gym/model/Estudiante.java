@@ -13,6 +13,7 @@ public class Estudiante extends Usuario {
         this.semestre = semestre;
         this.facultad = facultad;
     }
+
     @Override
     public double calcularDescuento(Membresia membresia) {
         Membresia membre = (membresia != null) ? membresia : this.getMembresia();
