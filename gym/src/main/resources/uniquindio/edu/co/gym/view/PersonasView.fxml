@@ -160,6 +160,7 @@
 
                                     </HBox>
                                     <HBox spacing="10">
+                                        <ComboBox fx:id="comboMembresiaEs" promptText="Membresía" styleClass="form-control2"/>
                                         <Button fx:id="btnSeleccionarEst" styleClass="btn" text="Seleccionar Imagen" onAction="#seleccionarImagenEstudiante"/>
                                         <Button fx:id="btnNuevoEstudiante" text="Nuevo" styleClass="btn" onAction="#guardarEstudiante"/>
                                         <ProgressIndicator fx:id="loaderEstudiante" prefWidth="20" prefHeight="20" visible="false"/>
@@ -176,6 +177,7 @@
                                             <TableColumn text="Programa" prefWidth="120" fx:id="colProgramaEs"/>
                                             <TableColumn text="Semestre" prefWidth="120" fx:id="colSemestreEs"/>
                                             <TableColumn text="Facultad" prefWidth="120" fx:id="colFacultadEs"/>
+                                            <TableColumn text="Membresía" prefWidth="180" fx:id="colMembresiaEs"/>
                                         </columns>
                                     </TableView>
                                 </VBox>
@@ -199,6 +201,7 @@
 
                                     </HBox>
                                     <HBox spacing="10">
+                                        <ComboBox fx:id="comboMembresiaT" promptText="Membresía" styleClass="form-control2"/>
                                         <Button fx:id="btnSeleccionarTraba" styleClass="btn" text="Seleccionar Imagen" onAction="#seleccionarImagenTrabajador"/>
                                         <Button fx:id="btnNuevoTrabajador" text="Nuevo" styleClass="btn" onAction="#guardarTrabajadoresUq"/>
                                         <ProgressIndicator fx:id="loaderTrabajador" prefWidth="20" prefHeight="20" visible="false"/>
@@ -214,6 +217,7 @@
                                             <TableColumn text="Fechas Creacion" prefWidth="160" fx:id="colFechaCT"/>
                                             <TableColumn text="Cargo" prefWidth="160" fx:id="colCargoT"/>
                                             <TableColumn text="Área" prefWidth="160" fx:id="colAreaT"/>
+                                            <TableColumn text="Membresía" prefWidth="180" fx:id="colMembresiaT"/>
                                         </columns>
                                     </TableView>
                                 </VBox>
@@ -236,6 +240,7 @@
 
                                     </HBox>
                                     <HBox spacing="10">
+                                        <ComboBox fx:id="comboMembresiaEx" promptText="Membresía" styleClass="form-control2"/>
                                         <Button fx:id="btnSeleccionarExter" styleClass="btn" text="Seleccionar Imagen" onAction="#seleccionarImagenExterno"/>
                                         <Button fx:id="btnNuevoExterno" text="Nuevo" styleClass="btn" onAction="#guardarExterno"/>
                                         <ProgressIndicator fx:id="loaderExterno" prefWidth="20" prefHeight="20" visible="false"/>
@@ -249,6 +254,7 @@
                                             <TableColumn text="Fecha Nacimiento" prefWidth="160" fx:id="colFechaNEx"/>
                                             <TableColumn text="Fechas Creacion" prefWidth="160" fx:id="colFechaCEx"/>
                                             <TableColumn text="Ocupación" prefWidth="220" fx:id="colOcupacionEx"/>
+                                            <TableColumn text="Membresía" prefWidth="180" fx:id="colMembresiaEx"/>
                                         </columns>
                                     </TableView>
                                 </VBox>

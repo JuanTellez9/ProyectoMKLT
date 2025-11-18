@@ -7,15 +7,23 @@ public class Pago {
     private String id;
     private String detallesPago;
     private double valor;
-    private Date  fechaPago;
-    private Administrador administrador;
+    private Date fechaPago;
+    private Usuario usuario;
 
-    public Pago(String id, String detallesPago, double valor, Date fechaPago, Administrador administrador) {
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Pago(String id, String detallesPago, double valor, Date fechaPago, Usuario usuario) {
         this.id = id;
         this.detallesPago = detallesPago;
         this.valor = valor;
         this.fechaPago = fechaPago;
-        this.administrador = administrador;
+        this.usuario=usuario;
     }
 
     public String getId() {
@@ -48,13 +56,5 @@ public class Pago {
 
     public void setFechaPago(Date fechaPago) {
         this.fechaPago = fechaPago;
-    }
-
-    public Administrador getAdministrador() {
-        return administrador;
-    }
-
-    public void setAdministrador(Administrador administrador) {
-        this.administrador = administrador;
     }
 }

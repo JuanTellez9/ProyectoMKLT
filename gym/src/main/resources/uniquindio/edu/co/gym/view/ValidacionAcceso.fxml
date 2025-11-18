@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="uniquindio.edu.co.gym.controller.ValidacionAccesoController"
+      alignment="TOP_CENTER"
+      spacing="20"
+      style="-fx-padding: 30;">
+
+    <Label text="Validación de Acceso al Gimnasio" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+    <!-- BUSCAR USUARIO -->
+    <HBox spacing="10">
+        <TextField fx:id="txtBuscarID" promptText="Ingrese ID del usuario" styleClass="form-control"/>
+        <Button text="Validar acceso" styleClass="btn" onAction="#validarAcceso"/>
+    </HBox>
+
+    <!-- INFO DEL USUARIO -->
+    <VBox fx:id="boxInfo" spacing="8" visible="false" style="-fx-background-color: #ffffff; -fx-padding: 20; -fx-background-radius: 10;">
+        <Label text="Información del Usuario" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <Label fx:id="lblNombre" styleClass="perfil-info"/>
+        <Label fx:id="lblID" styleClass="perfil-info"/>
+        <Label fx:id="lblTelefono" styleClass="perfil-info"/>
+        <Label fx:id="lblDireccion" styleClass="perfil-info"/>
+        <Label fx:id="lblMembresia" styleClass="perfil-info"/>
+        <Label fx:id="lblEstado" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    </VBox>
+
+    <Separator/>
+
+    <!-- ENVIAR EMAIL -->
+    <HBox spacing="10">
+        <TextField fx:id="txtEmail" promptText="Correo electrónico" styleClass="form-control"/>
+        <Button fx:id="btnEnviar" text="Enviar" styleClass="btn" onAction="#enviarEmail"/>
+        <ProgressIndicator fx:id="loaderEmail" prefWidth="25" prefHeight="25" visible="false"/>
+
+    </HBox>
+
+</VBox>

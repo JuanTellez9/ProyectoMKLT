@@ -16,7 +16,6 @@ public class Gimnasio {
     private ArrayList<TrabajadorUQ>  listTrabajadorUQ;
     private ArrayList<Estudiante> listEstudiante;
     private ArrayList<Externo> listExterno;
-    private ArrayList<HistorialPago> listHistorialPago;
     private ArrayList<Recepcionista>  listRecepcionista;
     private Administrador administrador;
     private ArrayList<Entrenador> listEntrenadores;
@@ -35,7 +34,6 @@ public class Gimnasio {
         this.listTrabajadorUQ = new ArrayList<>();
         this.listEstudiante = new ArrayList<>();
         this.listExterno = new ArrayList<>();
-        this.listHistorialPago = new ArrayList<>();
         this.listClases = new ArrayList <> ();
         this.listRecepcionista = new ArrayList<>();
         this.listEntrenadores = new ArrayList<>();
@@ -100,10 +98,6 @@ public class Gimnasio {
 
     public void setListExterno(ArrayList<Externo> listExterno) {
         this.listExterno = listExterno;
-    }
-
-    public void setListHistorialPago(ArrayList<HistorialPago> listHistorialPago) {
-        this.listHistorialPago = listHistorialPago;
     }
 
     public void setListRecepcionista(ArrayList<Recepcionista> listRecepcionista) {
@@ -225,9 +219,6 @@ public class Gimnasio {
         return direccion;
     }
 
-     public List<HistorialPago> getListHistorialPago() {
-        return listHistorialPago;
-    }
 
    
 
@@ -261,6 +252,26 @@ public class Gimnasio {
     public void registrarPagos(Pago pago) {
         this.listPagos.add(pago);
     }
+
+    public boolean isRecep(){
+
+        UsuarioLogueado user=UsuarioLogueado.getInstance();
+        if (user.getUsuario().getID().equals(administrador.getID())){
+            return false;
+        }
+        return  true;
+    }
+
+    public ArrayList<Usuario> getTodosLosUsuarios() {
+        ArrayList<Usuario> lista = new ArrayList<>();
+
+        lista.addAll(getListEstudiante());
+        lista.addAll(getListTrabajadorUQ());
+        lista.addAll(getListExterno());
+
+        return lista;
+    }
+
 
 
 }

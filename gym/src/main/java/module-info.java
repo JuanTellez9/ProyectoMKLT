@@ -6,6 +6,7 @@ module uniquindio.edu.co.gym {
     requires java.desktop;
     requires java.sql;
     requires cloudinary.core;
+    requires jakarta.mail;
 
     // 🔓 Permitir que FXML acceda a tus controladores y clases
     opens uniquindio.edu.co.gym to javafx.fxml;

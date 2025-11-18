@@ -142,11 +142,19 @@ public class ClasesController {
         }
     }
 
-
+    private void mostrar(String msg) {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setHeaderText(null);
+        a.setContentText(msg);
+        a.showAndWait();
+    }
 
     @FXML
     public void registrarUsuarioEnClase() {
-
+        if (!gimnasio.isRecep()){
+            mostrar("debes ser Recepcionista para poder ejecutar esta accion");
+            return;
+        }
         // Clase seleccionada
         Clase clase = comboClasesRegistro.getValue();
         String idUsuarioIngresado = usuarioRegisClass.getText();
@@ -189,6 +197,11 @@ public class ClasesController {
         int cuposDisponibles = clase.getCupoMaximo() - inscritos.size();
         if (cuposDisponibles <= 0) {
             mostrarAlerta("No hay cupos disponibles.");
+            return;
+        }
+        Membresia membresiaUsu=usuarioEncontrado.getMembresia();
+        if (membresiaUsu.getNivel().toString().equals("BASICO")){
+            mostrarAlerta("Tu plan es basico no puedes acceder a clases Grupales");
             return;
         }
 

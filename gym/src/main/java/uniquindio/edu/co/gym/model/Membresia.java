@@ -1,4 +1,5 @@
 package uniquindio.edu.co.gym.model;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Membresia {
@@ -10,6 +11,7 @@ public class Membresia {
     private String beneficio;
     private Tipo tipo;
     private Nivel nivel;
+    private ArrayList<Usuario> listUsuarios;
 
     public Membresia(int id,double costo,Date fechaInicio,Date fechaVencimiento,boolean estado, String beneficio, Tipo tipo, Nivel nivel) {
         this.id = id;
@@ -20,6 +22,18 @@ public class Membresia {
         this.beneficio = beneficio;
         this.tipo = tipo;
         this.nivel = nivel;
+        this.listUsuarios=new ArrayList<>();
+    }
+
+    public ArrayList<Usuario> getListUsuarios() {
+        return listUsuarios;
+    }
+
+    public void setListUsuarios(ArrayList<Usuario> listUsuarios) {
+        this.listUsuarios = listUsuarios;
+    }
+    public  void registrarUsuario(Usuario usu){
+        listUsuarios.add(usu);
     }
 
     public boolean isActiva() {

@@ -2,104 +2,186 @@ package uniquindio.edu.co.gym.controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import uniquindio.edu.co.gym.model.*;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class ReportesAdminController {
 
     private final Gimnasio gym = Gimnasio.getInstance();
     private final Administrador admin = gym.getAdministrador();
 
-    /* ==== TABLA 1: Asistencia ==== */
-    @FXML private TableView<Clase> tablaAsistencia;
-    @FXML private TableColumn<Clase, String> colClaseA;
-    @FXML private TableColumn<Clase, String> colCupoA;
-    @FXML private TableColumn<Clase, String> colAsistentesA;
-    @FXML private TableColumn<Clase, String> colOcupacionA;
+    /* TABLA ASISTENCIA */
+    @FXML private TableView<Administrador.ReporteAsistencia> tablaAsistencia;
+    @FXML private TableColumn<Administrador.ReporteAsistencia, String> colClaseA;
+    @FXML private TableColumn<Administrador.ReporteAsistencia, String> colCupoA;
+    @FXML private TableColumn<Administrador.ReporteAsistencia, String> colAsistentesA;
+    @FXML private TableColumn<Administrador.ReporteAsistencia, String> colOcupacionA;
 
-    /* ==== TABLA 2: Ingresos ==== */
-    @FXML private TableView<ReporteIngresos> tablaIngresos;
-    @FXML private TableColumn<ReporteIngresos, String> colCantidadI;
-    @FXML private TableColumn<ReporteIngresos, String> colTotalI;
+    /* TABLA INGRESOS */
+    @FXML private TableView<Administrador.ReporteIngresos> tablaIngresos;
+    @FXML private TableColumn<Administrador.ReporteIngresos, String> colCantidadI;
+    @FXML private TableColumn<Administrador.ReporteIngresos, String> colTotalI;
 
-    /* ==== TABLA 3: Populares ==== */
+    /* TABLA POPULARES */
     @FXML private TableView<Clase> tablaPopulares;
     @FXML private TableColumn<Clase, String> colClaseP;
     @FXML private TableColumn<Clase, String> colAsistentesP;
     @FXML private TableColumn<Clase, String> colCupoP;
 
+
+
+    /* TABLA ACTIVOS */
+    @FXML private TableView<Usuario> tablaActivos;
+    @FXML private TableColumn<Usuario, String> colNombreA;
+    @FXML private TableColumn<Usuario, String> colIdA;
+    @FXML private TableColumn<Usuario, String> colTelA;
+    @FXML private TableColumn<Usuario, String> colMemA;
+    @FXML private TableColumn<Usuario, String> colFinA;
+
+    /* TABLA VENCIDOS */
+    @FXML private TableView<Usuario> tablaVencidos;
+    @FXML private TableColumn<Usuario, String> colNombreV;
+    @FXML private TableColumn<Usuario, String> colIdV;
+    @FXML private TableColumn<Usuario, String> colTelV;
+    @FXML private TableColumn<Usuario, String> colMemV;
+    @FXML private TableColumn<Usuario, String> colFinV;
+
+
     @FXML
     public void initialize() {
 
         /* ---- Tabla Asistencia ---- */
-        colClaseA.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getClaseGrupal().toString())
-        );
+        colClaseA.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getClase()));
+        colCupoA.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCupo()));
+        colAsistentesA.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getAsistentes()));
+        colOcupacionA.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOcupacion()));
 
-        colCupoA.setCellValueFactory(d ->
-                new SimpleStringProperty(String.valueOf(d.getValue().getCupoMaximo()))
-        );
+        /* ---- Tabla Ingresos ---- */
+        colCantidadI.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getCantidad()));
+        colTotalI.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTotal()));
 
-        colAsistentesA.setCellValueFactory(d ->
-                new SimpleStringProperty(String.valueOf(
-                        d.getValue().getListUsario() != null
-                                ? d.getValue().getListUsario().size()
-                                : 0
-                ))
-        );
-
-        colOcupacionA.setCellValueFactory(d -> {
-            int cupo = d.getValue().getCupoMaximo();
-            int asis = (d.getValue().getListUsario() != null)
-                    ? d.getValue().getListUsario().size()
-                    : 0;
-
-            double porc = (cupo > 0) ? (asis * 100.0 / cupo) : 0;
-            return new SimpleStringProperty(String.format("%.2f%%", porc));
-        });
-
-
-        /* ---- Tabla Popularidad ---- */
-        colClaseP.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getClaseGrupal().toString())
-        );
-
+        /* ---- Tabla Populares ---- */
+        colClaseP.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getClaseGrupal().toString()));
         colAsistentesP.setCellValueFactory(d ->
                 new SimpleStringProperty(String.valueOf(
-                        d.getValue().getListUsario() != null
-                                ? d.getValue().getListUsario().size()
-                                : 0
+                        d.getValue().getListUsario() != null ? d.getValue().getListUsario().size() : 0
                 ))
         );
+        /* ---- Tabla Activos ---- */
+        colNombreA.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+        colIdA.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getID()));
+        colTelA.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTelefono()));
+        colMemA.setCellValueFactory(d -> new SimpleStringProperty(
+                d.getValue().getMembresia() != null ? d.getValue().getMembresia().getTipo().toString() : "Sin membresía"
+        ));
+        colFinA.setCellValueFactory(d -> new SimpleStringProperty(
+                d.getValue().getMembresia() != null
+                        ? d.getValue().getMembresia().getFechaVencimiento().toString()
+                        : "---"
+        ));
 
+        /* ---- Tabla Vencidos ---- */
+        colNombreV.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+        colIdV.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getID()));
+        colTelV.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getTelefono()));
+        colMemV.setCellValueFactory(d -> new SimpleStringProperty(
+                d.getValue().getMembresia() != null ? d.getValue().getMembresia().getTipo().toString() : "Sin membresía"
+        ));
+        colFinV.setCellValueFactory(d -> new SimpleStringProperty(
+                d.getValue().getMembresia() != null
+                        ? d.getValue().getMembresia().getFechaVencimiento().toString()
+                        : "---"
+        ));
         colCupoP.setCellValueFactory(d ->
                 new SimpleStringProperty(String.valueOf(d.getValue().getCupoMaximo()))
         );
     }
 
 
-    /* ========== BOTÓN: CARGAR INGRESOS ========== */
+    /* === BOTONES === */
+
+    @FXML
+    public void cargarAsistencia() {
+        if (gym.isRecep()){
+            mostrar("debes ser Administrador para poder ejecutar esta accion");
+            return;
+        }
+        tablaAsistencia.getItems().setAll(admin.generarEstadisticasAsistencia());
+    }
+
     @FXML
     public void cargarIngresos() {
-        ArrayList<Pago> pagos = gym.getListPagos();
-
-        int cantidad = pagos.size();
-        double total = pagos.stream().mapToDouble(Pago::getValor).sum();
-
-        tablaIngresos.getItems().setAll(
-                new ReporteIngresos(
-                        String.valueOf(cantidad),
-                        "$" + total
-                )
-        );
+        if (gym.isRecep()){
+            mostrar("debes ser Administrador para poder ejecutar esta accion");
+            return;
+        }
+        tablaIngresos.getItems().setAll(admin.generarIngresosPorMembresias());
     }
 
-    /* ========== BOTÓN: CARGAR POPULARES ========== */
     @FXML
     public void cargarPopulares() {
-        tablaPopulares.getItems().setAll(gym.getListClases());
+        tablaPopulares.getItems().setAll(admin.generarReporteClasesMasPopulares());
     }
+
+    private void mostrar(String msg) {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setHeaderText(null);
+        a.setContentText(msg);
+        a.showAndWait();
+    }
+
+    @FXML
+    public void cargarActivos() {
+
+        if (!gym.isRecep()) {
+            mostrar("Debes ser Recepcionista para poder ejecutar esta acción");
+            return;
+        }
+
+        tablaActivos.getItems().clear();
+
+        for (Usuario u : gym.getTodosLosUsuarios()) {
+
+            Membresia mem = u.getMembresia();
+
+            if (mem == null) continue;
+
+            LocalDate hoy = LocalDate.now();
+            LocalDate ini = mem.getFechaInicio().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+            LocalDate fin = mem.getFechaVencimiento().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+            if (!hoy.isBefore(ini) && !hoy.isAfter(fin)) {
+                tablaActivos.getItems().add(u);
+            }
+        }
+    }
+
+    @FXML
+    public void cargarVencidos() {
+
+        if (!gym.isRecep()) {
+            mostrar("Debes ser Recepcionista para poder ejecutar esta acción");
+            return;
+        }
+
+        tablaVencidos.getItems().clear();
+
+        for (Usuario u : gym.getTodosLosUsuarios()) {
+
+            Membresia mem = u.getMembresia();
+
+            if (mem == null) continue;
+
+            LocalDate hoy = LocalDate.now();
+            LocalDate fin = mem.getFechaVencimiento().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+            if (hoy.isAfter(fin)) {
+                tablaVencidos.getItems().add(u);
+            }
+        }
+    }
+
+
 }

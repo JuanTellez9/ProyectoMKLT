@@ -74,7 +74,49 @@
 
                     </VBox>
                 </Tab>
+                <!-- ================== REPORTE 4: MEMBRESÍAS ACTIVAS ================== -->
+                <Tab text="Usuarios Activos">
+                    <VBox spacing="12">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
+                        <Button text="Listar Activos"
+                                styleClass="btn"
+                                onAction="#cargarActivos"/>
+
+                        <TableView fx:id="tablaActivos" prefHeight="500">
+                            <columns>
+                                <TableColumn text="Nombre" fx:id="colNombreA" prefWidth="200"/>
+                                <TableColumn text="ID" fx:id="colIdA" prefWidth="120"/>
+                                <TableColumn text="Teléfono" fx:id="colTelA" prefWidth="150"/>
+                                <TableColumn text="Membresía" fx:id="colMemA" prefWidth="180"/>
+                                <TableColumn text="Vence" fx:id="colFinA" prefWidth="160"/>
+                            </columns>
+                        </TableView>
+
+                    </VBox>
+                </Tab>
+
+                <!-- ================== REPORTE 5: MEMBRESÍAS VENCIDAS ================== -->
+                <Tab text="Usuarios con Membresía Vencida">
+                    <VBox spacing="12">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                        <Button text="Listar Vencidos"
+                                styleClass="btn"
+                                onAction="#cargarVencidos"/>
+
+                        <TableView fx:id="tablaVencidos" prefHeight="500">
+                            <columns>
+                                <TableColumn text="Nombre" fx:id="colNombreV" prefWidth="200"/>
+                                <TableColumn text="ID" fx:id="colIdV" prefWidth="120"/>
+                                <TableColumn text="Teléfono" fx:id="colTelV" prefWidth="150"/>
+                                <TableColumn text="Membresía" fx:id="colMemV" prefWidth="180"/>
+                                <TableColumn text="Venció" fx:id="colFinV" prefWidth="160"/>
+                            </columns>
+                        </TableView>
+
+                    </VBox>
+                </Tab>
             </tabs>
         </TabPane>
 

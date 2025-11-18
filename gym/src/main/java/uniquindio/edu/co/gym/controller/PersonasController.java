@@ -17,6 +17,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class PersonasController {
 
@@ -148,6 +149,19 @@ public class PersonasController {
     @FXML private Button btnNuevoExterno;
     @FXML private ProgressIndicator loaderExterno;
 
+
+
+    // ComboBox membresías
+    @FXML private ComboBox<Membresia> comboMembresiaEs;
+    @FXML private ComboBox<Membresia> comboMembresiaT;
+    @FXML private ComboBox<Membresia> comboMembresiaEx;
+
+    // Columnas para mostrar membresía
+    @FXML private TableColumn<Estudiante, String> colMembresiaEs;
+    @FXML private TableColumn<TrabajadorUQ, String> colMembresiaT;
+    @FXML private TableColumn<Externo, String> colMembresiaEx;
+
+
     // ================== INIT ==================
     @FXML
     public void initialize() {
@@ -216,6 +230,63 @@ public class PersonasController {
             String fechaFormateada = fecha != null ? formatoFecha.format(fecha) : "Sin fecha";
             return new SimpleStringProperty(fechaFormateada);
         });
+        // Estudiantes: mostrar membresía
+        colMembresiaEs.setCellValueFactory(d -> {
+            Membresia m = d.getValue().getMembresia();
+            String texto = (m == null) ? "Sin membresía" : m.getTipo() + " — $" + m.getCosto();
+            return new SimpleStringProperty(texto);
+        });
+
+// Trabajador UQ
+        colMembresiaT.setCellValueFactory(d -> {
+            Membresia m = d.getValue().getMembresia();
+            String texto = (m == null) ? "Sin membresía" : m.getTipo() + " — $" + m.getCosto();
+            return new SimpleStringProperty(texto);
+        });
+
+// Externo
+        colMembresiaEx.setCellValueFactory(d -> {
+            Membresia m = d.getValue().getMembresia();
+            String texto = (m == null) ? "Sin membresía" : m.getTipo() + " — $" + m.getCosto();
+            return new SimpleStringProperty(texto);
+        });
+
+
+        // === Cargar membresías ===
+        ObservableList<Membresia> membresias = FXCollections.observableArrayList(gimnasio.getListMembresia());
+
+        comboMembresiaEs.setItems(membresias);
+        comboMembresiaT.setItems(membresias);
+        comboMembresiaEx.setItems(membresias);
+
+// Mostrar tipo + precio
+        comboMembresiaEs.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(Membresia m, boolean empty) {
+                super.updateItem(m, empty);
+                setText(empty || m == null ? "" : m.getTipo() + " - $" + m.getCosto());
+            }
+        });
+        comboMembresiaEs.setButtonCell(comboMembresiaEs.getCellFactory().call(null));
+
+        comboMembresiaT.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(Membresia m, boolean empty) {
+                super.updateItem(m, empty);
+                setText(empty || m == null ? "" : m.getTipo() + " - $" + m.getCosto());
+            }
+        });
+        comboMembresiaT.setButtonCell(comboMembresiaT.getCellFactory().call(null));
+
+        comboMembresiaEx.setCellFactory(list -> new ListCell<>() {
+            @Override
+            protected void updateItem(Membresia m, boolean empty) {
+                super.updateItem(m, empty);
+                setText(empty || m == null ? "" : m.getTipo() + " - $" + m.getCosto());
+            }
+        });
+        comboMembresiaEx.setButtonCell(comboMembresiaEx.getCellFactory().call(null));
+
         colOcupacionEx.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getOcupacion()));
         listExterno.setAll(gimnasio.getListExterno());
         tablaExterno.setItems(listExterno);
@@ -315,6 +386,10 @@ public class PersonasController {
 
     @FXML
     private void guardarEntrenador() {
+        if (gimnasio.isRecep()){
+            mostrar("debes ser Administrador para poder ejecutar esta accion");
+            return;
+        }
         btnNuevoEntrenador.setDisable(true);
         btnNuevoEntrenador.setText("Guardando...");
         loaderEntrenador.setVisible(true);
@@ -362,7 +437,10 @@ public class PersonasController {
 
     @FXML
     private void guardarEstudiante() {
-
+        if (!gimnasio.isRecep()){
+            mostrar("debes ser Recepcionista para poder ejecutar esta accion");
+            return;
+        }
         btnNuevoEstudiante.setDisable(true);
         btnNuevoEstudiante.setText("Guardando...");
         loaderEstudiante.setVisible(true);
@@ -379,6 +457,13 @@ public class PersonasController {
                 String semestre = textSemestreEs.getText();
                 String facultad = textFacultadEs.getText();
 
+                Membresia memSeleccionada = comboMembresiaEs.getValue();
+
+                if (memSeleccionada == null) {
+                    mostrar("Debe seleccionar una membresía");
+                    return;
+                }
+
                 String fechaNF = fechaN != null
                         ? fechaN.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                         : "";
@@ -388,12 +473,35 @@ public class PersonasController {
                         fechaC, programa, semestre, facultad
                 );
 
+                // === FOTO ===
                 if (imagenEstudiante != null) {
                     var upload = cloudinary.uploader().upload(imagenEstudiante, ObjectUtils.emptyMap());
                     nuevo.setFoto(upload.get("secure_url").toString());
                 }
 
+                // === ASIGNACIÓN DE MEMBRESÍA ===
+                ArrayList<Membresia> memArray = gimnasio.getListMembresia();
+
+                for (Membresia m : memArray) {
+
+                    if (m.getId() == memSeleccionada.getId()) {
+
+                        // 1. Asignar la membresía al usuario
+                        nuevo.setMembresia(m);
+
+                        // 2. Registrar el usuario dentro de esa membresía
+                        m.registrarUsuario(nuevo);
+
+                        break;
+                    }
+                }
+
+                // guardar lista global actualizada
+                gimnasio.setListMembresia(memArray);
+
+                // Registrar estudiante
                 gimnasio.registrarEstudiante(nuevo);
+                registrarPagoAutomatico(nuevo);
                 listEstudiante.add(nuevo);
 
                 imagenEstudiante = null;
@@ -411,8 +519,13 @@ public class PersonasController {
         }).start();
     }
 
+
     @FXML
     private void guardarTrabajadoresUq() {
+        if (!gimnasio.isRecep()){
+            mostrar("debes ser Recepcionista para poder ejecutar esta accion");
+            return;
+        }
 
         btnNuevoTrabajador.setDisable(true);
         btnNuevoTrabajador.setText("Guardando...");
@@ -429,6 +542,13 @@ public class PersonasController {
                 String cargo = textCargoT.getText();
                 String area = textAreaT.getText();
 
+                Membresia memSeleccionada = comboMembresiaT.getValue();
+
+                if (memSeleccionada == null) {
+                    mostrar("Debe seleccionar una membresía");
+                    return;
+                }
+
                 String fechaNF = fechaN != null
                         ? fechaN.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                         : "";
@@ -437,12 +557,35 @@ public class PersonasController {
                         nombre, id, tel, dir, fechaNF, fechaC, cargo, area
                 );
 
+                // Foto
                 if (imagenTrabajador != null) {
                     var upload = cloudinary.uploader().upload(imagenTrabajador, ObjectUtils.emptyMap());
                     nuevo.setFoto(upload.get("secure_url").toString());
                 }
 
+                // === ASIGNACIÓN DE MEMBRESÍA ===
+                ArrayList<Membresia> memArray = gimnasio.getListMembresia();
+
+                for (Membresia m : memArray) {
+                    if (m.getId() == memSeleccionada.getId()) {
+
+                        // 1. Asignar membresía al trabajador
+                        nuevo.setMembresia(m);
+
+                        // 2. Registrar usuario en la membresía
+                        m.registrarUsuario(nuevo);
+
+                        break;
+                    }
+                }
+
+                // Guardar lista global
+                gimnasio.setListMembresia(memArray);
+
+                // Registrar trabajador
                 gimnasio.registrarTrabajadorUQ(nuevo);
+                registrarPagoAutomatico(nuevo);
+
                 listTrabajadorUQ.add(nuevo);
 
                 imagenTrabajador = null;
@@ -460,10 +603,12 @@ public class PersonasController {
         }).start();
     }
 
-
     @FXML
     private void guardarExterno() {
-
+        if (!gimnasio.isRecep()){
+            mostrar("debes ser Recepcionista para poder ejecutar esta accion");
+            return;
+        }
         btnNuevoExterno.setDisable(true);
         btnNuevoExterno.setText("Guardando...");
         loaderExterno.setVisible(true);
@@ -478,6 +623,13 @@ public class PersonasController {
                 LocalDate fechaC = dateFechaCEx.getValue();
                 String ocupacion = textOcupacionEx.getText();
 
+                Membresia memSeleccionada = comboMembresiaEx.getValue();
+
+                if (memSeleccionada == null) {
+                    mostrar("Debe seleccionar una membresía");
+                    return;
+                }
+
                 String fechaNF = fechaN != null
                         ? fechaN.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                         : "";
@@ -491,7 +643,28 @@ public class PersonasController {
                     nuevo.setFoto(upload.get("secure_url").toString());
                 }
 
+                // === ASIGNACIÓN DE MEMBRESÍA ===
+                ArrayList<Membresia> memArray = gimnasio.getListMembresia();
+
+                for (Membresia m : memArray) {
+                    if (m.getId() == memSeleccionada.getId()) {
+
+                        // 1. Asignar membresía al externo
+                        nuevo.setMembresia(m);
+
+                        // 2. Registrar usuario dentro de la membresía
+                        m.registrarUsuario(nuevo);
+
+                        break;
+                    }
+                }
+
+                // actualizar lista global
+                gimnasio.setListMembresia(memArray);
+
+                // Registrar externo
                 gimnasio.registrarExterno(nuevo);
+                registrarPagoAutomatico(nuevo);
                 listExterno.add(nuevo);
 
                 imagenExterno = null;
@@ -507,6 +680,16 @@ public class PersonasController {
                 });
             }
         }).start();
+    }
+    private void registrarPagoAutomatico(Usuario usuario) {
+
+        Membresia m = usuario.getMembresia();
+        if (m == null) return;
+
+        Pago p = new Pago(usuario.getID(),"Pago de membresía " + m.getTipo(),(int)m.getCosto(),new java.util.Date(),usuario);
+
+
+        gimnasio.registrarPagos(p);
     }
 
 
@@ -561,6 +744,10 @@ public class PersonasController {
 
     @FXML
     private void actualizarEntrenador() {
+        if (gimnasio.isRecep()){
+            mostrar("debes ser Administrador para poder ejecutar esta accion");
+            return;
+        }
         String id = updateIdE.getText();
         String nuevoTel = updateTelE.getText();
         String nuevaDir = updateDirE.getText();
@@ -578,6 +765,10 @@ public class PersonasController {
 
     @FXML
     private void eliminarEntrenador() {
+        if (gimnasio.isRecep()){
+            mostrar("debes ser Administrador para poder ejecutar esta accion");
+            return;
+        }
         String id = deleteIdE.getText();
 
         gimnasio.getAdministrador().eliminarEntrenador(id);

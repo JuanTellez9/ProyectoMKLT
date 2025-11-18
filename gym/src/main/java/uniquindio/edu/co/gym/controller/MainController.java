@@ -48,6 +48,11 @@ public class MainController {
         setContent(Navigator.loadView("ReportesAdminView.fxml"));
     }
 
+    @FXML
+    public void goAcceso() {
+        setContent(Navigator.loadView("ValidacionAcceso.fxml"));
+    }
+
 
     @FXML
     public void goMaquinas() {

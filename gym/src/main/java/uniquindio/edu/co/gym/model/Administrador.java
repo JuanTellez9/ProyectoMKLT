@@ -1,267 +1,163 @@
 package uniquindio.edu.co.gym.model;
+
 import java.util.ArrayList;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+public class Administrador extends Persona implements Ihashes {
 
-//j
-public class Administrador extends Persona implements Ihashes{
     private String titulo;
     private String contrasena;
-    private  Gimnasio gym=Gimnasio.getInstance();
+    private Gimnasio gym = Gimnasio.getInstance();
 
-
-    public Administrador(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String titulo,String contrasena) {
+    public Administrador(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String titulo, String contrasena) {
         super(nombre, ID, telefono, direccion, fechaNacimiento);
         this.titulo = titulo;
-        this.contrasena=contrasena;
+        this.contrasena = contrasena;
     }
+
+    /* ==========================================================
+       ===============   ENTRENADORES CRUD   ====================
+       ========================================================== */
+
     public boolean verificarEntrenador(Entrenador entrenador) {
-        try {
-            boolean bandera = false;
-
-            for (Entrenador ent : gym.getListEntrenadores()) {
-                if (ent.getID().equals(entrenador.getID())) {
-                    bandera = true;
-                    break;
-                }
+        for (Entrenador ent : gym.getListEntrenadores()) {
+            if (ent.getID().equals(entrenador.getID())) {
+                return true;
             }
-
-            return bandera;
-
-        } catch (Exception e) {
-            System.out.println("Error al verificar entrenador: " + e.getMessage());
-            return false;
         }
-
+        return false;
     }
-    public void registrarEntrenador(Entrenador entrenador){
-        try {
-            if (!verificarEntrenador(entrenador)) {
-                gym.registrarEntrenador(entrenador);
-                System.out.println("Entrenador agregado: " + entrenador.getNombre());
-            } else {
-                System.out.println("El entrenador ya existe: " + entrenador.getNombre());
-            }
-        } catch (Exception e) {
-            System.out.println("Error al registrar entrenador: " + e.getMessage());
+
+    public void registrarEntrenador(Entrenador entrenador) {
+        if (!verificarEntrenador(entrenador)) {
+            gym.registrarEntrenador(entrenador);
         }
     }
 
     public void modificarEntrenador(String idEntrenador, String nuevoTelefono, String nuevaDireccion, String nuevoTurno) {
-        try {
-            boolean encontrado = false;
-            ArrayList<Entrenador> arrayE=gym.getListEntrenadores();
-            for (Entrenador ent : arrayE) {
-                if (ent.getID().equals(idEntrenador)) {
-                    ent.setTelefono(nuevoTelefono);
-                    ent.setDireccion(nuevaDireccion);
-                    ent.setTurno(nuevoTurno);
-                    encontrado = true;
-                    gym.setListEntrenadores(arrayE);
-                    System.out.println(" Entrenador actualizado: " + ent.getNombre());
-                    break;
-                }
-            }
+        ArrayList<Entrenador> lista = gym.getListEntrenadores();
 
-            if (!encontrado) {
-                System.out.println(" No se encontró ningún entrenador con ID: " + idEntrenador);
+        for (Entrenador ent : lista) {
+            if (ent.getID().equals(idEntrenador)) {
+                ent.setTelefono(nuevoTelefono);
+                ent.setDireccion(nuevaDireccion);
+                ent.setTurno(nuevoTurno);
+                gym.setListEntrenadores(lista);
+                return;
             }
-
-        } catch (Exception e) {
-            System.out.println("Error al modificar entrenador: " + e.getMessage());
         }
     }
 
-    /**
-     * Método que elimina un entrenador del sistema.
-     */
     public void eliminarEntrenador(String idEntrenador) {
-        try {
-            Entrenador entrenadorAEliminar = null;
-            ArrayList<Entrenador> arrayE=gym.getListEntrenadores();
+        ArrayList<Entrenador> lista = gym.getListEntrenadores();
+        Entrenador eliminar = null;
 
-            for (Entrenador ent : arrayE) {
-                if (ent.getID().equals(idEntrenador)) {
-                    entrenadorAEliminar = ent;
-                    break;
-                }
+        for (Entrenador e : lista) {
+            if (e.getID().equals(idEntrenador)) {
+                eliminar = e;
+                break;
             }
+        }
 
-            if (entrenadorAEliminar != null) {
-                arrayE.remove(entrenadorAEliminar);
-                gym.setListEntrenadores(arrayE);
-                System.out.println(" Entrenador eliminado: " + entrenadorAEliminar.getNombre());
-            } else {
-                System.out.println("No se encontró el entrenador con ID: " + idEntrenador);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error al eliminar entrenador: " + e.getMessage());
+        if (eliminar != null) {
+            lista.remove(eliminar);
+            gym.setListEntrenadores(lista);
         }
     }
 
-    public void asignarEntrenadorAClase(String idClase, Entrenador entrenador) {
-        try {
-            Clase claseEncontrada = null;
-            ArrayList<Clase> arrayC=gym.getListClases();
+    /* ==========================================================
+       ===============   REPORTES CON RETORNO   =================
+       ========================================================== */
 
-            for (Clase c : arrayC) {
-                if (c.getId().equals(idClase)) {
-                    claseEncontrada = c;
-                    if (!verificarEntrenador(entrenador)) {
-                            throw new Exception("El entrenador no está registrado en el sistema.");
-                    }
+    /** Clase Auxiliar Reporte Asistencia **/
+    public static class ReporteAsistencia {
+        private String clase, cupo, asistentes, ocupacion;
 
-                    c.setEntrenador(entrenador);
-
-                    entrenador.agregarClase(c);
-                    gym.setListClases(arrayC);
-                    System.out.println("Entrenador " + entrenador.getNombre() +
-                                " asignado a la clase: " + claseEncontrada.getClaseGrupal());
-
-                    break;
-                }
-            }
-
-
-
-        } catch (Exception e) {
-            System.out.println("Error al asignar entrenador: " + e.getMessage());
+        public ReporteAsistencia(String clase, String cupo, String asistentes, String ocupacion) {
+            this.clase = clase;
+            this.cupo = cupo;
+            this.asistentes = asistentes;
+            this.ocupacion = ocupacion;
         }
+
+        public String getClase() { return clase; }
+        public String getCupo() { return cupo; }
+        public String getAsistentes() { return asistentes; }
+        public String getOcupacion() { return ocupacion; }
     }
 
-    public void generarEstadisticasAsistencia() {
-        ArrayList<Clase> listClases=gym.getListClases();
-        try {
-            System.out.println("\n------ REPORTE DE ASISTENCIA ------");
+    /** Retorna lista formateada para tabla Asistencia */
+    public ArrayList<ReporteAsistencia> generarEstadisticasAsistencia() {
+        ArrayList<ReporteAsistencia> result = new ArrayList<>();
 
-            if (listClases.isEmpty()) {
-                System.out.println("No hay clases registradas en el sistema.");
-                return;
-            }
+        for (Clase clase : gym.getListClases()) {
 
-            for (Clase clase : listClases) {
-                int asistentes = 0;
-                int cupoMaximo = clase.getCupoMaximo();
+            int asistentes = (clase.getListUsario() != null)
+                    ? clase.getListUsario().size()
+                    : 0;
 
-                // Si la clase tiene usuarios inscritos
-                if (clase.getListUsario() != null) {
-                    asistentes = clase.getListUsario().size();
-                }
+            int cupo = clase.getCupoMaximo();
 
-                double porcentajeOcupacion = 0;
-                if (cupoMaximo > 0) {
-                    porcentajeOcupacion = (asistentes * 100.0) / cupoMaximo;
-                }
+            double porc = (cupo > 0)
+                    ? (asistentes * 100.0 / cupo)
+                    : 0;
 
-                System.out.println("- Clase: " + clase.getClaseGrupal());
-                System.out.println("  • Cupo máximo: " + cupoMaximo);
-                System.out.println("  • Asistentes: " + asistentes);
-                System.out.println("  • Ocupación: " + String.format("%.2f", porcentajeOcupacion) + "%");
-                System.out.println("--------------------------------------");
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error al generar el reporte de asistencia: " + e.getMessage());
+            result.add(new ReporteAsistencia(
+                    clase.getClaseGrupal().toString(),
+                    String.valueOf(cupo),
+                    String.valueOf(asistentes),
+                    String.format("%.2f%%", porc)
+            ));
         }
+        return result;
     }
-    /**
-     *
-     * Calcula los ingresos totales por membresías registradas en el historial de pagos.
-     */
-    public void generarIngresosPorMembresias() {
-        try {
-            System.out.println("----- REPORTE DE INGRESOS POR MEMBRESÍAS -----");
-            ArrayList<Pago> historialPagos=gym.getListPagos();
 
-            if (historialPagos == null || historialPagos.isEmpty()) {
-                System.out.println("No hay pagos registrados.");
-                return;
-            }
 
-            double totalMembresias = 0;
-            int cantidadMembresias = 0;
+    /** Clase Auxiliar Reporte Ingresos */
+    public static class ReporteIngresos {
+        private String cantidad, total;
 
-            for (Pago pago : historialPagos) {
-
-                totalMembresias += pago.getValor();
-                cantidadMembresias++;
-
-            }
-
-            System.out.println("Cantidad de pagos por membresía: " + cantidadMembresias);
-            System.out.println("Total recaudado por membresías: $" + totalMembresias);
-            System.out.println("----------------------------------------------\n");
-
-        } catch (Exception e) {
-            System.out.println("Error al generar reporte de ingresos por membresías: " + e.getMessage());
+        public ReporteIngresos(String cantidad, String total) {
+            this.cantidad = cantidad;
+            this.total = total;
         }
+
+        public String getCantidad() { return cantidad; }
+        public String getTotal() { return total; }
     }
-    public void generarReporteClasesMasPopulares() {
-        try {
-            System.out.println("\n------ REPORTE: CLASES MÁS POPULARES ------");
-            ArrayList<Clase> listClases=gym.getListClases();
-            if (listClases == null || listClases.isEmpty()) {
-                System.out.println("No hay clases registradas en el sistema.");
-                return;
-            }
 
-            // Variables para encontrar la clase más popular
-            Clase claseMasPopular = null;
-            int maxAsistentes = -1;
+    public ReporteIngresos generarIngresosPorMembresias() {
+        ArrayList<Pago> pagos = gym.getListPagos();
 
-            // Recorrer todas las clases
-            for (Clase clase : listClases) {
-                int asistentes = 0;
-
-                // Si la clase tiene lista de usuarios, contar los asistentes
-                if (clase.getListUsario() != null) {
-                    asistentes = clase.getListUsario().size();
-                }
-
-                System.out.println("- Clase: " + clase.getClaseGrupal() +
-                        " | Asistentes: " + asistentes +
-                        " | Cupo: " + clase.getCupoMaximo());
-
-                // Actualizar la clase más popular
-                if (asistentes > maxAsistentes) {
-                    maxAsistentes = asistentes;
-                    claseMasPopular = clase;
-                }
-            }
-
-            // Mostrar resultado final
-            if (claseMasPopular != null) {
-                System.out.println("\n La clase más popular es: " + claseMasPopular.getClaseGrupal());
-                System.out.println("   Con " + maxAsistentes + " asistentes.");
-            } else {
-                System.out.println("No se encontró ninguna clase con asistentes.");
-            }
-
-            System.out.println("---------------------------------------------");
-
-        } catch (Exception e) {
-            System.out.println("Error al generar el reporte de clases populares: " + e.getMessage());
+        if (pagos == null || pagos.isEmpty()) {
+            return new ReporteIngresos("0", "$0");
         }
+
+        int cantidad = pagos.size();
+        double total = pagos.stream().mapToDouble(Pago::getValor).sum();
+
+        return new ReporteIngresos(
+                String.valueOf(cantidad),
+                "$" + total
+        );
     }
 
 
-    public String getContrasena() {
-        return contrasena;
+    /** Reporte clases ordenadas por popularidad */
+    public ArrayList<Clase> generarReporteClasesMasPopulares() {
+        ArrayList<Clase> result = new ArrayList<>(gym.getListClases());
+
+        result.sort((a, b) -> {
+            int asA = (a.getListUsario() != null) ? a.getListUsario().size() : 0;
+            int asB = (b.getListUsario() != null) ? b.getListUsario().size() : 0;
+            return Integer.compare(asB, asA);
+        });
+
+        return result;
     }
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-   
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
+    /* GETTERS Y SETTERS */
+    public String getContrasena() { return contrasena; }
+    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 }

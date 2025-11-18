@@ -28,7 +28,8 @@
             <Button text="Membresías"   onAction="#goMembresias"  styleClass="btn-nav"/>
             <Button text="Máquinas"     onAction="#goMaquinas"    styleClass="btn-nav"/>
             <Button text="Pagos"        onAction="#goPagos"       styleClass="btn-nav"/>
-            <Button text="Reportes" onAction="#goReportes" styleClass="btn-nav"/>
+            <Button text="Reportes"     onAction="#goReportes"    styleClass="btn-nav"/>
+            <Button text="Acceso" onAction="#goAcceso" styleClass="btn-nav"/>
             <Pane VBox.vgrow="ALWAYS"/>
            <!-- <Button text="⚙ Ajustes"    styleClass="btn btn-muted"/> -->
         </VBox>
