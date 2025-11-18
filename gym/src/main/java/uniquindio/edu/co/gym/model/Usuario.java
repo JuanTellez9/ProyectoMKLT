@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public abstract class Usuario extends Persona {
     private LocalDate fechaCreacion;
     private ArrayList<Pago> listpagos;
-    private ArrayList<Clase> listClases;
     private Membresia membresia;
 
     public Usuario(String nombre, String ID, String telefono, String direccion, String fechaNacimiento,LocalDate fechaCreacion) {
@@ -25,19 +24,12 @@ public abstract class Usuario extends Persona {
         this.listpagos = listpagos;
     }
 
-    public void setListClases(ArrayList<Clase> listClases) {
-        this.listClases = listClases;
-    }
 
-    public ArrayList<Clase> getListClases() {
-        return listClases;
-    }
 
     public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
 
-    
 
     public void setFechaCreacion(LocalDate fechaCreacion) {
         this.fechaCreacion = fechaCreacion;

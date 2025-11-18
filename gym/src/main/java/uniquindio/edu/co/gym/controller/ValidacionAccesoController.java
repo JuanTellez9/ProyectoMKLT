@@ -30,30 +30,48 @@ public class ValidacionAccesoController {
     private final Gimnasio gym = Gimnasio.getInstance();
 
 
-    // -------------------------
-    //  VALIDAR ACCESO
-    // -------------------------
-    private LocalDate convertir(Date date) {
-        return date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+    private boolean campoVacio(String valor, String nombreCampo) {
+        if (valor == null || valor.trim().isEmpty()) {
+            mostrar("Falta llenar el campo: " + nombreCampo);
+            return true;
+        }
+        return false;
     }
+
+    private boolean correoInvalido(String correo) {
+        return !correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+    }
+
 
     @FXML
     private void validarAcceso() {
 
         String id = txtBuscarID.getText().trim();
 
-        if (id.isEmpty()) {
-            mostrar("Debe ingresar un ID.");
-            return;
-        }
-
-        Usuario u = buscarUsuario(id);
-
-        if (u == null) {
-            mostrar("No existe un usuario con ese ID.");
+        // ===== VALIDACIONES =====
+        if (campoVacio(id, "ID del usuario")) {
             boxInfo.setVisible(false);
             return;
         }
+
+        Recepcionista recep = gym.obtenerRecepcionistaActual();
+
+        if (recep == null) {
+            mostrar("No hay recepcionista logueado.");
+            return;
+        }
+
+        // ===== USAR LÓGICA DE RECEPCIONISTA =====
+        Recepcionista.ResultadoAcceso r = recep.validarAcceso(id);
+
+        if (r.usuario == null) {
+            boxInfo.setVisible(false);
+            mostrar(r.mensaje);
+            return;
+        }
+
+        Usuario u = r.usuario;
 
         boxInfo.setVisible(true);
 
@@ -64,46 +82,14 @@ public class ValidacionAccesoController {
 
         Membresia mem = u.getMembresia();
 
-        if (mem == null) {
-            lblMembresia.setText("Membresía: No registrada");
-            lblEstado.setText("ESTADO: SIN ACCESO");
-            lblEstado.setStyle("-fx-text-fill: red;");
-            return;
-        }
-
         lblMembresia.setText("Membresía: " + mem.getTipo() + " — $" + mem.getCosto());
+        lblEstado.setText("ESTADO: " + r.mensaje);
 
-        // Convertir fechas
-        LocalDate hoy = LocalDate.now();
-        LocalDate inicio = convertir(mem.getFechaInicio());
-        LocalDate fin = convertir(mem.getFechaVencimiento());
-
-        if (hoy.isBefore(inicio) || hoy.isAfter(fin)) {
-            lblEstado.setText("ESTADO: MEMBRESÍA VENCIDA X");
-            lblEstado.setStyle("-fx-text-fill: red;");
-        } else {
-            lblEstado.setText("ESTADO: ACCESO PERMITIDO ✔");
-            lblEstado.setStyle("-fx-text-fill: green;");
-        }
+        lblEstado.setStyle(r.permitido ? "-fx-text-fill: green;" : "-fx-text-fill: red;");
     }
 
-    // -------------------------
-    //  BUSCAR USUARIO EN LISTAS
-    // -------------------------
-    private Usuario buscarUsuario(String id) {
 
-        ArrayList<Usuario> todos = new ArrayList<>();
 
-        todos.addAll(gym.getListEstudiante());
-        todos.addAll(gym.getListTrabajadorUQ());
-        todos.addAll(gym.getListExterno());
-
-        for (Usuario u : todos) {
-            if (u.getID().equals(id)) return u;
-        }
-
-        return null;
-    }
 
 
     // -------------------------
@@ -120,8 +106,11 @@ public class ValidacionAccesoController {
 
         String correo = txtEmail.getText().trim();
 
-        if (correo.isEmpty()) {
-            mostrar("Debe ingresar un correo.");
+        // ===== VALIDACIONES =====
+        if (campoVacio(correo, "Correo electrónico")) return;
+
+        if (correoInvalido(correo)) {
+            mostrar("El correo ingresado no es válido.");
             return;
         }
 
@@ -139,14 +128,13 @@ public class ValidacionAccesoController {
                         "Desde Gimnasio UQ queremos decirte que tu membresía está por vencer o ya venció.\nPor favor vuelve pronto."
                 );
 
-                Platform.runLater(() -> mostrar("Correo enviado correctamente "));
+                Platform.runLater(() -> mostrar("Correo enviado correctamente."));
 
             } catch (Exception e) {
                 e.printStackTrace();
                 Platform.runLater(() -> mostrar("Error al enviar el correo."));
             }
 
-            // Desactivar loader
             Platform.runLater(() -> {
                 loaderEmail.setVisible(false);
                 btnEnviar.setDisable(false);
@@ -154,6 +142,7 @@ public class ValidacionAccesoController {
 
         }).start();
     }
+
 
 
 }

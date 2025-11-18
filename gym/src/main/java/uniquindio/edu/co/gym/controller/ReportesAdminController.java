@@ -136,52 +136,29 @@ public class ReportesAdminController {
     public void cargarActivos() {
 
         if (!gym.isRecep()) {
-            mostrar("Debes ser Recepcionista para poder ejecutar esta acción");
+            mostrar("Debes ser Recepcionista para esta acción");
             return;
         }
 
-        tablaActivos.getItems().clear();
+        Recepcionista recep = gym.obtenerRecepcionistaActual();
 
-        for (Usuario u : gym.getTodosLosUsuarios()) {
-
-            Membresia mem = u.getMembresia();
-
-            if (mem == null) continue;
-
-            LocalDate hoy = LocalDate.now();
-            LocalDate ini = mem.getFechaInicio().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-            LocalDate fin = mem.getFechaVencimiento().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-
-            if (!hoy.isBefore(ini) && !hoy.isAfter(fin)) {
-                tablaActivos.getItems().add(u);
-            }
-        }
+        tablaActivos.getItems().setAll(recep.obtenerUsuariosActivos());
     }
+
 
     @FXML
     public void cargarVencidos() {
 
         if (!gym.isRecep()) {
-            mostrar("Debes ser Recepcionista para poder ejecutar esta acción");
+            mostrar("Debes ser Recepcionista para esta acción");
             return;
         }
 
-        tablaVencidos.getItems().clear();
+        Recepcionista recep = gym.obtenerRecepcionistaActual();
 
-        for (Usuario u : gym.getTodosLosUsuarios()) {
-
-            Membresia mem = u.getMembresia();
-
-            if (mem == null) continue;
-
-            LocalDate hoy = LocalDate.now();
-            LocalDate fin = mem.getFechaVencimiento().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-
-            if (hoy.isAfter(fin)) {
-                tablaVencidos.getItems().add(u);
-            }
-        }
+        tablaVencidos.getItems().setAll(recep.obtenerUsuariosVencidos());
     }
+
 
 
 }

@@ -10,23 +10,18 @@ import java.util.List;
 public  class Recepcionista extends Persona implements Ihashes {
     private String turno;
     private String contrasena;
-    private ArrayList<Clase> listClases;
-    private ArrayList<Membresia> listMembresias;
-    private ArrayList<Usuario> listUsuarios;
+    private Gimnasio gym= Gimnasio.getInstance();
 
 
     public Recepcionista(String nombre, String ID, String telefono, String direccion, String fechaNacimiento, String turno,String contrasena) {
         super(nombre, ID, telefono, direccion, fechaNacimiento);
         this.turno = turno;
         this.contrasena= Arrays.toString(hashearContrasenaBytes(contrasena));
-        this.listClases = new ArrayList<>();
-        this.listMembresias = new ArrayList<>();
-        this.listUsuarios = new ArrayList<>();
     }
 
     public boolean verificarUsuario(Usuario usuario){
         boolean bandera = false;
-        for(Usuario usu : listUsuarios){
+        for(Usuario usu : gym.getTodosLosUsuarios()){
             if(usu.getID().equals(usuario.getID())){
                 bandera = true;
                 break;
@@ -34,154 +29,207 @@ public  class Recepcionista extends Persona implements Ihashes {
         }
         return bandera;
     }
-    public void registrarUsuario(Usuario usuario) {
-        if (!verificarUsuario(usuario)) {
-            listUsuarios.add(usuario);
-            System.out.println("Usuario registrado: " + usuario.getNombre());
-        } else {
-            System.out.println("El usuario ya existe" + usuario.getNombre());
+    private void registrarPagoAutomatico(Usuario usuario) {
+
+        Membresia m = usuario.getMembresia();
+        if (m == null) return;
+
+        Pago p = new Pago(usuario.getID(),"Pago de membresía " + m.getTipo(),(int)m.getCosto(),new java.util.Date(),usuario);
+
+
+        gym.registrarPagos(p);
+    }
+    public void registrarEstudiante(Estudiante est, Membresia membresia) {
+        if (est == null || membresia == null) return;
+
+        est.setMembresia(membresia);
+        membresia.registrarUsuario(est);
+        gym.registrarEstudiante(est);
+
+        registrarPagoAutomatico(est);
+    }
+
+    public void registrarTrabajadorUQ(TrabajadorUQ trab, Membresia membresia) {
+        if (trab == null || membresia == null) return;
+
+        trab.setMembresia(membresia);
+        membresia.registrarUsuario(trab);
+        gym.registrarTrabajadorUQ(trab);
+
+        registrarPagoAutomatico(trab);
+    }
+    public class ResultadoAcceso {
+        public String mensaje;
+        public Usuario usuario;
+        public boolean permitido;
+
+        public ResultadoAcceso(String mensaje, Usuario usuario, boolean permitido) {
+            this.mensaje = mensaje;
+            this.usuario = usuario;
+            this.permitido = permitido;
         }
     }
 
-    public void reservarClase(Gimnasio gimnasio, Usuario usuario, Clase clase) {
-        try {
-            if (gimnasio == null || usuario == null || clase == null) {
-                System.out.println("Error: datos inválidos (usuario, clase o gimnasio nulo).");
-                return;
-            }
+    public ResultadoAcceso validarAcceso(String idUsuario) {
 
-            boolean encontrada = false;
-            Clase claseEncontrada = null;
-
-            for (Clase c : gimnasio.getListClases()) {
-                if (c.getId().equals(clase.getId())) {
-                    encontrada = true;
-                    claseEncontrada = c;
-                }
-            }
-
-            if (!encontrada) {
-                System.out.println("Error: la clase '" + clase.getId() + "' no está registrada en el gimnasio.");
-                return;
-            }
-
-            if (claseEncontrada.getCupoMaximo() <= 0) {
-                System.out.println("Error: no hay cupos disponibles para la clase '" + clase.getId() + "'.");
-                return;
-            }
-
-            if (usuario.getListClases().contains(claseEncontrada)) {
-                System.out.println("El usuario '" + usuario.getNombre() + "' ya tiene reservada la clase '"
-                        + clase.getId() + "'.");
-                return;
-            }
-
-            usuario.getListClases().add(claseEncontrada);
-            claseEncontrada.setCupoMaximo(claseEncontrada.getCupoMaximo() - 1);
-
-            System.out.println("Clase '" + claseEncontrada.getId() + "' reservada exitosamente para "
-                    + usuario.getNombre() + ". Cupos restantes: " + claseEncontrada.getCupoMaximo());
-
-        } catch (Exception e) {
-            System.out.println("Error al reservar la clase: " + e.getMessage());
+        if (idUsuario == null || idUsuario.isEmpty()) {
+            return new ResultadoAcceso("Debe ingresar un ID.", null, false);
         }
-    }
-    public void asignarMembresia(Usuario usuario, Membresia membresia) {
-        try {
-            if (usuario == null || membresia == null) {
-                System.out.println("Error: el usuario o la membresía son nulos.");
-                return;
+
+        // Obtener todos los usuarios
+        ArrayList<Usuario> todos = new ArrayList<>();
+        todos.addAll(gym.getListEstudiante());
+        todos.addAll(gym.getListTrabajadorUQ());
+        todos.addAll(gym.getListExterno());
+
+        Usuario u = null;
+
+        for (Usuario usu : todos) {
+            if (usu.getID().equals(idUsuario)) {
+                u = usu;
+                break;
             }
-
-            usuario.setMembresia(membresia);
-            System.out.println("Membresía " + membresia.getTipo() + " asignada al usuario " + usuario.getID());
-
-        } catch (Exception e) {
-            System.out.println("Error al asignar la membresía: " + e.getMessage());
         }
+
+        if (u == null) {
+            return new ResultadoAcceso("No existe un usuario con ese ID.", null, false);
+        }
+
+        Membresia mem = u.getMembresia();
+
+        if (mem == null) {
+            return new ResultadoAcceso("Usuario sin membresía registrada. SIN ACCESO.", u, false);
+        }
+
+        LocalDate hoy = LocalDate.now();
+        LocalDate inicio = mem.getFechaInicio().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        LocalDate fin = mem.getFechaVencimiento().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+        if (hoy.isBefore(inicio) || hoy.isAfter(fin)) {
+            return new ResultadoAcceso("MEMBRESÍA VENCIDA ❌", u, false);
+        }
+
+        return new ResultadoAcceso("ACCESO PERMITIDO ✔", u, true);
     }
 
-    public boolean controlAcceso(Usuario usuario) {
-        try {
-            if (usuario == null) {
-                System.out.println("Usuario incorrecto");
-                return false;
-            }
 
-            if (usuario.getMembresia() != null && usuario.getMembresia().isActiva()) {
-                System.out.println("La membresía está activa para " + usuario.getNombre());
-                return true;
-            } else {
-                System.out.println("La membresía es inactiva o inexistente, por favor vuelve al gym.");
-                return false;
-            }
 
-        } catch (Exception e) {
-            System.out.println("Error al verificar el acceso: " + e.getMessage());
-            return false;
-        }
+    public void registrarExterno(Externo ext, Membresia membresia) {
+        if (ext == null || membresia == null) return;
+
+        ext.setMembresia(membresia);
+        membresia.registrarUsuario(ext);
+        gym.registrarExterno(ext);
+
+        registrarPagoAutomatico(ext);
     }
-    public void generarReporte(Gimnasio gimnasio) {
-        try {
-            if (gimnasio == null) {
-                System.out.println("Error: el gimnasio es nulo.");
-                return;
-            }
+    public String registrarUsuarioEnClase(String idUsuario, Clase clase) {
 
-            System.out.println("===== REPORTE GENERAL DEL GIMNASIO =====");
-            System.out.println("Fecha de generación: " + LocalDate.now());
-            System.out.println();
-
-            System.out.println("USUARIOS ACTIVOS:");
-            for (Usuario u : gimnasio.getListUsuarios()) {
-                if (u.getMembresia() != null && u.getMembresia().isActiva()) {
-                    System.out.println("- " + u.getNombre() + " | ID: " + u.getID() + " | Tipo membresía: " + u.getMembresia().getTipo());
-                }
-            }
-
-            System.out.println();
-            System.out.println("VENCIMIENTO DE MEMBRESÍAS:");
-            for (Usuario u : gimnasio.getListUsuarios()) {
-                if (u.getMembresia() != null) {
-                    System.out.println("- " + u.getNombre() + " | Vence: " + u.getMembresia().getFechaVencimiento());
-                }
-            }
-
-            System.out.println();
-            System.out.println("CLASES MÁS RESERVADAS:");
-            if (gimnasio.getListClases().isEmpty()) {
-                System.out.println("No hay clases registradas.");
-            } else {
-                Clase claseMasReservada = null;
-                int maxReservas = -1;
-
-                for (Clase c : gimnasio.getListClases()) {
-                    int reservas = 0;
-                    for (Usuario u : gimnasio.getListUsuarios()) {
-                        if (u.getListClases().contains(c)) {
-                            reservas++;
-                        }
-                    }
-
-                    if (reservas > maxReservas) {
-                        maxReservas = reservas;
-                        claseMasReservada = c;
-                    }
-                }
-
-                if (claseMasReservada != null) {
-                    System.out.println("Clase: " + claseMasReservada.getId() + " | Reservas: " + maxReservas);
-                } else {
-                    System.out.println("No se encontraron reservas de clases.");
-                }
-            }
-
-            System.out.println("========================================");
-
-        } catch (Exception e) {
-            System.out.println("Error al generar el reporte: " + e.getMessage());
+        if (idUsuario == null || idUsuario.isEmpty() || clase == null) {
+            return "Debe ingresar un ID y seleccionar una clase.";
         }
+
+        // 1. Obtener todos los usuarios
+        List<Usuario> todos = gym.getTodosLosUsuarios();
+
+        // 2. Buscar usuario por ID
+        Usuario usuario = null;
+        for (Usuario u : todos) {
+            if (u.getID().equals(idUsuario)) {
+                usuario = u;
+                break;
+            }
+        }
+
+        if (usuario == null) {
+            return "No existe un usuario con ese ID.";
+        }
+
+        // 3. Validar membresía
+        Membresia mem = usuario.getMembresia();
+        if (mem == null) {
+            return "El usuario no tiene membresía asignada.";
+        }
+
+
+        LocalDate hoy = LocalDate.now();
+        LocalDate ini = mem.getFechaInicio().toInstant()
+                .atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+        LocalDate fin = mem.getFechaVencimiento().toInstant()
+                .atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+        if (hoy.isBefore(ini) || hoy.isAfter(fin)) {
+            return "La membresía del usuario está vencida. No puede acceder a clases.";
+        }
+
+        // ✔ Validación por nivel
+        if (mem.getNivel() == Nivel.BASICO) {
+            return "El plan Básico no permite acceso a clases grupales.";
+        }
+
+        // 4. Validar cupos reales (listUsario)
+        ArrayList<Usuario> inscritos = clase.getListUsario();
+        int cupoReal = clase.getCupoMaximo() - inscritos.size();
+
+        if (cupoReal <= 0) {
+            return "No hay cupos disponibles.";
+        }
+
+        // 5. Verificar si ya está inscrito
+        if (inscritos.contains(usuario)) {
+            return "El usuario ya está inscrito en esta clase.";
+        }
+
+        // 6. Registrar
+        clase.inscribirUsuario(usuario);
+
+        return "OK";
     }
+
+
+
+
+    public ArrayList<Usuario> obtenerUsuariosActivos() {
+        ArrayList<Usuario> activos = new ArrayList<>();
+        LocalDate hoy = LocalDate.now();
+
+        for (Usuario u : gym.getTodosLosUsuarios()) {
+
+            if (u.getMembresia() == null) continue;
+
+            LocalDate ini = u.getMembresia().getFechaInicio()
+                    .toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+            LocalDate fin = u.getMembresia().getFechaVencimiento()
+                    .toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+            if (!hoy.isBefore(ini) && !hoy.isAfter(fin)) {
+                activos.add(u);
+            }
+        }
+
+        return activos;
+    }
+
+    public ArrayList<Usuario> obtenerUsuariosVencidos() {
+        ArrayList<Usuario> vencidos = new ArrayList<>();
+        LocalDate hoy = LocalDate.now();
+
+        for (Usuario u : gym.getTodosLosUsuarios()) {
+
+            if (u.getMembresia() == null) continue;
+
+            LocalDate fin = u.getMembresia().getFechaVencimiento()
+                    .toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+
+            if (hoy.isAfter(fin)) {
+                vencidos.add(u);
+            }
+        }
+
+        return vencidos;
+    }
+
 
 
 
@@ -195,17 +243,7 @@ public  class Recepcionista extends Persona implements Ihashes {
 
 
 
-    public void setListClases(ArrayList<Clase> listClases) {
-        this.listClases = listClases;
-    }
 
-    public void setListUsario(ArrayList<Usuario> listUsario) {
-        this.listUsuarios = listUsario;
-    }
-
-    public ArrayList<Clase> getListClases() {
-        return listClases;
-    }
 
   
 
@@ -216,11 +254,6 @@ public  class Recepcionista extends Persona implements Ihashes {
     public void setTurno(String turno) {
         this.turno = turno;
     }
-
-    public List<Membresia> getListMembresias() { return listMembresias; }
-
-    public void setListMembresias(ArrayList<Membresia> listMembresias) { this.listMembresias = listMembresias; }
-
 
 
   

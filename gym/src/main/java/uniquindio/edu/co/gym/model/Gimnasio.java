@@ -262,6 +262,28 @@ public class Gimnasio {
         return  true;
     }
 
+    public Recepcionista obtenerRecepcionistaActual() {
+
+        UsuarioLogueado p = UsuarioLogueado.getInstance();
+        Persona per=p.getUsuario();
+        Recepcionista recep=null;
+
+
+        if (per.getID()!=null) {
+            for (Recepcionista rr : listRecepcionista) {
+                if (rr.getID().equals(per.getID())) {
+                    recep=rr;// Devolver el recepcionista completo
+                    break;
+                }
+            }
+        }
+        if(recep==null){
+            recep=listRecepcionista.get(0);
+        }
+        return recep;
+    }
+
+
     public ArrayList<Usuario> getTodosLosUsuarios() {
         ArrayList<Usuario> lista = new ArrayList<>();
 

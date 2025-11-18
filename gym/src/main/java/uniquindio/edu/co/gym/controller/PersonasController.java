@@ -161,6 +161,8 @@ public class PersonasController {
     @FXML private TableColumn<TrabajadorUQ, String> colMembresiaT;
     @FXML private TableColumn<Externo, String> colMembresiaEx;
 
+    @FXML private TextField deleteIdE;
+
 
     // ================== INIT ==================
     @FXML
@@ -302,6 +304,22 @@ public class PersonasController {
         );
         return fc.showOpenDialog(null);
     }
+    private boolean campoVacio(String valor, String nombreCampo) {
+        if (valor == null || valor.trim().isEmpty()) {
+            mostrar("Falta llenar el campo: " + nombreCampo);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean fechaVacia(LocalDate fecha, String nombreCampo) {
+        if (fecha == null) {
+            mostrar("Debe seleccionar la fecha: " + nombreCampo);
+            return true;
+        }
+        return false;
+    }
+
 
     @FXML
     private void seleccionarImagenRecepcionista() {
@@ -332,6 +350,13 @@ public class PersonasController {
 
     @FXML
     private void guardarRecepcionista() {
+        if (campoVacio(textNombreR.getText(), "Nombre")) return;
+        if (campoVacio(textIdR.getText(), "ID")) return;
+        if (campoVacio(textTelefonoR.getText(), "Teléfono")) return;
+        if (campoVacio(textTurnoR.getText(), "Turno")) return;
+        if (campoVacio(textDireccionR.getText(), "Dirección")) return;
+        if (campoVacio(textContrasenaR.getText(), "Contraseña")) return;
+        if (fechaVacia(textFechaNR.getValue(), "Fecha de nacimiento")) return;
         btnNuevoRecep.setDisable(true);
         btnNuevoRecep.setText("Guardando...");
         loaderRecepcionista.setVisible(true);
@@ -386,10 +411,18 @@ public class PersonasController {
 
     @FXML
     private void guardarEntrenador() {
+
         if (gimnasio.isRecep()){
             mostrar("debes ser Administrador para poder ejecutar esta accion");
             return;
         }
+        // Validaciones
+        if (campoVacio(textNombreE.getText(), "Nombre")) return;
+        if (campoVacio(textIdE.getText(), "ID")) return;
+        if (campoVacio(textTelefonoE.getText(), "Teléfono")) return;
+        if (campoVacio(textTurnoE.getText(), "Turno")) return;
+        if (campoVacio(textDireccionE.getText(), "Dirección")) return;
+        if (fechaVacia(textFechaNE.getValue(), "Fecha de nacimiento")) return;
         btnNuevoEntrenador.setDisable(true);
         btnNuevoEntrenador.setText("Guardando...");
         loaderEntrenador.setVisible(true);
@@ -441,12 +474,28 @@ public class PersonasController {
             mostrar("debes ser Recepcionista para poder ejecutar esta accion");
             return;
         }
+        // VALIDACIONES
+        if (campoVacio(textNombreEs.getText(), "Nombre")) return;
+        if (campoVacio(textIdEs.getText(), "ID")) return;
+        if (campoVacio(textTelefonoEs.getText(), "Teléfono")) return;
+        if (campoVacio(textDireccionEs.getText(), "Dirección")) return;
+        if (fechaVacia(dateFechaNEs.getValue(), "Fecha de nacimiento")) return;
+        if (fechaVacia(dateFechaCEs.getValue(), "Fecha de creación")) return;
+        if (campoVacio(textProgramaEs.getText(), "Programa")) return;
+        if (campoVacio(textSemestreEs.getText(), "Semestre")) return;
+        if (campoVacio(textFacultadEs.getText(), "Facultad")) return;
+
+        if (comboMembresiaEs.getValue() == null) {
+            mostrar("Debe seleccionar una membresía");
+            return;
+        }
         btnNuevoEstudiante.setDisable(true);
         btnNuevoEstudiante.setText("Guardando...");
         loaderEstudiante.setVisible(true);
 
         new Thread(() -> {
             try {
+                Recepcionista recep = gimnasio.obtenerRecepcionistaActual();
                 String nombre = textNombreEs.getText();
                 String id = textIdEs.getText();
                 String tel = textTelefonoEs.getText();
@@ -481,13 +530,14 @@ public class PersonasController {
 
                 // === ASIGNACIÓN DE MEMBRESÍA ===
                 ArrayList<Membresia> memArray = gimnasio.getListMembresia();
-
+                Membresia mem=null;
                 for (Membresia m : memArray) {
 
                     if (m.getId() == memSeleccionada.getId()) {
 
                         // 1. Asignar la membresía al usuario
                         nuevo.setMembresia(m);
+                        mem=m;
 
                         // 2. Registrar el usuario dentro de esa membresía
                         m.registrarUsuario(nuevo);
@@ -500,8 +550,7 @@ public class PersonasController {
                 gimnasio.setListMembresia(memArray);
 
                 // Registrar estudiante
-                gimnasio.registrarEstudiante(nuevo);
-                registrarPagoAutomatico(nuevo);
+                recep.registrarEstudiante(nuevo,mem);
                 listEstudiante.add(nuevo);
 
                 imagenEstudiante = null;
@@ -526,6 +575,22 @@ public class PersonasController {
             mostrar("debes ser Recepcionista para poder ejecutar esta accion");
             return;
         }
+        // VALIDACIONES
+        if (campoVacio(textNombreEs.getText(), "Nombre")) return;
+        if (campoVacio(textIdEs.getText(), "ID")) return;
+        if (campoVacio(textTelefonoEs.getText(), "Teléfono")) return;
+        if (campoVacio(textDireccionEs.getText(), "Dirección")) return;
+        if (fechaVacia(dateFechaNEs.getValue(), "Fecha de nacimiento")) return;
+        if (fechaVacia(dateFechaCEs.getValue(), "Fecha de creación")) return;
+        if (campoVacio(textProgramaEs.getText(), "Programa")) return;
+        if (campoVacio(textSemestreEs.getText(), "Semestre")) return;
+        if (campoVacio(textFacultadEs.getText(), "Facultad")) return;
+
+        if (comboMembresiaT.getValue() == null) {
+            mostrar("Debe seleccionar una membresía");
+            return;
+        }
+        Recepcionista recep = gimnasio.obtenerRecepcionistaActual();
 
         btnNuevoTrabajador.setDisable(true);
         btnNuevoTrabajador.setText("Guardando...");
@@ -565,13 +630,13 @@ public class PersonasController {
 
                 // === ASIGNACIÓN DE MEMBRESÍA ===
                 ArrayList<Membresia> memArray = gimnasio.getListMembresia();
-
+                Membresia mem=null;
                 for (Membresia m : memArray) {
                     if (m.getId() == memSeleccionada.getId()) {
 
                         // 1. Asignar membresía al trabajador
                         nuevo.setMembresia(m);
-
+                        mem=m;
                         // 2. Registrar usuario en la membresía
                         m.registrarUsuario(nuevo);
 
@@ -583,8 +648,7 @@ public class PersonasController {
                 gimnasio.setListMembresia(memArray);
 
                 // Registrar trabajador
-                gimnasio.registrarTrabajadorUQ(nuevo);
-                registrarPagoAutomatico(nuevo);
+                recep.registrarTrabajadorUQ(nuevo,mem);
 
                 listTrabajadorUQ.add(nuevo);
 
@@ -609,6 +673,22 @@ public class PersonasController {
             mostrar("debes ser Recepcionista para poder ejecutar esta accion");
             return;
         }
+        // VALIDACIONES
+        if (campoVacio(textNombreEs.getText(), "Nombre")) return;
+        if (campoVacio(textIdEs.getText(), "ID")) return;
+        if (campoVacio(textTelefonoEs.getText(), "Teléfono")) return;
+        if (campoVacio(textDireccionEs.getText(), "Dirección")) return;
+        if (fechaVacia(dateFechaNEs.getValue(), "Fecha de nacimiento")) return;
+        if (fechaVacia(dateFechaCEs.getValue(), "Fecha de creación")) return;
+        if (campoVacio(textProgramaEs.getText(), "Programa")) return;
+        if (campoVacio(textSemestreEs.getText(), "Semestre")) return;
+        if (campoVacio(textFacultadEs.getText(), "Facultad")) return;
+
+        if (comboMembresiaEx.getValue() == null) {
+            mostrar("Debe seleccionar una membresía");
+            return;
+        }
+        Recepcionista recep = gimnasio.obtenerRecepcionistaActual();
         btnNuevoExterno.setDisable(true);
         btnNuevoExterno.setText("Guardando...");
         loaderExterno.setVisible(true);
@@ -645,13 +725,14 @@ public class PersonasController {
 
                 // === ASIGNACIÓN DE MEMBRESÍA ===
                 ArrayList<Membresia> memArray = gimnasio.getListMembresia();
+                Membresia mem=null;
 
                 for (Membresia m : memArray) {
                     if (m.getId() == memSeleccionada.getId()) {
 
                         // 1. Asignar membresía al externo
                         nuevo.setMembresia(m);
-
+                        mem=m;
                         // 2. Registrar usuario dentro de la membresía
                         m.registrarUsuario(nuevo);
 
@@ -663,8 +744,7 @@ public class PersonasController {
                 gimnasio.setListMembresia(memArray);
 
                 // Registrar externo
-                gimnasio.registrarExterno(nuevo);
-                registrarPagoAutomatico(nuevo);
+                recep.registrarExterno(nuevo,mem);
                 listExterno.add(nuevo);
 
                 imagenExterno = null;
@@ -681,16 +761,7 @@ public class PersonasController {
             }
         }).start();
     }
-    private void registrarPagoAutomatico(Usuario usuario) {
 
-        Membresia m = usuario.getMembresia();
-        if (m == null) return;
-
-        Pago p = new Pago(usuario.getID(),"Pago de membresía " + m.getTipo(),(int)m.getCosto(),new java.util.Date(),usuario);
-
-
-        gimnasio.registrarPagos(p);
-    }
 
 
     // ================= LIMPIAR CAMPOS =================
@@ -744,39 +815,91 @@ public class PersonasController {
 
     @FXML
     private void actualizarEntrenador() {
-        if (gimnasio.isRecep()){
-            mostrar("debes ser Administrador para poder ejecutar esta accion");
+        if (gimnasio.isRecep()) {
+            mostrar("Debes ser Administrador para poder ejecutar esta acción");
             return;
         }
-        String id = updateIdE.getText();
-        String nuevoTel = updateTelE.getText();
-        String nuevaDir = updateDirE.getText();
-        String nuevoTurno = updateTurnoE.getText();
 
+        String id = updateIdE.getText().trim();
+        String nuevoTel = updateTelE.getText().trim();
+        String nuevaDir = updateDirE.getText().trim();
+        String nuevoTurno = updateTurnoE.getText().trim();
+
+        // ===== VALIDACIONES =====
+        if (id.isEmpty()) {
+            mostrar("Falta llenar el campo: ID del entrenador");
+            return;
+        }
+        if (nuevoTel.isEmpty()) {
+            mostrar("Falta llenar el campo: Teléfono");
+            return;
+        }
+        if (nuevaDir.isEmpty()) {
+            mostrar("Falta llenar el campo: Dirección");
+            return;
+        }
+        if (nuevoTurno.isEmpty()) {
+            mostrar("Falta llenar el campo: Turno");
+            return;
+        }
+
+        // ===== Verificar que exista =====
+        Entrenador encontrado = gimnasio.getListEntrenadores()
+                .stream()
+                .filter(e -> e.getID().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (encontrado == null) {
+            mostrar("No existe un entrenador con ese ID");
+            return;
+        }
+
+        // ===== Actualizar =====
         gimnasio.getAdministrador().modificarEntrenador(id, nuevoTel, nuevaDir, nuevoTurno);
 
-        listEntrenador.setAll(gimnasio.getListEntrenadores()); // refrescar tabla de Registrar
+        listEntrenador.setAll(gimnasio.getListEntrenadores()); // refrescar
 
         mostrar("Entrenador actualizado correctamente");
     }
 
-    @FXML
-    private TextField deleteIdE;
+
 
     @FXML
     private void eliminarEntrenador() {
-        if (gimnasio.isRecep()){
-            mostrar("debes ser Administrador para poder ejecutar esta accion");
+        if (gimnasio.isRecep()) {
+            mostrar("Debes ser Administrador para poder ejecutar esta acción");
             return;
         }
-        String id = deleteIdE.getText();
 
+        String id = deleteIdE.getText().trim();
+
+        // ===== VALIDACIÓN =====
+        if (id.isEmpty()) {
+            mostrar("Falta llenar el campo: ID del entrenador a eliminar");
+            return;
+        }
+
+        // ===== Verificar si existe =====
+        Entrenador encontrado = gimnasio.getListEntrenadores()
+                .stream()
+                .filter(e -> e.getID().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        if (encontrado == null) {
+            mostrar("No existe un entrenador con ese ID");
+            return;
+        }
+
+        // ===== Eliminar =====
         gimnasio.getAdministrador().eliminarEntrenador(id);
 
         listEntrenador.setAll(gimnasio.getListEntrenadores()); // refrescar tabla
 
-        mostrar("Entrenador eliminado");
+        mostrar("Entrenador eliminado correctamente");
     }
+
 
     private void mostrar(String msg) {
         Alert a = new Alert(Alert.AlertType.INFORMATION);

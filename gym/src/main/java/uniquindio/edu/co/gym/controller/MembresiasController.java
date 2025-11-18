@@ -64,42 +64,90 @@ public class MembresiasController {
         tableMembresia.setItems(listaMembresias);
     }
 
+    private boolean campoVacio(String valor, String nombreCampo) {
+        if (valor == null || valor.trim().isEmpty()) {
+            mostrarAlerta("Falta llenar el campo: " + nombreCampo);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean comboVacio(Object valor, String nombreCampo) {
+        if (valor == null) {
+            mostrarAlerta("Debe seleccionar: " + nombreCampo);
+            return true;
+        }
+        return false;
+    }
+
 
 
     @FXML
     private void guardarMembresias() {
+
+        // ===== VALIDACIONES =====
+        if (campoVacio(textid.getText(), "ID")) return;
+        if (campoVacio(textCosto.getText(), "Costo")) return;
+        if (comboVacio(DateFechaInicio.getValue(), "Fecha de inicio")) return;
+        if (comboVacio(DateFechaVencimiento.getValue(), "Fecha de vencimiento")) return;
+        if (comboVacio(comboBeneficio.getValue(), "Beneficio")) return;
+        if (comboVacio(comboTipo.getValue(), "Tipo de membresía")) return;
+        if (comboVacio(comboNivel.getValue(), "Nivel de membresía")) return;
+
+        // ===== VALIDAR QUE ID y COSTO sean números =====
+        int id;
+        double costo;
+
         try {
-            int id = Integer.parseInt(textid.getText());
-            double costo = Double.parseDouble(textCosto.getText());
-            Date fechaInicio = java.sql.Date.valueOf(DateFechaInicio.getValue());
-            Date fechaVencimiento = java.sql.Date.valueOf(DateFechaVencimiento.getValue());
-            boolean estado = checkActivo.isSelected();
-            String beneficio = comboBeneficio.getValue();
-            Tipo tipo = comboTipo.getValue();
-            Nivel nivel = comboNivel.getValue();
-
-            Membresia nueva = new Membresia(
-                    id,
-                    costo,
-                    fechaInicio,
-                    fechaVencimiento,
-                    estado,
-                    beneficio,
-                    tipo,
-                    nivel
-            );
-
-            Gimnasio.getInstance().registrarMembresia(nueva);
-            listaMembresias.add(nueva);
-
-            limpiarFormulario();
-
+            id = Integer.parseInt(textid.getText());
         } catch (NumberFormatException e) {
-            mostrarAlerta("ID y Costo deben ser números válidos.");
-        } catch (Exception e) {
-            mostrarAlerta("Error al crear la membresía: " + e.getMessage());
+            mostrarAlerta("El campo ID debe ser un número entero.");
+            return;
         }
+
+        try {
+            costo = Double.parseDouble(textCosto.getText());
+        } catch (NumberFormatException e) {
+            mostrarAlerta("El campo Costo debe ser un número válido.");
+            return;
+        }
+
+        // ===== CONVERTIR FECHAS =====
+        Date fechaInicio = java.sql.Date.valueOf(DateFechaInicio.getValue());
+        Date fechaVencimiento = java.sql.Date.valueOf(DateFechaVencimiento.getValue());
+
+        // ===== VALIDACIÓN DE FECHA =====
+        if (fechaVencimiento.before(fechaInicio)) {
+            mostrarAlerta("La fecha de vencimiento debe ser mayor o igual a la fecha de inicio.");
+            return;
+        }
+
+        // ===== EXTRAER DEMÁS CAMPOS =====
+        boolean estado = checkActivo.isSelected();
+        String beneficio = comboBeneficio.getValue();
+        Tipo tipo = comboTipo.getValue();
+        Nivel nivel = comboNivel.getValue();
+
+        // ===== CREAR OBJETO =====
+        Membresia nueva = new Membresia(
+                id,
+                costo,
+                fechaInicio,
+                fechaVencimiento,
+                estado,
+                beneficio,
+                tipo,
+                nivel
+        );
+
+        // ===== GUARDAR =====
+        gimnasio.registrarMembresia(nueva);
+        listaMembresias.add(nueva);
+
+        limpiarFormulario();
+        mostrarAlerta("Membresía registrada exitosamente.");
     }
+
 
     private void limpiarFormulario() {
         textid.clear();

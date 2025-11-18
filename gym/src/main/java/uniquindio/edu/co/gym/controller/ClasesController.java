@@ -102,45 +102,53 @@ public class ClasesController {
         listaUsuarios.setAll(obtenerUsuariosInscritosReales(claseSeleccionada));
         tablaUsuarios.setItems(listaUsuarios);
     }
-
     @FXML
     public void registrarClase() {
+
+        // === VALIDACIONES ===
+        if (campoVacio(textId.getText(), "ID de la clase")) return;
+        if (comboVacio(comboClaseGrupal.getValue(), "Clase grupal")) return;
+        if (comboVacio(comboDiaSemana.getValue(), "Día de la semana")) return;
+        if (comboVacio(comboHoraInicio.getValue(), "Hora de inicio")) return;
+        if (comboVacio(comboHoraFin.getValue(), "Hora de fin")) return;
+        if (campoVacio(textCupoMaximo.getText(), "Cupo máximo")) return;
+        if (comboVacio(comboEntrenador.getValue(), "Entrenador")) return;
+
+        // Validar número
+        int cupo;
         try {
-            String id = textId.getText();
-            ClaseGrupal nombre = comboClaseGrupal.getValue();
-            Semana dia = comboDiaSemana.getValue();
-            String inicioHora = comboHoraInicio.getValue();
-            String finHora = comboHoraFin.getValue();
-            int cupo = Integer.parseInt(textCupoMaximo.getText());
-
-            Entrenador entrenadorSeleccionado = comboEntrenador.getValue();
-
-            if (entrenadorSeleccionado == null) {
-                mostrarAlerta("Debe seleccionar un entrenador.");
+            cupo = Integer.parseInt(textCupoMaximo.getText());
+            if (cupo <= 0) {
+                mostrarAlerta("El cupo máximo debe ser mayor que 0.");
                 return;
             }
-
-            Clase nueva = new Clase(
-                    id,
-                    cupo,
-                    inicioHora,
-                    finHora,
-                    dia,
-                    nombre,
-                    entrenadorSeleccionado
-            );
-
-            gimnasio.registrarClase(nueva);
-            entrenadorSeleccionado.agregarClase(nueva);
-
-            listaClases.add(nueva);
-
-            limpiarFormulario();
-
         } catch (NumberFormatException e) {
-            mostrarAlerta("El cupo máximo debe ser un número.");
+            mostrarAlerta("El campo Cupo Máximo debe ser un número entero.");
+            return;
         }
+
+        // Extraer valores
+        String id = textId.getText();
+        ClaseGrupal nombre = comboClaseGrupal.getValue();
+        Semana dia = comboDiaSemana.getValue();
+        String inicioHora = comboHoraInicio.getValue();
+        String finHora = comboHoraFin.getValue();
+        Entrenador entrenadorSeleccionado = comboEntrenador.getValue();
+
+        // Crear clase
+        Clase nueva = new Clase(
+                id, cupo, inicioHora, finHora, dia, nombre, entrenadorSeleccionado
+        );
+
+        gimnasio.registrarClase(nueva);
+        entrenadorSeleccionado.agregarClase(nueva);
+
+        listaClases.add(nueva);
+        limpiarFormulario();
+
+        mostrarAlerta("Clase registrada correctamente.");
     }
+
 
     private void mostrar(String msg) {
         Alert a = new Alert(Alert.AlertType.INFORMATION);
@@ -148,78 +156,59 @@ public class ClasesController {
         a.setContentText(msg);
         a.showAndWait();
     }
+    private boolean campoVacio(String valor, String nombreCampo) {
+        if (valor == null || valor.trim().isEmpty()) {
+            mostrarAlerta("Falta llenar el campo: " + nombreCampo);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean comboVacio(Object valor, String nombreCampo) {
+        if (valor == null) {
+            mostrarAlerta("Debe seleccionar: " + nombreCampo);
+            return true;
+        }
+        return false;
+    }
+
 
     @FXML
     public void registrarUsuarioEnClase() {
-        if (!gimnasio.isRecep()){
-            mostrar("debes ser Recepcionista para poder ejecutar esta accion");
+
+        if (!gimnasio.isRecep()) {
+            mostrarAlerta("Debes ser Recepcionista para poder ejecutar esta acción.");
             return;
         }
-        // Clase seleccionada
+        if (comboVacio(comboClasesRegistro.getValue(), "Clase para registrar usuario")) return;
+        if (campoVacio(usuarioRegisClass.getText(), "ID del usuario")) return;
+
         Clase clase = comboClasesRegistro.getValue();
-        String idUsuarioIngresado = usuarioRegisClass.getText();
+        String idUsuario = usuarioRegisClass.getText().trim();
 
-        if (clase == null || idUsuarioIngresado == null || idUsuarioIngresado.isEmpty()) {
-            mostrarAlerta("Debe seleccionar una clase y escribir el ID del usuario.");
+        Recepcionista recep = gimnasio.obtenerRecepcionistaActual();
+
+        if (recep == null) {
+            mostrarAlerta("ERROR: No se pudo obtener el recepcionista actual.");
             return;
         }
 
-        // Unir los tres arrays en uno solo
-        List<Usuario> todosLosUsuarios = new ArrayList<>();
-        todosLosUsuarios.addAll(gimnasio.getListTrabajadorUQ());
-        todosLosUsuarios.addAll(gimnasio.getListExterno());
-        todosLosUsuarios.addAll(gimnasio.getListEstudiante());
+        String resultado = recep.registrarUsuarioEnClase(idUsuario, clase);
 
-        // Buscar usuario por ID
-        Usuario usuarioEncontrado = null;
-        for (Usuario u : todosLosUsuarios) {
-            if (u.getID().equals(idUsuarioIngresado)) {
-                usuarioEncontrado = u;
-                break;
-            }
-        }
-
-        if (usuarioEncontrado == null) {
-            mostrarAlerta("No existe un usuario con ese ID.");
-            return;
-        }
-
-        // Obtener inscritos reales
-        ArrayList<Usuario> inscritos = obtenerUsuariosInscritosReales(clase);
-
-        // Verificar si ya está inscrito
-        if (inscritos.contains(usuarioEncontrado)) {
-            mostrarAlerta("El usuario ya está inscrito en esta clase.");
-            return;
-        }
-
-        // Verificar cupos
-        int cuposDisponibles = clase.getCupoMaximo() - inscritos.size();
-        if (cuposDisponibles <= 0) {
-            mostrarAlerta("No hay cupos disponibles.");
-            return;
-        }
-        Membresia membresiaUsu=usuarioEncontrado.getMembresia();
-        if (membresiaUsu.getNivel().toString().equals("BASICO")){
-            mostrarAlerta("Tu plan es basico no puedes acceder a clases Grupales");
-            return;
-        }
-
-        // Registrar al usuario completo dentro de la clase
-        boolean registrado = clase.inscribirUsuario(usuarioEncontrado);
-
-        if (!registrado) {
-            mostrarAlerta("No se pudo registrar. Cupo lleno o error interno.");
+        if (!resultado.equals("OK")) {
+            mostrarAlerta(resultado);
             return;
         }
 
         mostrarAlerta("Usuario registrado correctamente.");
         limpiarFormulario();
-        // Actualizar tabla si está viendo esa clase
+
+        // refrescar tabla si es la misma clase
         if (comboClases.getValue() == clase) {
-            listaUsuarios.setAll(inscritos);
+            listaUsuarios.setAll(clase.getListUsario());
         }
     }
+
 
 
     private void limpiarFormulario() {
@@ -233,8 +222,8 @@ public class ClasesController {
         comboClasesRegistro.setValue(null);
         usuarioRegisClass.clear();
         comboClases.setValue(null);
-
     }
+
 
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
